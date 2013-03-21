@@ -11,9 +11,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Ctrl_Space
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
@@ -37,16 +34,8 @@ namespace Ctrl_Space
             graphics.PreferredBackBufferHeight = 768;
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             myPosition = new Rectangle(0, 0, 48, 48);
 
             Random r = new Random();
@@ -66,18 +55,12 @@ namespace Ctrl_Space
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _myFirstTexture = Content.Load<Texture2D>("Bitmap1");
             _meteoriteTexture = Content.Load<Texture2D>("Bitmap2");
-            // TODO: use this.Content to load your game content here
         }
 
         List<Rectangle> _listMeteorites = new List<Rectangle>();
@@ -85,25 +68,15 @@ namespace Ctrl_Space
         List<float> _listMeteoritesR = new List<float>();
         List<float> _listMeteoritesRV = new List<float>();
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             keyboardState = Keyboard.GetState();
 
-            // Allows the game to exit
             if (keyboardState.IsKeyDown(Keys.Escape))
                 this.Exit();
 
@@ -129,10 +102,7 @@ namespace Ctrl_Space
 
             myPosition.Y = (myPosition.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height;
 
-            // TODO: Add your update logic here
-
             oldKeyboardState = keyboardState;
-
 
             for (int i = 0; i < _listMeteorites.Count; ++i)
             {
@@ -148,16 +118,10 @@ namespace Ctrl_Space
 
         float x = 0.0f;
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-
-            // TODO: Add your drawing code here
             spriteBatch.Begin();
 
             for (int i = 0; i < _listMeteorites.Count; ++i)
