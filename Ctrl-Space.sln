@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ctrl-Space", "src\Ctrl-Space\Ctrl-Space.csproj", "{61693B55-B41A-41B1-80E8-B9B57600A9D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ctrl-SpaceContent", "src\Ctrl-SpaceContent\Ctrl-SpaceContent.contentproj", "{B8F8C26F-4C04-4DEC-87ED-00E10C4EE638}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61693B55-B41A-41B1-80E8-B9B57600A9D5}.Debug|x86.ActiveCfg = Debug|x86
+		{61693B55-B41A-41B1-80E8-B9B57600A9D5}.Debug|x86.Build.0 = Debug|x86
+		{61693B55-B41A-41B1-80E8-B9B57600A9D5}.Release|x86.ActiveCfg = Release|x86
+		{61693B55-B41A-41B1-80E8-B9B57600A9D5}.Release|x86.Build.0 = Release|x86
+		{B8F8C26F-4C04-4DEC-87ED-00E10C4EE638}.Debug|x86.ActiveCfg = Debug|x86
+		{B8F8C26F-4C04-4DEC-87ED-00E10C4EE638}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
