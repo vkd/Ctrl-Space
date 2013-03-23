@@ -82,27 +82,30 @@ namespace Ctrl_Space
 
             if (keyboardState.IsKeyDown(Keys.Right))
             {
-                _ship.Position.X += 5;
+                _ship.Rotation += .05f;
             }
             else if (keyboardState.IsKeyDown(Keys.Left))
             {
-                _ship.Position.X -= 5;
+                _ship.Rotation -= .05f;
             }
-
-            _ship.Position.X = (_ship.Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width;
 
             if (keyboardState.IsKeyDown(Keys.Up))
             {
-                _ship.Position.Y -= 5;
+                _ship.Speed.X += (float)(0.05f * Math.Sin(_ship.Rotation));
+                _ship.Speed.Y -= (float)(0.05f * Math.Cos(_ship.Rotation));
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
-                _ship.Position.Y += 5;
+                _ship.Speed.X -= (float)(0.05f * Math.Sin(_ship.Rotation));
+                _ship.Speed.Y += (float)(0.05f * Math.Cos(_ship.Rotation));
             }
 
-            _ship.Position.Y = (_ship.Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height;
+            _ship.Position += _ship.Speed;
 
-            _ship.Rotation += .08f;
+            _ship.Speed *= 0.99f;
+
+            _ship.Position.X = (_ship.Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width;
+            _ship.Position.Y = (_ship.Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height;
 
             for (int i = 0; i < _asteroids.Count; ++i)
             {
