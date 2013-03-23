@@ -13,43 +13,48 @@ namespace Ctrl_Space
 {
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
 
         Texture2D _myFirstTexture;
         Texture2D _meteoriteTexture;
 
-        Rectangle myPosition;
-
         KeyboardState keyboardState;
-        KeyboardState oldKeyboardState;
+
+        GameObject _ship;
+        List<GameObject> _asteroids = new List<GameObject>();
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-
-            graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 768;
+            _graphics.PreferredBackBufferWidth = 1024;
+            _graphics.PreferredBackBufferHeight = 768;
         }
 
         protected override void Initialize()
         {
-            myPosition = new Rectangle(0, 0, 48, 48);
-
             Random r = new Random();
 
             int maxWidth = GraphicsDevice.Viewport.Width;
             int maxHeight = GraphicsDevice.Viewport.Height;
 
+            _ship = new GameObject();
+            _ship.Size = 48;
+            _ship.Position.X = maxWidth / 2;
+            _ship.Position.Y = maxHeight / 2;
+
             for (int i = 0; i < 100; ++i)
             {
-                int size = r.Next(10,100);
-                _listMeteorites.Add(new Rectangle(r.Next(maxWidth), r.Next(maxHeight), size, size));
-                _listMeteoritesV.Add(new Vector2((float)(r.NextDouble() * 6 - 3), (float)(r.NextDouble() * 6 - 3)));
-                _listMeteoritesR.Add((float)(r.NextDouble() * 6.28));
-                _listMeteoritesRV.Add((float)(r.NextDouble() * .2 - .1));
+                GameObject asteroid = new GameObject();
+                asteroid.Position.X = (float)(r.NextDouble() * maxWidth);
+                asteroid.Position.Y = (float)(r.NextDouble() * maxHeight);
+                asteroid.Speed.X = (float)(r.NextDouble() * 4 - 2);
+                asteroid.Speed.Y = (float)(r.NextDouble() * 4 - 2);
+                asteroid.Size = (float)(r.NextDouble() * 40 + 20);
+                asteroid.Rotation = (float)(r.NextDouble() * 6.28);
+                asteroid.RotationSpeed = (float)(r.NextDouble() * .1 - .05);
+                _asteroids.Add(asteroid);
             }
 
             base.Initialize();
@@ -57,16 +62,11 @@ namespace Ctrl_Space
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _myFirstTexture = Content.Load<Texture2D>("Bitmap1");
             _meteoriteTexture = Content.Load<Texture2D>("Bitmap2");
         }
-
-        List<Rectangle> _listMeteorites = new List<Rectangle>();
-        List<Vector2> _listMeteoritesV = new List<Vector2>();
-        List<float> _listMeteoritesR = new List<float>();
-        List<float> _listMeteoritesRV = new List<float>();
 
         protected override void UnloadContent()
         {
@@ -82,57 +82,54 @@ namespace Ctrl_Space
 
             if (keyboardState.IsKeyDown(Keys.Right))
             {
-                myPosition.X += 5;
+                _ship.Position.X += 5;
             }
             else if (keyboardState.IsKeyDown(Keys.Left))
             {
-                myPosition.X -= 5;
+                _ship.Position.X -= 5;
             }
 
-            myPosition.X = (myPosition.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width;
+            _ship.Position.X = (_ship.Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width;
 
             if (keyboardState.IsKeyDown(Keys.Up))
             {
-                myPosition.Y -= 5;
+                _ship.Position.Y -= 5;
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
-                myPosition.Y += 5;
+                _ship.Position.Y += 5;
             }
 
-            myPosition.Y = (myPosition.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height;
+            _ship.Position.Y = (_ship.Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height;
 
-            oldKeyboardState = keyboardState;
+            _ship.Rotation += .08f;
 
-            for (int i = 0; i < _listMeteorites.Count; ++i)
+            for (int i = 0; i < _asteroids.Count; ++i)
             {
-                _listMeteorites[i] = new Rectangle((_listMeteorites[i].X + (int)_listMeteoritesV[i].X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width
-                    , (_listMeteorites[i].Y + (int)_listMeteoritesV[i].Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height
-                    , _listMeteorites[i].Width
-                    , _listMeteorites[i].Height);
-                _listMeteoritesR[i] += _listMeteoritesRV[i];
+                _asteroids[i].Position += _asteroids[i].Speed;
+                _asteroids[i].Rotation += _asteroids[i].RotationSpeed;
+
+                _asteroids[i].Position.X = (_asteroids[i].Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width;
+                _asteroids[i].Position.Y = (_asteroids[i].Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height;
             }
 
             base.Update(gameTime);
         }
 
-        float x = 0.0f;
-
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.Begin();
+            _spriteBatch.Begin();
 
-            for (int i = 0; i < _listMeteorites.Count; ++i)
+            for (int i = 0; i < _asteroids.Count; ++i)
             {
-                spriteBatch.Draw(_meteoriteTexture, _listMeteorites[i], null, Color.White, _listMeteoritesR[i], new Vector2(24, 24), SpriteEffects.None, 0.0f);
+                _spriteBatch.Draw(_meteoriteTexture, new Rectangle((int)_asteroids[i].Position.X, (int)_asteroids[i].Position.Y, (int)_asteroids[i].Size, (int)_asteroids[i].Size), null, Color.White, _asteroids[i].Rotation, new Vector2(24, 24), SpriteEffects.None, 0.0f);
             }
 
-            spriteBatch.Draw(_myFirstTexture, myPosition, null, Color.White, x, new Vector2(24,24), SpriteEffects.None, 0.0f);
-            x += .1f;
+            _spriteBatch.Draw(_myFirstTexture, new Rectangle((int)_ship.Position.X, (int)_ship.Position.Y, (int)_ship.Size, (int)_ship.Size), null, Color.White, _ship.Rotation, new Vector2(24, 24), SpriteEffects.None, 0.0f);
 
-            spriteBatch.End();
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
