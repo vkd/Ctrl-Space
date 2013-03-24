@@ -17,8 +17,9 @@ namespace Ctrl_Space
         //Бокс для расчета столкновений
         public BoundingBox BB;
 
-        public GameObject()
+        public GameObject(float size)
         {
+            Size = size;
             BB = new BoundingBox(
                 new Vector3(Position.X - Size / 2, Position.Y - Size / 2, 0),
                 new Vector3(Position.X + Size / 2, Position.Y + Size / 2, 0));
@@ -30,13 +31,19 @@ namespace Ctrl_Space
         public float Frequency;
         public float Range;
         public DateTime TTL;
+
+        public Weapon()
+            : base(20)
+        {
+
+        }
     }
 
     class Bonus : GameObject
     {
         public DateTime TTL;
 
-        public Bonus() : base()
+        public Bonus(float size) : base(size)
         {
             Speed.X = 0;
             Speed.Y = 0;
@@ -47,9 +54,9 @@ namespace Ctrl_Space
     {
         public int GiveSpeed;
 
-        public SpeedBonus() : base()
+        public SpeedBonus() : base(15)
         {
-            Size = 15;
+            //Size = 15;
         }
     }
 }

@@ -22,6 +22,7 @@ namespace Ctrl_Space
         Texture2D _speedBonusTexture;
 
         KeyboardState keyboardState;
+        KeyboardState oldKeyboardState;
 
         GameObject _ship;
         
@@ -43,30 +44,30 @@ namespace Ctrl_Space
             int maxWidth = GraphicsDevice.Viewport.Width;
             int maxHeight = GraphicsDevice.Viewport.Height;
 
-            _ship = new GameObject();
-            _ship.Size = 48;
+            _ship = new GameObject(48);
+            //_ship.Size = 48;
             _ship.Position.X = maxWidth / 2;
             _ship.Position.Y = maxHeight / 2;
 
             for (int i = 0; i < 10; ++i)
             {
-                GameObject asteroid = new GameObject();
+                GameObject asteroid = new GameObject((float)(r.NextDouble() * 40 + 20));
                 asteroid.Position.X = (float)(r.NextDouble() * maxWidth);
                 asteroid.Position.Y = (float)(r.NextDouble() * maxHeight);
                 asteroid.Speed.X = (float)(r.NextDouble() * 4 - 2);
                 asteroid.Speed.Y = (float)(r.NextDouble() * 4 - 2);
-                asteroid.Size = (float)(r.NextDouble() * 40 + 20);
+                //asteroid.Size = (float)(r.NextDouble() * 40 + 20);
                 asteroid.Rotation = (float)(r.NextDouble() * 6.28);
                 asteroid.RotationSpeed = (float)(r.NextDouble() * .1 - .05);
                 _asteroids.Add(asteroid);
+            }
 
-                if (i < 5)
-                {
-                    SpeedBonus bonus = new SpeedBonus();
-                    bonus.Position.X = (float)(r.NextDouble() * maxWidth);
-                    bonus.Position.Y = (float)(r.NextDouble() * maxHeight);
-                    _speedBonuses.Add(bonus);
-                }
+            for (int i = 0; i < 5; ++i)
+            {
+                SpeedBonus bonus = new SpeedBonus();
+                bonus.Position.X = (float)(r.NextDouble() * maxWidth);
+                bonus.Position.Y = (float)(r.NextDouble() * maxHeight);
+                _speedBonuses.Add(bonus);
             }
 
             base.Initialize();
@@ -94,33 +95,43 @@ namespace Ctrl_Space
             if (keyboardState.IsKeyDown(Keys.Escape))
                 this.Exit();
 
+            var rotationSpeed = .1f;
             if (keyboardState.IsKeyDown(Keys.Right))
             {
-                _ship.Rotation += .05f;
+                _ship.Rotation += rotationSpeed;
             }
             else if (keyboardState.IsKeyDown(Keys.Left))
             {
-                _ship.Rotation -= .05f;
+                _ship.Rotation -= rotationSpeed;
             }
 
+            var acceleration = 0.1f;
             if (keyboardState.IsKeyDown(Keys.Up))
             {
-                _ship.Speed.X += (float)(0.05f * Math.Sin(_ship.Rotation));
-                _ship.Speed.Y -= (float)(0.05f * Math.Cos(_ship.Rotation));
+                _ship.Speed.X += (float)(acceleration * Math.Sin(_ship.Rotation));
+                _ship.Speed.Y -= (float)(acceleration * Math.Cos(_ship.Rotation));
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
-                _ship.Speed.X -= (float)(0.05f * Math.Sin(_ship.Rotation));
-                _ship.Speed.Y += (float)(0.05f * Math.Cos(_ship.Rotation));
+                _ship.Speed.X -= (float)(acceleration * Math.Sin(_ship.Rotation));
+                _ship.Speed.Y += (float)(acceleration * Math.Cos(_ship.Rotation));
             }
 
-            if (keyboardState.IsKeyDown(Keys.Space))
+            if (keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
             {
-                
+                var kickRocket = 40f;
+                var speedRocket = 0.5f;
+
+                GameObject rocketAsteroid = new GameObject(10);
+                rocketAsteroid.Position.X = _ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation));
+                rocketAsteroid.Position.Y = _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation));
+                rocketAsteroid.Speed.X = _ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation));
+                rocketAsteroid.Speed.Y = _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation));
+                _asteroids.Add(rocketAsteroid);
             }
 
             _ship.Position += _ship.Speed;
-
+            
             _ship.Speed *= 0.99f;
 
             _ship.Position.X = (_ship.Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width;
@@ -161,6 +172,8 @@ namespace Ctrl_Space
                     _speedBonuses.Remove(_speedBonuses[i]);
                 }
             }
+
+            oldKeyboardState = keyboardState;
 
             base.Update(gameTime);
         }
