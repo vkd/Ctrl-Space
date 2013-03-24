@@ -28,6 +28,7 @@ namespace Ctrl_Space
         
         List<GameObject> _asteroids = new List<GameObject>();
         List<SpeedBonus> _speedBonuses = new List<SpeedBonus>();
+        List<RocketWeapon> _rockets = new List<RocketWeapon>();
 
         public Game1()
         {
@@ -45,7 +46,7 @@ namespace Ctrl_Space
             int maxHeight = GraphicsDevice.Viewport.Height;
 
             _ship = new GameObject(48);
-            //_ship.Size = 48;
+
             _ship.Position.X = maxWidth / 2;
             _ship.Position.Y = maxHeight / 2;
 
@@ -117,7 +118,7 @@ namespace Ctrl_Space
                 _ship.Speed.Y += (float)(acceleration * Math.Cos(_ship.Rotation));
             }
 
-            if (keyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
+            if (keyboardState.IsKeyUp(Keys.Space) && oldKeyboardState.IsKeyDown(Keys.Space))
             {
                 var kickRocket = 40f;
                 var speedRocket = 0.5f;
@@ -128,6 +129,13 @@ namespace Ctrl_Space
                 rocketAsteroid.Speed.X = _ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation));
                 rocketAsteroid.Speed.Y = _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation));
                 _asteroids.Add(rocketAsteroid);
+            }
+
+            if (keyboardState.IsKeyUp(Keys.LeftShift) && oldKeyboardState.IsKeyDown(Keys.LeftShift))
+            {
+                RocketWeapon rocket = new RocketWeapon();
+                rocket.Position = _ship.Position;
+                _rockets.Add(rocket);
             }
 
             _ship.Position += _ship.Speed;
@@ -141,6 +149,7 @@ namespace Ctrl_Space
 
             for (int i = 0; i < _asteroids.Count; ++i)
             {
+                bool asteroidDestroyed = false;
                 _asteroids[i].Position += _asteroids[i].Speed;
                 _asteroids[i].Rotation += _asteroids[i].RotationSpeed;
 
@@ -155,8 +164,29 @@ namespace Ctrl_Space
                 {
                     _ship.Speed.X /= 2;
                     _ship.Speed.Y /= 2;
-                    _asteroids.Remove(_asteroids[i]);
+                    asteroidDestroyed = true;
                 }
+
+                if (!asteroidDestroyed)
+                {
+                    for (int j = 0; j < _rockets.Count; ++j)
+                    {
+                        _rockets[j].Position += _rockets[j].Speed;
+
+                        _rockets[j].BB = new BoundingBox(
+                            new Vector3(_rockets[j].Position.X - _rockets[j].Size / 2, _rockets[j].Position.Y - _rockets[j].Size / 2, 0),
+                            new Vector3(_rockets[j].Position.X + _rockets[j].Size / 2, _rockets[j].Position.Y + _rockets[j].Size / 2, 0));
+
+                        if (_rockets[j].BB.Intersects(_asteroids[i].BB))
+                        {
+                            asteroidDestroyed = true;
+                            _rockets.Remove(_rockets[j]);
+                        }
+                    }
+                }
+
+                if (asteroidDestroyed)
+                    _asteroids.Remove(_asteroids[i]);
             }
 
             for (int i = 0; i < _speedBonuses.Count; ++i)
@@ -192,6 +222,11 @@ namespace Ctrl_Space
             for (int i = 0; i < _speedBonuses.Count; ++i)
             {
                 _spriteBatch.Draw(_speedBonusTexture, _speedBonuses[i].Position, Color.White);
+            }
+
+            for (int i = 0; i < _rockets.Count; ++i)
+            {
+                _spriteBatch.Draw(_rocketTexture, _rockets[i].Position, Color.White);
             }
 
             _spriteBatch.Draw(_myFirstTexture, _ship.Position, null, Color.White, _ship.Rotation, new Vector2(24, 24), new Vector2(_ship.Size / 48, _ship.Size / 48), SpriteEffects.None, 0f);

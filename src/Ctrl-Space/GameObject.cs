@@ -39,6 +39,16 @@ namespace Ctrl_Space
         }
     }
 
+    class RocketWeapon : Weapon
+    {
+        public RocketWeapon()
+            : base()
+        {
+            Speed = new Vector2(0.1f, 0.1f);
+            Frequency = 10;
+        }
+    }
+
     class Bonus : GameObject
     {
         public DateTime TTL;
@@ -56,7 +66,7 @@ namespace Ctrl_Space
 
         public SpeedBonus() : base(15)
         {
-            //Size = 15;
+
         }
     }
 }
