@@ -14,4 +14,32 @@ namespace Ctrl_Space
         public float RotationSpeed;
         public float Size;
     }
+
+    class Weapon : GameObject
+    {
+        public float Frequency;
+        public float Range;
+        public DateTime TTL;
+    }
+
+    class Bonus : GameObject
+    {
+        public DateTime TTL;
+
+        public Bonus()
+        {
+            Speed.X = 0;
+            Speed.Y = 0;
+        }
+    }
+
+    class SpeedBonus : Bonus
+    {
+        public int GiveSpeed;
+
+        public SpeedBonus() : base()
+        {
+            Size = 15;
+        }
+    }
 }
