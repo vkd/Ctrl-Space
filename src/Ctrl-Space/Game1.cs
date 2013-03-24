@@ -127,10 +127,10 @@ namespace Ctrl_Space
 
             for (int i = 0; i < _asteroids.Count; ++i)
             {
-                _spriteBatch.Draw(_meteoriteTexture, new Rectangle((int)_asteroids[i].Position.X, (int)_asteroids[i].Position.Y, (int)_asteroids[i].Size, (int)_asteroids[i].Size), null, Color.White, _asteroids[i].Rotation, new Vector2(24, 24), SpriteEffects.None, 0.0f);
+                _spriteBatch.Draw(_meteoriteTexture, _asteroids[i].Position, null, Color.White, _asteroids[i].Rotation, new Vector2(24, 24), new Vector2(_asteroids[i].Size / 48, _asteroids[i].Size / 48), SpriteEffects.None, 0f);
             }
 
-            _spriteBatch.Draw(_myFirstTexture, new Rectangle((int)_ship.Position.X, (int)_ship.Position.Y, (int)_ship.Size, (int)_ship.Size), null, Color.White, _ship.Rotation, new Vector2(24, 24), SpriteEffects.None, 0.0f);
+            _spriteBatch.Draw(_myFirstTexture, _ship.Position, null, Color.White, _ship.Rotation, new Vector2(24, 24), new Vector2(_ship.Size / 48, _ship.Size / 48), SpriteEffects.None, 0f);
 
             _spriteBatch.End();
 
