@@ -24,12 +24,9 @@ namespace Ctrl_Space
         KeyboardState keyboardState;
 
         GameObject _ship;
-        BoundingBox _shipBB;
         
         List<GameObject> _asteroids = new List<GameObject>();
-        
         List<SpeedBonus> _speedBonuses = new List<SpeedBonus>();
-        List<BoundingBox> _speedBonusesBB = new List<BoundingBox>();
 
         public Game1()
         {
@@ -50,11 +47,8 @@ namespace Ctrl_Space
             _ship.Size = 48;
             _ship.Position.X = maxWidth / 2;
             _ship.Position.Y = maxHeight / 2;
-            _shipBB = new BoundingBox(
-                new Vector3(_ship.Position.X - _ship.Size / 2, _ship.Position.Y - _ship.Size / 2, 0),
-                new Vector3(_ship.Position.X - _ship.Size / 2, _ship.Position.Y + _ship.Size / 2, 0));
 
-            for (int i = 0; i < 100; ++i)
+            for (int i = 0; i < 10; ++i)
             {
                 GameObject asteroid = new GameObject();
                 asteroid.Position.X = (float)(r.NextDouble() * maxWidth);
@@ -72,11 +66,6 @@ namespace Ctrl_Space
                     bonus.Position.X = (float)(r.NextDouble() * maxWidth);
                     bonus.Position.Y = (float)(r.NextDouble() * maxHeight);
                     _speedBonuses.Add(bonus);
-
-                    BoundingBox bb = new BoundingBox(
-                        new Vector3(bonus.Position.X - bonus.Size / 2, bonus.Position.Y - bonus.Size / 2, 0),
-                        new Vector3(bonus.Size + bonus.Size / 2, bonus.Size + bonus.Size / 2, 0));
-                    _speedBonusesBB.Add(bb);
                 }
             }
 
@@ -136,23 +125,8 @@ namespace Ctrl_Space
 
             _ship.Position.X = (_ship.Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width;
             _ship.Position.Y = (_ship.Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height;
-            _shipBB.Min = new Vector3(_ship.Position.X - _ship.Size / 2, _ship.Position.Y - _ship.Size / 2, 0);
-            _shipBB.Max = new Vector3(_ship.Position.X - _ship.Size / 2, _ship.Position.Y + _ship.Size / 2, 0);
-
-            for (int i = 0; i < _speedBonusesBB.Count; ++i)
-            {
-                _speedBonusesBB[i] = new BoundingBox(
-                    new Vector3(_speedBonuses[i].Position.X - _speedBonuses[i].Size / 2, _speedBonuses[i].Position.Y - _speedBonuses[i].Size / 2, 0),
-                    new Vector3(_speedBonuses[i].Position.X + _speedBonuses[i].Size / 2, _speedBonuses[i].Position.Y + _speedBonuses[i].Size / 2, 0));
-
-                if (_speedBonusesBB[i].Intersects(_shipBB))
-                {
-                    _ship.Speed.X *= 2;
-                    _ship.Speed.Y *= 2;
-                    _speedBonuses.Remove(_speedBonuses[i]);
-                    _speedBonusesBB.Remove(_speedBonusesBB[i]);
-                }
-            }
+            _ship.BB.Min = new Vector3(_ship.Position.X - _ship.Size / 2, _ship.Position.Y - _ship.Size / 2, 0);
+            _ship.BB.Max = new Vector3(_ship.Position.X - _ship.Size / 2, _ship.Position.Y + _ship.Size / 2, 0);
 
             for (int i = 0; i < _asteroids.Count; ++i)
             {
@@ -161,6 +135,31 @@ namespace Ctrl_Space
 
                 _asteroids[i].Position.X = (_asteroids[i].Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width;
                 _asteroids[i].Position.Y = (_asteroids[i].Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height;
+
+                _asteroids[i].BB = new BoundingBox(
+                    new Vector3(_asteroids[i].Position.X - _asteroids[i].Size / 2, _asteroids[i].Position.Y - _asteroids[i].Size / 2, 0),
+                    new Vector3(_asteroids[i].Position.X + _asteroids[i].Size / 2, _asteroids[i].Position.Y + _asteroids[i].Size / 2, 0));
+
+                if (_asteroids[i].BB.Intersects(_ship.BB))
+                {
+                    _ship.Speed.X /= 2;
+                    _ship.Speed.Y /= 2;
+                    _asteroids.Remove(_asteroids[i]);
+                }
+            }
+
+            for (int i = 0; i < _speedBonuses.Count; ++i)
+            {
+                _speedBonuses[i].BB = new BoundingBox(
+                    new Vector3(_speedBonuses[i].Position.X - _speedBonuses[i].Size / 2, _speedBonuses[i].Position.Y - _speedBonuses[i].Size / 2, 0),
+                    new Vector3(_speedBonuses[i].Position.X + _speedBonuses[i].Size / 2, _speedBonuses[i].Position.Y + _speedBonuses[i].Size / 2, 0));
+
+                if (_speedBonuses[i].BB.Intersects(_ship.BB))
+                {
+                    _ship.Speed.X *= 2;
+                    _ship.Speed.Y *= 2;
+                    _speedBonuses.Remove(_speedBonuses[i]);
+                }
             }
 
             base.Update(gameTime);

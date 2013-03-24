@@ -13,6 +13,16 @@ namespace Ctrl_Space
         public float Rotation;
         public float RotationSpeed;
         public float Size;
+
+        //Бокс для расчета столкновений
+        public BoundingBox BB;
+
+        public GameObject()
+        {
+            BB = new BoundingBox(
+                new Vector3(Position.X - Size / 2, Position.Y - Size / 2, 0),
+                new Vector3(Position.X + Size / 2, Position.Y + Size / 2, 0));
+        }
     }
 
     class Weapon : GameObject
@@ -26,7 +36,7 @@ namespace Ctrl_Space
     {
         public DateTime TTL;
 
-        public Bonus()
+        public Bonus() : base()
         {
             Speed.X = 0;
             Speed.Y = 0;
