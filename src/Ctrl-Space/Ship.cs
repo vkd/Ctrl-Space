@@ -13,6 +13,21 @@ namespace Ctrl_Space
 
         }
 
+        public void Rotate(float rotationSpeed)
+        {
+            Rotation += rotationSpeed;
+        }
 
+        public void SpeedUp(float acceleration)
+        {
+            Speed.X += (float)(acceleration * Math.Sin(Rotation));
+            Speed.Y -= (float)(acceleration * Math.Cos(Rotation));
+        }
+
+        public void SpeedDown(float acceleration)
+        {
+            Speed.X -= (float)(acceleration * Math.Sin(Rotation));
+            Speed.Y += (float)(acceleration * Math.Cos(Rotation));
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace Ctrl_Space
         private GamePadState _gamePadState;
         private GamePadState _oldGamePadState;
 
-        GameObject _ship;
+        Ship _ship;
 
         Camera _camera;
         
@@ -52,7 +52,7 @@ namespace Ctrl_Space
             int maxWidth = GraphicsDevice.Viewport.Width;
             int maxHeight = GraphicsDevice.Viewport.Height;
 
-            _ship = new GameObject(48);
+            _ship = new Ship(48);
 
             _camera = new Camera(_ship);
 
@@ -182,23 +182,21 @@ namespace Ctrl_Space
             var rotationSpeed = .05f;
             if (_keyboardState.IsKeyDown(Keys.Right) || _gamePadState.IsButtonDown(Buttons.DPadRight))
             {
-                _ship.Rotation += rotationSpeed;
+                _ship.Rotate(rotationSpeed);
             }
             else if (_keyboardState.IsKeyDown(Keys.Left) || _gamePadState.IsButtonDown(Buttons.DPadLeft))
             {
-                _ship.Rotation -= rotationSpeed;
+                _ship.Rotate(-rotationSpeed);
             }
 
             var acceleration = 0.3f;
             if (_keyboardState.IsKeyDown(Keys.Up) || _gamePadState.IsButtonDown(Buttons.DPadUp))
             {
-                _ship.Speed.X += (float)(acceleration * Math.Sin(_ship.Rotation));
-                _ship.Speed.Y -= (float)(acceleration * Math.Cos(_ship.Rotation));
+                _ship.SpeedUp(acceleration);
             }
             else if (_keyboardState.IsKeyDown(Keys.Down) || _gamePadState.IsButtonDown(Buttons.DPadDown))
             {
-                _ship.Speed.X -= (float)(acceleration * Math.Sin(_ship.Rotation));
-                _ship.Speed.Y += (float)(acceleration * Math.Cos(_ship.Rotation));
+                _ship.SpeedDown(acceleration);
             }
 
             if ((_keyboardState.IsKeyDown(Keys.Space) && _oldKeyboardState.IsKeyUp(Keys.Space)) ||
