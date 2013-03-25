@@ -25,6 +25,8 @@ namespace Ctrl_Space
         KeyboardState oldKeyboardState;
 
         GameObject _ship;
+
+        Camera _camera;
         
         List<GameObject> _asteroids = new List<GameObject>();
         List<SpeedBonus> _speedBonuses = new List<SpeedBonus>();
@@ -46,6 +48,8 @@ namespace Ctrl_Space
             int maxHeight = GraphicsDevice.Viewport.Height;
 
             _ship = new GameObject(48);
+
+            _camera = new Camera(_ship);
 
             _ship.Position.X = maxWidth / 2;
             _ship.Position.Y = maxHeight / 2;
@@ -212,7 +216,7 @@ namespace Ctrl_Space
         {
             GraphicsDevice.Clear(Color.Black);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetTransform());
 
             for (int i = 0; i < _asteroids.Count; ++i)
             {
