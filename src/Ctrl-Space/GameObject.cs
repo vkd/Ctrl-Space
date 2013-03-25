@@ -9,6 +9,7 @@ namespace Ctrl_Space
     class GameObject
     {
         public Vector2 Position;
+        public int Radius;
         public Vector2 Speed;
         public float Rotation;
         public float RotationSpeed;
@@ -16,6 +17,11 @@ namespace Ctrl_Space
 
         //Бокс для расчета столкновений
         public BoundingBox BB;
+
+        public GameObject()
+        {
+
+        }
 
         public GameObject(float size)
         {

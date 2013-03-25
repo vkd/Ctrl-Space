@@ -21,8 +21,13 @@ namespace Ctrl_Space
         Texture2D _rocketTexture;
         Texture2D _speedBonusTexture;
 
-        KeyboardState keyboardState;
-        KeyboardState oldKeyboardState;
+        //Keyboard
+        private KeyboardState _keyboardState;
+        private KeyboardState _oldKeyboardState;
+
+        //GamePad
+        private GamePadState _gamePadState;
+        private GamePadState _oldGamePadState;
 
         GameObject _ship;
 
@@ -95,53 +100,8 @@ namespace Ctrl_Space
 
         protected override void Update(GameTime gameTime)
         {
-            keyboardState = Keyboard.GetState();
-
-            if (keyboardState.IsKeyDown(Keys.Escape))
-                this.Exit();
-
-            var rotationSpeed = .1f;
-            if (keyboardState.IsKeyDown(Keys.Right))
-            {
-                _ship.Rotation += rotationSpeed;
-            }
-            else if (keyboardState.IsKeyDown(Keys.Left))
-            {
-                _ship.Rotation -= rotationSpeed;
-            }
-
-            var acceleration = 0.1f;
-            if (keyboardState.IsKeyDown(Keys.Up))
-            {
-                _ship.Speed.X += (float)(acceleration * Math.Sin(_ship.Rotation));
-                _ship.Speed.Y -= (float)(acceleration * Math.Cos(_ship.Rotation));
-            }
-            else if (keyboardState.IsKeyDown(Keys.Down))
-            {
-                _ship.Speed.X -= (float)(acceleration * Math.Sin(_ship.Rotation));
-                _ship.Speed.Y += (float)(acceleration * Math.Cos(_ship.Rotation));
-            }
-
-            if (keyboardState.IsKeyUp(Keys.Space) && oldKeyboardState.IsKeyDown(Keys.Space))
-            {
-                var kickRocket = 40f;
-                var speedRocket = 0.5f;
-
-                GameObject rocketAsteroid = new GameObject(10);
-                rocketAsteroid.Position.X = _ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation));
-                rocketAsteroid.Position.Y = _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation));
-                rocketAsteroid.Speed.X = _ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation));
-                rocketAsteroid.Speed.Y = _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation));
-                _asteroids.Add(rocketAsteroid);
-            }
-
-            if (keyboardState.IsKeyUp(Keys.LeftShift) && oldKeyboardState.IsKeyDown(Keys.LeftShift))
-            {
-                RocketWeapon rocket = new RocketWeapon();
-                rocket.Position = _ship.Position;
-                _rockets.Add(rocket);
-            }
-
+            InputDeviceUpdate(gameTime);
+            
             _ship.Position += _ship.Speed;
             
             _ship.Speed *= 0.99f;
@@ -207,9 +167,64 @@ namespace Ctrl_Space
                 }
             }
 
-            oldKeyboardState = keyboardState;
 
             base.Update(gameTime);
+        }
+
+        private void InputDeviceUpdate(GameTime gameTime)
+        {
+            _keyboardState = Keyboard.GetState();
+            _gamePadState = GamePad.GetState(0);
+
+            if (_keyboardState.IsKeyDown(Keys.Escape) || _gamePadState.IsButtonDown(Buttons.Back))
+                this.Exit();
+
+            var rotationSpeed = .05f;
+            if (_keyboardState.IsKeyDown(Keys.Right) || _gamePadState.IsButtonDown(Buttons.DPadRight))
+            {
+                _ship.Rotation += rotationSpeed;
+            }
+            else if (_keyboardState.IsKeyDown(Keys.Left) || _gamePadState.IsButtonDown(Buttons.DPadLeft))
+            {
+                _ship.Rotation -= rotationSpeed;
+            }
+
+            var acceleration = 0.3f;
+            if (_keyboardState.IsKeyDown(Keys.Up) || _gamePadState.IsButtonDown(Buttons.DPadUp))
+            {
+                _ship.Speed.X += (float)(acceleration * Math.Sin(_ship.Rotation));
+                _ship.Speed.Y -= (float)(acceleration * Math.Cos(_ship.Rotation));
+            }
+            else if (_keyboardState.IsKeyDown(Keys.Down) || _gamePadState.IsButtonDown(Buttons.DPadDown))
+            {
+                _ship.Speed.X -= (float)(acceleration * Math.Sin(_ship.Rotation));
+                _ship.Speed.Y += (float)(acceleration * Math.Cos(_ship.Rotation));
+            }
+
+            if ((_keyboardState.IsKeyDown(Keys.Space) && _oldKeyboardState.IsKeyUp(Keys.Space)) ||
+                (_gamePadState.IsButtonDown(Buttons.A) && _oldGamePadState.IsButtonUp(Buttons.A)))
+            {
+                var kickRocket = 40f;
+                var speedRocket = 0.9f;
+
+                GameObject rocketAsteroid = new GameObject(10);
+                rocketAsteroid.Position.X = _ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation));
+                rocketAsteroid.Position.Y = _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation));
+                rocketAsteroid.Speed.X = _ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation));
+                rocketAsteroid.Speed.Y = _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation));
+                _asteroids.Add(rocketAsteroid);
+            }
+
+            if ((_keyboardState.IsKeyDown(Keys.LeftShift) && _oldKeyboardState.IsKeyUp(Keys.LeftShift)) ||
+                (_gamePadState.IsButtonDown(Buttons.B) && _oldGamePadState.IsButtonUp(Buttons.B)))
+            {
+                RocketWeapon rocket = new RocketWeapon();
+                rocket.Position = _ship.Position;
+                _rockets.Add(rocket);
+            }
+
+            _oldKeyboardState = _keyboardState;
+            _oldGamePadState = _gamePadState;
         }
 
         protected override void Draw(GameTime gameTime)
