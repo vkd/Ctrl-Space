@@ -11,13 +11,13 @@ namespace Ctrl_Space
     {
         public Texture2D ShipTexture { get; set; }
         public Texture2D RocketTexture { get; set; }
-        public Texture2D MeteorTexture { get; set; }
+        public Texture2D AsteroidTexture { get; set; }
         public Texture2D SpeedBonusTexture { get; set; }
 
         public TexturesManager(ContentManager contentManaget)
         {
             ShipTexture = contentManaget.Load<Texture2D>("Bitmap1");
-            MeteorTexture = contentManaget.Load<Texture2D>("Bitmap2");
+            AsteroidTexture = contentManaget.Load<Texture2D>("Bitmap2");
             RocketTexture = contentManaget.Load<Texture2D>("Rocket");
             SpeedBonusTexture = contentManaget.Load<Texture2D>("SpeedBonus");
         }

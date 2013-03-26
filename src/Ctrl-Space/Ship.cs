@@ -10,20 +10,12 @@ namespace Ctrl_Space
 {
     public class Ship : GameObject
     {
+        private const float _mediumShipSize = 48; 
+
         public Ship(Vector2 position)
             : base(position)
         {
-            Size = 48;
-        }
-
-        public void Update()
-        {
-
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, Origin, Scale, SpriteEffects.None, 0f);
+            Size = _mediumShipSize;
         }
 
         public void Rotate(float rotationSpeed)

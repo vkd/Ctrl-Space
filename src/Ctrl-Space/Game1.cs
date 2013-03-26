@@ -13,13 +13,8 @@ namespace Ctrl_Space
 {
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager _graphics;
-        SpriteBatch _spriteBatch;
-
-        Texture2D _myFirstTexture;
-        Texture2D _meteoriteTexture;
-        Texture2D _rocketTexture;
-        Texture2D _speedBonusTexture;
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
 
         //Keyboard
         private KeyboardState _keyboardState;
@@ -29,9 +24,9 @@ namespace Ctrl_Space
         private GamePadState _gamePadState;
         private GamePadState _oldGamePadState;
 
-        Ship _ship;
+        private Ship _ship;
 
-        Camera _camera;
+        private Camera _camera;
         
         List<GameObject> _asteroids = new List<GameObject>();
         List<SpeedBonus> _speedBonuses = new List<SpeedBonus>();
@@ -65,13 +60,14 @@ namespace Ctrl_Space
                     new Vector2((float)(r.NextDouble() * 4 - 2), (float)(r.NextDouble() * 4 - 2)),
                     (float)(r.NextDouble() * 6.28),
                     (float)(r.NextDouble() * .1 - .05));
-
                 _asteroids.Add(asteroid);
             }
 
             for (int i = 0; i < 5; ++i)
             {
-                SpeedBonus bonus = new SpeedBonus(new Vector2((float)(r.NextDouble() * maxWidth), (float)(r.NextDouble() * maxHeight)));
+                SpeedBonus bonus = new SpeedBonus(
+                    new Vector2((float)(r.NextDouble() * maxWidth),
+                    (float)(r.NextDouble() * maxHeight)));
                 _speedBonuses.Add(bonus);
             }
 
@@ -93,27 +89,20 @@ namespace Ctrl_Space
         {
             InputDeviceUpdate(gameTime);
             
-            _ship.Position += _ship.Speed;
-            
+            _ship.Update();
             _ship.Speed *= 0.99f;
-
-            _ship.Position.X = (_ship.Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width;
-            _ship.Position.Y = (_ship.Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height;
-            _ship.BB.Min = new Vector3(_ship.Position.X - _ship.Size / 2, _ship.Position.Y - _ship.Size / 2, 0);
-            _ship.BB.Max = new Vector3(_ship.Position.X - _ship.Size / 2, _ship.Position.Y + _ship.Size / 2, 0);
+            _ship.UpdateWithNewPosition(
+                new Vector2((_ship.Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width,
+                            (_ship.Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height));
 
             for (int i = 0; i < _asteroids.Count; ++i)
             {
                 bool asteroidDestroyed = false;
-                _asteroids[i].Position += _asteroids[i].Speed;
-                _asteroids[i].Rotation += _asteroids[i].RotationSpeed;
 
-                _asteroids[i].Position.X = (_asteroids[i].Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width;
-                _asteroids[i].Position.Y = (_asteroids[i].Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height;
-
-                _asteroids[i].BB = new BoundingBox(
-                    new Vector3(_asteroids[i].Position.X - _asteroids[i].Size / 2, _asteroids[i].Position.Y - _asteroids[i].Size / 2, 0),
-                    new Vector3(_asteroids[i].Position.X + _asteroids[i].Size / 2, _asteroids[i].Position.Y + _asteroids[i].Size / 2, 0));
+                _asteroids[i].UpdateWithRotation();
+                _asteroids[i].UpdateWithNewPosition(
+                    new Vector2((_asteroids[i].Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width,
+                                (_asteroids[i].Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height));
 
                 if (_asteroids[i].BB.Intersects(_ship.BB))
                 {
@@ -126,11 +115,7 @@ namespace Ctrl_Space
                 {
                     for (int j = 0; j < _rockets.Count; ++j)
                     {
-                        _rockets[j].Position += _rockets[j].Speed;
-
-                        _rockets[j].BB = new BoundingBox(
-                            new Vector3(_rockets[j].Position.X - _rockets[j].Size / 2, _rockets[j].Position.Y - _rockets[j].Size / 2, 0),
-                            new Vector3(_rockets[j].Position.X + _rockets[j].Size / 2, _rockets[j].Position.Y + _rockets[j].Size / 2, 0));
+                        _rockets[j].Update();
 
                         if (_rockets[j].BB.Intersects(_asteroids[i].BB))
                         {
@@ -146,9 +131,7 @@ namespace Ctrl_Space
 
             for (int i = 0; i < _speedBonuses.Count; ++i)
             {
-                _speedBonuses[i].BB = new BoundingBox(
-                    new Vector3(_speedBonuses[i].Position.X - _speedBonuses[i].Size / 2, _speedBonuses[i].Position.Y - _speedBonuses[i].Size / 2, 0),
-                    new Vector3(_speedBonuses[i].Position.X + _speedBonuses[i].Size / 2, _speedBonuses[i].Position.Y + _speedBonuses[i].Size / 2, 0));
+                _speedBonuses[i].Update();
 
                 if (_speedBonuses[i].BB.Intersects(_ship.BB))
                 {
@@ -157,7 +140,6 @@ namespace Ctrl_Space
                     _speedBonuses.Remove(_speedBonuses[i]);
                 }
             }
-
 
             base.Update(gameTime);
         }
@@ -222,20 +204,20 @@ namespace Ctrl_Space
 
             for (int i = 0; i < _asteroids.Count; ++i)
             {
-                _spriteBatch.Draw(_textureManager.MeteorTexture, _asteroids[i].Position, null, Color.White, _asteroids[i].Rotation, new Vector2(24, 24), new Vector2(_asteroids[i].Size / 48, _asteroids[i].Size / 48), SpriteEffects.None, 0f);
+                _asteroids[i].Draw(_spriteBatch, _textureManager.AsteroidTexture, new Vector2(24, 24), new Vector2(_asteroids[i].Size / 48, _asteroids[i].Size / 48));
             }
 
             for (int i = 0; i < _speedBonuses.Count; ++i)
             {
-                _spriteBatch.Draw(_textureManager.SpeedBonusTexture, _speedBonuses[i].Position, Color.White);
+                _speedBonuses[i].Draw(_spriteBatch, _textureManager.SpeedBonusTexture);
             }
 
             for (int i = 0; i < _rockets.Count; ++i)
             {
-                _spriteBatch.Draw(_textureManager.RocketTexture, _rockets[i].Position, Color.White);
+                _rockets[i].Draw(_spriteBatch, _textureManager.RocketTexture);
             }
 
-            _spriteBatch.Draw(_textureManager.ShipTexture, _ship.Position, null, Color.White, _ship.Rotation, new Vector2(24, 24), new Vector2(_ship.Size / 48, _ship.Size / 48), SpriteEffects.None, 0f);
+            _ship.Draw(_spriteBatch, _textureManager.ShipTexture);
 
             _spriteBatch.End();
 

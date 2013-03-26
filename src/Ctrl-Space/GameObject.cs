@@ -17,13 +17,10 @@ namespace Ctrl_Space
 
         public float Rotation;
         public float RotationSpeed;
-        
-        public Vector2 Origin;
-        public Vector2 Scale;
-
-        public Texture2D Texture;
 
         public BoundingBox BB;
+
+        #region Constructors
 
         public GameObject()
         {
@@ -79,5 +76,54 @@ namespace Ctrl_Space
                 new Vector3(Position.X - Size / 2, Position.Y - Size / 2, 0),
                 new Vector3(Position.X + Size / 2, Position.Y + Size / 2, 0));
         }
+
+        #endregion
+
+        #region Updaters
+
+        public void Update()
+        {
+            Position += Speed;
+
+            BB = new BoundingBox(
+                new Vector3(Position.X - Size / 2, Position.Y - Size / 2, 0),
+                new Vector3(Position.X + Size / 2, Position.Y + Size / 2, 0));
+        }
+
+        //Something not undestood
+        public void UpdateWithNewPosition(Vector2 newPosition)
+        {
+            Position = newPosition;
+
+            BB = new BoundingBox(
+                new Vector3(Position.X - Size / 2, Position.Y - Size / 2, 0),
+                new Vector3(Position.X + Size / 2, Position.Y + Size / 2, 0));
+        }
+
+        public void UpdateWithRotation()
+        {
+            Position += Speed;
+            Rotation += RotationSpeed;
+
+            BB = new BoundingBox(
+                new Vector3(Position.X - Size / 2, Position.Y - Size / 2, 0),
+                new Vector3(Position.X + Size / 2, Position.Y + Size / 2, 0));
+        }
+
+        #endregion
+
+        #region Drawers
+
+        public void Draw(SpriteBatch spriteBatch, Texture2D texture)
+        {
+            spriteBatch.Draw(texture, Position, null, Color.White, Rotation, new Vector2(Size / 2, Size / 2), Vector2.One, SpriteEffects.None, 0f);
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Texture2D texture, Vector2 origin, Vector2 scale)
+        {
+            spriteBatch.Draw(texture, Position, null, Color.White, Rotation, origin, scale, SpriteEffects.None, 0f);
+        }
+
+        #endregion
     }
 }

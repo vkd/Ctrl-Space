@@ -79,6 +79,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Ship.cs" />
+    <Compile Include="SpaceObject.cs" />
     <Compile Include="TexturesManager.cs" />
     <Compile Include="Weapon.cs" />
   </ItemGroup>
