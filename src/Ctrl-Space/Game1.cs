@@ -52,7 +52,8 @@ namespace Ctrl_Space
             int maxWidth = GraphicsDevice.Viewport.Width;
             int maxHeight = GraphicsDevice.Viewport.Height;
 
-            _ship = new Ship(48);
+            _ship = new Ship();
+            _ship.Size = 48;
 
             _camera = new Camera(_ship);
 
