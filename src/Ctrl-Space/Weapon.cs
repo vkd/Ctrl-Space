@@ -12,8 +12,8 @@ namespace Ctrl_Space
         public float Range;
         public DateTime TTL;
 
-        public Weapon()
-            : base(20)
+        public Weapon(Vector2 position)
+            : base(position)
         {
 
         }
@@ -21,8 +21,8 @@ namespace Ctrl_Space
 
     class RocketWeapon : Weapon
     {
-        public RocketWeapon()
-            : base()
+        public RocketWeapon(Vector2 position)
+            : base(position)
         {
             Speed = new Vector2(0.1f, 0.1f);
             Frequency = 10;

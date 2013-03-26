@@ -2,15 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ctrl_Space
 {
-    class Ship : GameObject
+    public class Ship : GameObject
     {
-        public Ship()
-            : base()
+        public Ship(Vector2 position)
+            : base(position)
+        {
+            Size = 48;
+        }
+
+        public void Update()
         {
 
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, Origin, Scale, SpriteEffects.None, 0f);
         }
 
         public void Rotate(float rotationSpeed)

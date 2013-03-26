@@ -2,29 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace Ctrl_Space
 {
     class Bonus : GameObject
     {
-        public DateTime TTL;
-
-        public Bonus(float size)
-            : base(size)
+        public Bonus(Vector2 position)
+            : base(position)
         {
-            Speed.X = 0;
-            Speed.Y = 0;
+
         }
     }
 
     class SpeedBonus : Bonus
     {
-        public int GiveSpeed;
-
-        public SpeedBonus()
-            : base(15)
+        public SpeedBonus(Vector2 position)
+            : base(position)
         {
-
+            Speed = Vector2.Zero;
+            Size = 15;
         }
     }
 }

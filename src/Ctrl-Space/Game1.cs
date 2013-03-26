@@ -37,6 +37,8 @@ namespace Ctrl_Space
         List<SpeedBonus> _speedBonuses = new List<SpeedBonus>();
         List<RocketWeapon> _rockets = new List<RocketWeapon>();
 
+        private TexturesManager _textureManager;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -52,32 +54,24 @@ namespace Ctrl_Space
             int maxWidth = GraphicsDevice.Viewport.Width;
             int maxHeight = GraphicsDevice.Viewport.Height;
 
-            _ship = new Ship();
-            _ship.Size = 48;
-
+            _ship = new Ship(new Vector2(maxWidth / 2, maxHeight / 2));
             _camera = new Camera(_ship);
-
-            _ship.Position.X = maxWidth / 2;
-            _ship.Position.Y = maxHeight / 2;
 
             for (int i = 0; i < 10; ++i)
             {
-                GameObject asteroid = new GameObject((float)(r.NextDouble() * 40 + 20));
-                asteroid.Position.X = (float)(r.NextDouble() * maxWidth);
-                asteroid.Position.Y = (float)(r.NextDouble() * maxHeight);
-                asteroid.Speed.X = (float)(r.NextDouble() * 4 - 2);
-                asteroid.Speed.Y = (float)(r.NextDouble() * 4 - 2);
-                //asteroid.Size = (float)(r.NextDouble() * 40 + 20);
-                asteroid.Rotation = (float)(r.NextDouble() * 6.28);
-                asteroid.RotationSpeed = (float)(r.NextDouble() * .1 - .05);
+                GameObject asteroid = new GameObject(
+                    (float)(r.NextDouble() * 40 + 20),
+                    new Vector2((float)(r.NextDouble() * maxWidth), (float)(r.NextDouble() * maxHeight)),
+                    new Vector2((float)(r.NextDouble() * 4 - 2), (float)(r.NextDouble() * 4 - 2)),
+                    (float)(r.NextDouble() * 6.28),
+                    (float)(r.NextDouble() * .1 - .05));
+
                 _asteroids.Add(asteroid);
             }
 
             for (int i = 0; i < 5; ++i)
             {
-                SpeedBonus bonus = new SpeedBonus();
-                bonus.Position.X = (float)(r.NextDouble() * maxWidth);
-                bonus.Position.Y = (float)(r.NextDouble() * maxHeight);
+                SpeedBonus bonus = new SpeedBonus(new Vector2((float)(r.NextDouble() * maxWidth), (float)(r.NextDouble() * maxHeight)));
                 _speedBonuses.Add(bonus);
             }
 
@@ -87,11 +81,7 @@ namespace Ctrl_Space
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            _myFirstTexture = Content.Load<Texture2D>("Bitmap1");
-            _meteoriteTexture = Content.Load<Texture2D>("Bitmap2");
-            _rocketTexture = Content.Load<Texture2D>("Rocket");
-            _speedBonusTexture = Content.Load<Texture2D>("SpeedBonus");
+            _textureManager = new TexturesManager(Content);
         }
 
         protected override void UnloadContent()
@@ -206,19 +196,17 @@ namespace Ctrl_Space
                 var kickRocket = 40f;
                 var speedRocket = 0.9f;
 
-                GameObject rocketAsteroid = new GameObject(10);
-                rocketAsteroid.Position.X = _ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation));
-                rocketAsteroid.Position.Y = _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation));
-                rocketAsteroid.Speed.X = _ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation));
-                rocketAsteroid.Speed.Y = _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation));
+                GameObject rocketAsteroid = new GameObject(10,
+                    new Vector2(_ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation)), _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation))),
+                    new Vector2(_ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation)), _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation))));
+
                 _asteroids.Add(rocketAsteroid);
             }
 
             if ((_keyboardState.IsKeyDown(Keys.LeftShift) && _oldKeyboardState.IsKeyUp(Keys.LeftShift)) ||
                 (_gamePadState.IsButtonDown(Buttons.B) && _oldGamePadState.IsButtonUp(Buttons.B)))
             {
-                RocketWeapon rocket = new RocketWeapon();
-                rocket.Position = _ship.Position;
+                RocketWeapon rocket = new RocketWeapon(_ship.Position);
                 _rockets.Add(rocket);
             }
 
@@ -234,20 +222,20 @@ namespace Ctrl_Space
 
             for (int i = 0; i < _asteroids.Count; ++i)
             {
-                _spriteBatch.Draw(_meteoriteTexture, _asteroids[i].Position, null, Color.White, _asteroids[i].Rotation, new Vector2(24, 24), new Vector2(_asteroids[i].Size / 48, _asteroids[i].Size / 48), SpriteEffects.None, 0f);
+                _spriteBatch.Draw(_textureManager.MeteorTexture, _asteroids[i].Position, null, Color.White, _asteroids[i].Rotation, new Vector2(24, 24), new Vector2(_asteroids[i].Size / 48, _asteroids[i].Size / 48), SpriteEffects.None, 0f);
             }
 
             for (int i = 0; i < _speedBonuses.Count; ++i)
             {
-                _spriteBatch.Draw(_speedBonusTexture, _speedBonuses[i].Position, Color.White);
+                _spriteBatch.Draw(_textureManager.SpeedBonusTexture, _speedBonuses[i].Position, Color.White);
             }
 
             for (int i = 0; i < _rockets.Count; ++i)
             {
-                _spriteBatch.Draw(_rocketTexture, _rockets[i].Position, Color.White);
+                _spriteBatch.Draw(_textureManager.RocketTexture, _rockets[i].Position, Color.White);
             }
 
-            _spriteBatch.Draw(_myFirstTexture, _ship.Position, null, Color.White, _ship.Rotation, new Vector2(24, 24), new Vector2(_ship.Size / 48, _ship.Size / 48), SpriteEffects.None, 0f);
+            _spriteBatch.Draw(_textureManager.ShipTexture, _ship.Position, null, Color.White, _ship.Rotation, new Vector2(24, 24), new Vector2(_ship.Size / 48, _ship.Size / 48), SpriteEffects.None, 0f);
 
             _spriteBatch.End();
 
