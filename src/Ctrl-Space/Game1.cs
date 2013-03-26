@@ -32,6 +32,8 @@ namespace Ctrl_Space
         List<SpeedBonus> _speedBonuses = new List<SpeedBonus>();
         List<RocketWeapon> _rockets = new List<RocketWeapon>();
 
+        private Song _song;
+
         private TexturesManager _textureManager;
 
         public Game1()
@@ -78,6 +80,8 @@ namespace Ctrl_Space
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _textureManager = new TexturesManager(Content);
+
+            _song = Content.Load<Song>("music/SOUP - Q7");
         }
 
         protected override void UnloadContent()
@@ -153,6 +157,16 @@ namespace Ctrl_Space
 
             if (_keyboardState.IsKeyDown(Keys.Escape) || _gamePadState.IsButtonDown(Buttons.Back))
                 this.Exit();
+
+            if (_keyboardState.IsKeyUp(Keys.Tab) && _oldKeyboardState.IsKeyDown(Keys.Tab))
+                if (MediaPlayer.Queue.ActiveSong != null)
+                {
+                    if (MediaPlayer.State == MediaState.Paused)
+                        MediaPlayer.Resume();
+                    else
+                        MediaPlayer.Pause();
+                }
+                else MediaPlayer.Play(_song);
 
             var rotationSpeed = .05f;
             if (_keyboardState.IsKeyDown(Keys.Right) || _gamePadState.IsButtonDown(Buttons.DPadRight))
