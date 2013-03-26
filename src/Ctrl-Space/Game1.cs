@@ -158,7 +158,7 @@ namespace Ctrl_Space
                 }
             }
 
-
+            Collisions.Detect(_asteroids);
             base.Update(gameTime);
         }
 
@@ -194,7 +194,7 @@ namespace Ctrl_Space
                 (_gamePadState.IsButtonDown(Buttons.A) && _oldGamePadState.IsButtonUp(Buttons.A)))
             {
                 var kickRocket = 40f;
-                var speedRocket = 0.9f;
+                var speedRocket = 4.9f;
 
                 GameObject rocketAsteroid = new GameObject(10,
                     new Vector2(_ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation)), _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation))),
