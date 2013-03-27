@@ -21,11 +21,29 @@ namespace Ctrl_Space
                     float ol2 = rr * rr - dx * dx - dy * dy;
                     if (ol2 > 0)
                     {
-                        var vel = (go2.Speed - go1.Speed).Length();
-                        var dir = new Vector2(dx, dy);
-                        dir.Normalize();
-                        go1.Speed = (-dir * vel) * go2.Mass / (go1.Mass + go2.Mass);
-                        go2.Speed = (dir * vel) * go1.Mass / (go1.Mass + go2.Mass);
+                        // ось столкновения и нормаль к ней
+                        var nrm = new Vector2(dx, dy);
+                        var tan = new Vector2(dy, -dx);
+                        nrm.Normalize();
+                        tan.Normalize();
+
+                        // проекция скорости на ось столкновения (нормальная скорость)
+                        float go1nrm = Vector2.Dot(go1.Speed, nrm);
+                        float go2nrm = Vector2.Dot(go2.Speed, nrm);
+                        if (go1nrm - go2nrm < 0)
+                            continue;
+
+                        // перераспределяем импульс между нормальными скоростями в соответствии с массами
+                        float rel = Math.Abs(go1nrm - go2nrm);
+                        float go1rsp = rel * go2.Mass / (go1.Mass + go2.Mass);
+                        float go2rsp = rel * go1.Mass / (go1.Mass + go2.Mass);
+
+                        // проекция скорости на нормаль к оси столкновения (тангенциальная скорость)
+                        float go1tan = Vector2.Dot(go1.Speed, tan);
+                        float go2tan = Vector2.Dot(go2.Speed, tan);
+
+                        go1.Speed = -nrm * go1rsp + tan * go1tan;
+                        go2.Speed = nrm * go2rsp + tan * go2tan;
                     }
                 }
         }
