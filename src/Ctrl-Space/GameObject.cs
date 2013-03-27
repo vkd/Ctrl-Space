@@ -72,7 +72,7 @@ namespace Ctrl_Space
             Position = position;
             Speed = speed;
             Rotation = rotation;
-            RotationSpeed = rotation;
+            RotationSpeed = rotationSpeed;
             BB = new BoundingBox(
                 new Vector3(Position.X - Size / 2, Position.Y - Size / 2, 0),
                 new Vector3(Position.X + Size / 2, Position.Y + Size / 2, 0));
