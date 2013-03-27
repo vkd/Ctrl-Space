@@ -73,6 +73,8 @@ namespace Ctrl_Space
                 _speedBonuses.Add(bonus);
             }
 
+            Components.Add(new FPS(this, "Fonts/FPSFont", Vector2.Zero));
+
             base.Initialize();
         }
 
@@ -80,8 +82,7 @@ namespace Ctrl_Space
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _textureManager = new TexturesManager(Content);
-
-            _song = Content.Load<Song>("music/SOUP - Q7");
+            _song = Content.Load<Song>("Music/SOUP - Q7");
         }
 
         protected override void UnloadContent()
@@ -157,6 +158,9 @@ namespace Ctrl_Space
 
             if (_keyboardState.IsKeyDown(Keys.Escape) || _gamePadState.IsButtonDown(Buttons.Back))
                 this.Exit();
+
+            if (_keyboardState.IsKeyUp(Keys.F1) && _oldKeyboardState.IsKeyDown(Keys.F1))
+                GameOptions.IsDebugMode = !GameOptions.IsDebugMode;
 
             if (_keyboardState.IsKeyUp(Keys.Tab) && _oldKeyboardState.IsKeyDown(Keys.Tab))
                 if (MediaPlayer.Queue.ActiveSong != null)
