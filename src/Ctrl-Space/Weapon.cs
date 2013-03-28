@@ -17,11 +17,12 @@ namespace Ctrl_Space
 
     class RocketWeapon : Weapon
     {
-        public RocketWeapon(Vector2 position)
+        public RocketWeapon(Vector2 position, float rotation)
             : base(position)
         {
             Size = 5;
-            Speed = new Vector2(0.1f, 0.1f);
+            Speed = new Vector2(0.1f * (float)Math.Sin(rotation), -0.1f * (float)Math.Cos(rotation));
+            Rotation = rotation;
         }
     }
 }

@@ -208,7 +208,7 @@ namespace Ctrl_Space
             if ((_keyboardState.IsKeyDown(Keys.LeftShift) && _oldKeyboardState.IsKeyUp(Keys.LeftShift)) ||
                 (_gamePadState.IsButtonDown(Buttons.B) && _oldGamePadState.IsButtonUp(Buttons.B)))
             {
-                RocketWeapon rocket = new RocketWeapon(_ship.Position);
+                RocketWeapon rocket = new RocketWeapon(_ship.Position, _ship.Rotation);
                 _rockets.Add(rocket);
             }
 
