@@ -30,13 +30,10 @@ namespace Ctrl_Space
                         // проекция скорости на ось столкновения (нормальная скорость)
                         float go1nrm = Vector2.Dot(go1.Speed, nrm);
                         float go2nrm = Vector2.Dot(go2.Speed, nrm);
-                        if (go1nrm - go2nrm < 0)
-                            continue;
 
                         // перераспределяем импульс между нормальными скоростями в соответствии с массами
-                        float rel = Math.Abs(go1nrm - go2nrm);
-                        float go1rsp = rel * go2.Mass / (go1.Mass + go2.Mass);
-                        float go2rsp = rel * go1.Mass / (go1.Mass + go2.Mass);
+                        float go1rsp = ((go1.Mass - go2.Mass) * go1nrm + 2f * go2.Mass * go2nrm) / (go1.Mass + go2.Mass);
+                        float go2rsp = ((go2.Mass - go1.Mass) * go2nrm + 2f * go1.Mass * go1nrm) / (go1.Mass + go2.Mass);
 
                         // проекция скорости на нормаль к оси столкновения (тангенциальная скорость)
                         float go1tan = Vector2.Dot(go1.Speed, tan);
