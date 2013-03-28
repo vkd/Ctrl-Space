@@ -13,9 +13,6 @@ namespace Ctrl_Space
         public Vector2 Speed;
         public float Size;
         public float Mass = 1f;
-        
-        public int Radius;
-
         public float Rotation;
         public float RotationSpeed;
 
