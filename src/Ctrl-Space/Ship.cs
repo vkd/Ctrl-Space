@@ -10,17 +10,21 @@ namespace Ctrl_Space
 {
     public class Ship : GameObject
     {
-        private const float _mediumShipSize = 48; 
-
         public Ship(Vector2 position)
-            : base(position)
         {
-            Size = _mediumShipSize;
+            Position = position;
+            Size = 48;
         }
 
         public void Rotate(float rotationSpeed)
         {
             Rotation += rotationSpeed;
+        }
+
+        public void Strafe(float strafeStep)
+        {
+            Speed.X += (float)(strafeStep * Math.Cos(Rotation));
+            Speed.Y += (float)(strafeStep * Math.Sin(Rotation));
         }
 
         public void SpeedUp(float acceleration)
@@ -29,10 +33,15 @@ namespace Ctrl_Space
             Speed.Y -= (float)(acceleration * Math.Cos(Rotation));
         }
 
-        public void SpeedDown(float acceleration)
+        public override void Update()
         {
-            Speed.X -= (float)(acceleration * Math.Sin(Rotation));
-            Speed.Y += (float)(acceleration * Math.Cos(Rotation));
+            base.Update();
+            Speed *= .99f;
+        }
+
+        public override Texture2D GetTexture(TextureManager textureManager)
+        {
+            return textureManager.ShipTexture;
         }
     }
 }

@@ -6,23 +6,19 @@ using Microsoft.Xna.Framework;
 
 namespace Ctrl_Space
 {
-    class Weapon : GameObject
-    {
-        public Weapon(Vector2 position)
-            : base(position)
-        {
-
-        }
-    }
-
-    class RocketWeapon : Weapon
+    class RocketWeapon : GameObject
     {
         public RocketWeapon(Vector2 position, float rotation)
-            : base(position)
         {
+            Position = position;
             Size = 5;
             Speed = new Vector2(0.1f * (float)Math.Sin(rotation), -0.1f * (float)Math.Cos(rotation));
             Rotation = rotation;
+        }
+
+        public override Microsoft.Xna.Framework.Graphics.Texture2D GetTexture(TextureManager textureManager)
+        {
+            return textureManager.RocketTexture;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +11,9 @@ namespace Ctrl_Space
         public static void Detect(List<GameObject> gameObjects)
         {
             for (int j = 0; j < gameObjects.Count; j++)
-                for (int i = j + 1; i < gameObjects.Count; i++)
+                for (int i = 0; i < gameObjects.Count; i++)
                 {
+                    if (i == j) continue;
                     var go1 = gameObjects[i];
                     var go2 = gameObjects[j];
                     float dx = go2.Position.X - go1.Position.X;
@@ -39,8 +40,12 @@ namespace Ctrl_Space
                         float go1tan = Vector2.Dot(go1.Speed, tan);
                         float go2tan = Vector2.Dot(go2.Speed, tan);
 
-                        go1.Speed = -nrm * go1rsp + tan * go1tan;
+                        go1.Speed = nrm * go1rsp + tan * go1tan;
                         go2.Speed = nrm * go2rsp + tan * go2tan;
+
+                        float gp = (float)Math.Sqrt(ol2) / 2;
+                        go1.Position -= gp * nrm;
+                        go2.Position += gp * nrm;
                     }
                 }
         }

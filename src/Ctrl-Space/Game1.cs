@@ -13,8 +13,8 @@ namespace Ctrl_Space
 {
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        private static readonly int _worldWidth = 2048;
-        private static readonly int _worldHeight = 2048;
+        public static readonly int WorldWidth = 2048;
+        public static readonly int WorldHeight = 2048;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -26,17 +26,19 @@ namespace Ctrl_Space
         private GamePadState _gamePadState;
         private GamePadState _oldGamePadState;
 
+        //Mouse
+        private MouseState _mouseState;
+        private MouseState _oldMouseState;
+
         private Ship _ship;
 
         private Camera _camera;
-        
-        List<GameObject> _asteroids = new List<GameObject>();
-        List<SpeedBonus> _speedBonuses = new List<SpeedBonus>();
-        List<RocketWeapon> _rockets = new List<RocketWeapon>();
+
+        World _world = new World();
 
         private Song _song;
 
-        private TexturesManager _textureManager;
+        private TextureManager _textureManager;
 
         public Game1()
         {
@@ -50,30 +52,32 @@ namespace Ctrl_Space
         {
             Random r = new Random();
 
-            int maxWidth = _worldWidth;
-            int maxHeight = _worldHeight;
+            _oldMouseState = new MouseState();
 
-            _ship = new Ship(new Vector2(maxWidth / 2, maxHeight / 2));
+            _ship = new Ship(new Vector2(WorldWidth / 2, WorldHeight / 2));
             _camera = new Camera(_ship);
 
-            for (int i = 0; i < 100; ++i)
+            for (int i = 0; i < 10; ++i)
             {
-                GameObject asteroid = new GameObject(
-                    (float)(r.NextDouble() * 40 + 20),
-                    new Vector2((float)(r.NextDouble() * maxWidth), (float)(r.NextDouble() * maxHeight)),
-                    new Vector2((float)(r.NextDouble() * 4 - 2), (float)(r.NextDouble() * 4 - 2)),
-                    (float)(r.NextDouble() * 6.28),
-                    (float)(r.NextDouble() * .1 - .05));
-                _asteroids.Add(asteroid);
+                Asteroid asteroid = new Asteroid();
+                asteroid.Size = (float)(r.NextDouble() * 60 + 20);
+                asteroid.Mass = asteroid.Size;
+                asteroid.Position = new Vector2((float)(r.NextDouble() * WorldWidth), (float)(r.NextDouble() * WorldHeight));
+                asteroid.Speed = new Vector2((float)(r.NextDouble() * 4 - 2), (float)(r.NextDouble() * 4 - 2));
+                asteroid.Rotation = (float)(r.NextDouble() * 6.28);
+                asteroid.RotationSpeed = (float)(r.NextDouble() * .1 - .05);
+                _world.Add(asteroid);
             }
 
             for (int i = 0; i < 5; ++i)
             {
                 SpeedBonus bonus = new SpeedBonus(
-                    new Vector2((float)(r.NextDouble() * maxWidth),
-                    (float)(r.NextDouble() * maxHeight)));
-                _speedBonuses.Add(bonus);
+                    new Vector2((float)(r.NextDouble() * WorldWidth),
+                    (float)(r.NextDouble() * WorldHeight)));
+                _world.Add(bonus);
             }
+
+            _world.Add(_ship);
 
             Components.Add(new FPS(this, "Fonts/FPSFont", Vector2.Zero));
 
@@ -83,7 +87,7 @@ namespace Ctrl_Space
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _textureManager = new TexturesManager(Content);
+            _textureManager = new TextureManager(Content);
             _song = Content.Load<Song>("Music/SOUP - Q7");
         }
 
@@ -95,60 +99,11 @@ namespace Ctrl_Space
         protected override void Update(GameTime gameTime)
         {
             InputDeviceUpdate(gameTime);
-            
-            _ship.Update();
-            _ship.Speed *= 0.99f;
-            _ship.UpdateWithNewPosition(
-                new Vector2((_ship.Position.X + _worldWidth) % _worldWidth,
-                            (_ship.Position.Y + _worldHeight) % _worldHeight));
 
-            for (int i = 0; i < _asteroids.Count; ++i)
-            {
-                bool asteroidDestroyed = false;
+            foreach (var obj in _world)
+                obj.Update();
 
-                _asteroids[i].UpdateWithRotation();
-                _asteroids[i].UpdateWithNewPosition(
-                    new Vector2((_asteroids[i].Position.X + _worldWidth) % _worldWidth,
-                                (_asteroids[i].Position.Y + _worldHeight) % _worldHeight));
-
-                if (_asteroids[i].BB.Intersects(_ship.BB))
-                {
-                    _ship.Speed.X /= 2;
-                    _ship.Speed.Y /= 2;
-                    asteroidDestroyed = true;
-                }
-
-                if (!asteroidDestroyed)
-                {
-                    for (int j = 0; j < _rockets.Count; ++j)
-                    {
-                        _rockets[j].Update();
-
-                        if (_rockets[j].BB.Intersects(_asteroids[i].BB))
-                        {
-                            asteroidDestroyed = true;
-                            _rockets.Remove(_rockets[j]);
-                        }
-                    }
-                }
-
-                if (asteroidDestroyed)
-                    _asteroids.Remove(_asteroids[i]);
-            }
-
-            for (int i = 0; i < _speedBonuses.Count; ++i)
-            {
-                _speedBonuses[i].Update();
-
-                if (_speedBonuses[i].BB.Intersects(_ship.BB))
-                {
-                    _ship.Speed.X *= 2;
-                    _ship.Speed.Y *= 2;
-                    _speedBonuses.Remove(_speedBonuses[i]);
-                }
-            }
-
-            Collisions.Detect(_asteroids);
+            Collisions.Detect(_world);
 
             base.Update(gameTime);
         }
@@ -157,6 +112,7 @@ namespace Ctrl_Space
         {
             _keyboardState = Keyboard.GetState();
             _gamePadState = GamePad.GetState(0);
+            _mouseState = Mouse.GetState();
 
             if (_keyboardState.IsKeyDown(Keys.Escape) || _gamePadState.IsButtonDown(Buttons.Back))
                 this.Exit();
@@ -174,54 +130,55 @@ namespace Ctrl_Space
                 }
                 else MediaPlayer.Play(_song);
 
-            var rotationSpeed = .05f;
-            if (_keyboardState.IsKeyDown(Keys.Right) || _gamePadState.IsButtonDown(Buttons.DPadRight))
+            var acceleration = 0.5f;
+            if (_keyboardState.IsKeyDown(Keys.Right) || _gamePadState.IsButtonDown(Buttons.DPadRight) || _keyboardState.IsKeyDown(Keys.D))
             {
-                _ship.Rotate(rotationSpeed);
+                _ship.Strafe(acceleration);
             }
-            else if (_keyboardState.IsKeyDown(Keys.Left) || _gamePadState.IsButtonDown(Buttons.DPadLeft))
+            else if (_keyboardState.IsKeyDown(Keys.Left) || _gamePadState.IsButtonDown(Buttons.DPadLeft) || _keyboardState.IsKeyDown(Keys.A))
             {
-                _ship.Rotate(-rotationSpeed);
+                _ship.Strafe(-acceleration);
             }
 
-            var acceleration = 0.3f;
-            if (_keyboardState.IsKeyDown(Keys.Up) || _gamePadState.IsButtonDown(Buttons.DPadUp))
+            if (_keyboardState.IsKeyDown(Keys.Up) || _gamePadState.IsButtonDown(Buttons.DPadUp) || _keyboardState.IsKeyDown(Keys.W))
             {
                 _ship.SpeedUp(acceleration);
             }
-            else if (_keyboardState.IsKeyDown(Keys.Down) || _gamePadState.IsButtonDown(Buttons.DPadDown))
+            else if (_keyboardState.IsKeyDown(Keys.Down) || _gamePadState.IsButtonDown(Buttons.DPadDown) || _keyboardState.IsKeyDown(Keys.S))
             {
-                _ship.SpeedDown(acceleration);
+                _ship.SpeedUp(-acceleration);
             }
 
             if ((_keyboardState.IsKeyDown(Keys.Space) && _oldKeyboardState.IsKeyUp(Keys.Space)) ||
-                (_gamePadState.IsButtonDown(Buttons.A) && _oldGamePadState.IsButtonUp(Buttons.A)))
+                (_gamePadState.IsButtonDown(Buttons.A) && _oldGamePadState.IsButtonUp(Buttons.A)) ||
+                (_mouseState.LeftButton == ButtonState.Pressed && _oldMouseState.LeftButton == ButtonState.Released))
             {
                 var kickRocket = 40f;
                 var speedRocket = 4.9f;
 
-                GameObject rocketAsteroid = new GameObject(10,
-                    new Vector2(_ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation)), _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation))),
-                    new Vector2(_ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation)), _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation))));
-
-                _asteroids.Add(rocketAsteroid);
+                PlasmaBullet plasmaBullet = new PlasmaBullet();
+                plasmaBullet.Size = 10;
+                plasmaBullet.Position = new Vector2(_ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation)), _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation)));
+                plasmaBullet.Speed = new Vector2(_ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation)), _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation)));
+                _world.Add(plasmaBullet);
             }
 
             if ((_keyboardState.IsKeyDown(Keys.LeftShift) && _oldKeyboardState.IsKeyUp(Keys.LeftShift)) ||
                 (_gamePadState.IsButtonDown(Buttons.B) && _oldGamePadState.IsButtonUp(Buttons.B)))
             {
                 RocketWeapon rocket = new RocketWeapon(_ship.Position, _ship.Rotation);
-                _rockets.Add(rocket);
+                _world.Add(rocket);
             }
+
+            _ship.Rotate((_oldMouseState.X - _mouseState.X) * -0.002f);
 
             _oldKeyboardState = _keyboardState;
             _oldGamePadState = _gamePadState;
+            _oldMouseState = _mouseState;
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetParallaxTransform());
             _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(512, 512), SpriteEffects.None, 0.0f);
             _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(1536, 512), SpriteEffects.None, 0.0f);
@@ -236,22 +193,8 @@ namespace Ctrl_Space
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetTransform());
 
-            for (int i = 0; i < _asteroids.Count; ++i)
-            {
-                _asteroids[i].Draw(_spriteBatch, _textureManager.AsteroidTexture, new Vector2(24, 24), new Vector2(_asteroids[i].Size / 48, _asteroids[i].Size / 48));
-            }
-
-            for (int i = 0; i < _speedBonuses.Count; ++i)
-            {
-                _speedBonuses[i].Draw(_spriteBatch, _textureManager.SpeedBonusTexture);
-            }
-
-            for (int i = 0; i < _rockets.Count; ++i)
-            {
-                _rockets[i].Draw(_spriteBatch, _textureManager.RocketTexture);
-            }
-
-            _ship.Draw(_spriteBatch, _textureManager.ShipTexture);
+            foreach (var obj in _world)
+                obj.Draw(_spriteBatch, _textureManager);
 
             _spriteBatch.End();
 

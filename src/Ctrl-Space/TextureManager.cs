@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Ctrl_Space
 {
-    public class TexturesManager
+    public class TextureManager
     {
         public Texture2D ShipTexture { get; set; }
         public Texture2D ShipOffTexture { get; set; }
@@ -15,8 +15,9 @@ namespace Ctrl_Space
         public Texture2D AsteroidTexture { get; set; }
         public Texture2D SpeedBonusTexture { get; set; }
         public Texture2D SpaceTexture { get; set; }
+        public Texture2D PlasmaBulletTexture { get; set; }
 
-        public TexturesManager(ContentManager contentManaget)
+        public TextureManager(ContentManager contentManaget)
         {
             ShipTexture = contentManaget.Load<Texture2D>("Ship");
             ShipOffTexture = contentManaget.Load<Texture2D>("Ship-off");
@@ -24,6 +25,7 @@ namespace Ctrl_Space
             RocketTexture = contentManaget.Load<Texture2D>("Rocket");
             SpeedBonusTexture = contentManaget.Load<Texture2D>("SpeedBonus");
             SpaceTexture = contentManaget.Load<Texture2D>("Space");
+            PlasmaBulletTexture = contentManaget.Load<Texture2D>("PlasmaBullet");
         }
     }
 }

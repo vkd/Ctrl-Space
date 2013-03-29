@@ -6,17 +6,16 @@ using Microsoft.Xna.Framework;
 
 namespace Ctrl_Space
 {
-    class SpeedBonus : GameObject
+    class Asteroid : GameObject
     {
-        public SpeedBonus(Vector2 position)
+        public Asteroid()
         {
-            Speed = Vector2.Zero;
-            Size = 15;
+
         }
 
         public override Microsoft.Xna.Framework.Graphics.Texture2D GetTexture(TextureManager textureManager)
         {
-            return textureManager.SpeedBonusTexture;
+            return textureManager.AsteroidTexture;
         }
     }
 }
