@@ -13,6 +13,8 @@ namespace Ctrl_Space
 {
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        private static readonly int _worldWidth = 2048;
+        private static readonly int _worldHeight = 2048;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -48,13 +50,13 @@ namespace Ctrl_Space
         {
             Random r = new Random();
 
-            int maxWidth = GraphicsDevice.Viewport.Width;
-            int maxHeight = GraphicsDevice.Viewport.Height;
+            int maxWidth = _worldWidth;
+            int maxHeight = _worldHeight;
 
             _ship = new Ship(new Vector2(maxWidth / 2, maxHeight / 2));
             _camera = new Camera(_ship);
 
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 100; ++i)
             {
                 GameObject asteroid = new GameObject(
                     (float)(r.NextDouble() * 40 + 20),
@@ -97,8 +99,8 @@ namespace Ctrl_Space
             _ship.Update();
             _ship.Speed *= 0.99f;
             _ship.UpdateWithNewPosition(
-                new Vector2((_ship.Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width,
-                            (_ship.Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height));
+                new Vector2((_ship.Position.X + _worldWidth) % _worldWidth,
+                            (_ship.Position.Y + _worldHeight) % _worldHeight));
 
             for (int i = 0; i < _asteroids.Count; ++i)
             {
@@ -106,8 +108,8 @@ namespace Ctrl_Space
 
                 _asteroids[i].UpdateWithRotation();
                 _asteroids[i].UpdateWithNewPosition(
-                    new Vector2((_asteroids[i].Position.X + GraphicsDevice.Viewport.Width) % GraphicsDevice.Viewport.Width,
-                                (_asteroids[i].Position.Y + GraphicsDevice.Viewport.Height) % GraphicsDevice.Viewport.Height));
+                    new Vector2((_asteroids[i].Position.X + _worldWidth) % _worldWidth,
+                                (_asteroids[i].Position.Y + _worldHeight) % _worldHeight));
 
                 if (_asteroids[i].BB.Intersects(_ship.BB))
                 {
@@ -219,6 +221,18 @@ namespace Ctrl_Space
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetParallaxTransform());
+            _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(512, 512), SpriteEffects.None, 0.0f);
+            _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(1536, 512), SpriteEffects.None, 0.0f);
+            _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(1536, 1536), SpriteEffects.None, 0.0f);
+            _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(512, 1536), SpriteEffects.None, 0.0f);
+            _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(-512, 1536), SpriteEffects.None, 0.0f);
+            _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(-512, 512), SpriteEffects.None, 0.0f);
+            _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(-512, -512), SpriteEffects.None, 0.0f);
+            _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(512, -512), SpriteEffects.None, 0.0f);
+            _spriteBatch.Draw(_textureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(1536, -512), SpriteEffects.None, 0.0f);
+            _spriteBatch.End();
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetTransform());
 
