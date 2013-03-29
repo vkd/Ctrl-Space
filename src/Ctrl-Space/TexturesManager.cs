@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +14,7 @@ namespace Ctrl_Space
         public Texture2D RocketTexture { get; set; }
         public Texture2D AsteroidTexture { get; set; }
         public Texture2D SpeedBonusTexture { get; set; }
+        public Texture2D SpaceTexture { get; set; }
 
         public TexturesManager(ContentManager contentManaget)
         {
@@ -22,6 +23,7 @@ namespace Ctrl_Space
             AsteroidTexture = contentManaget.Load<Texture2D>("Asteroid");
             RocketTexture = contentManaget.Load<Texture2D>("Rocket");
             SpeedBonusTexture = contentManaget.Load<Texture2D>("SpeedBonus");
+            SpaceTexture = contentManaget.Load<Texture2D>("Space");
         }
     }
 }
