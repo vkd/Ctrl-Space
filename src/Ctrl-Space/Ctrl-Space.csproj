@@ -80,10 +80,11 @@
     <Compile Include="FPS.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameOptions.cs" />
+    <Compile Include="InputDevices.cs" />
     <Compile Include="PlasmaBullet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="TextureManager.cs" />
     <Compile Include="Weapon.cs" />

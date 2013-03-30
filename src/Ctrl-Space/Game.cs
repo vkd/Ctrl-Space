@@ -11,34 +11,23 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Ctrl_Space
 {
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game : Microsoft.Xna.Framework.Game
     {
         public static readonly int WorldWidth = 2048;
         public static readonly int WorldHeight = 2048;
-        private GraphicsDeviceManager _graphics;
+        public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
-        //Keyboard
-        private KeyboardState _keyboardState;
-        private KeyboardState _oldKeyboardState;
-
-        //GamePad
-        private GamePadState _gamePadState;
-        private GamePadState _oldGamePadState;
-
-        //Mouse
-        private MouseState _mouseState;
-        private MouseState _oldMouseState;
 
         private Ship _ship;
 
         private Camera _camera;
+        private InputDevices _inputDevices;
 
         World _world = new World();
 
         private Song _song;
 
-        public Game1()
+        public Game()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -50,7 +39,7 @@ namespace Ctrl_Space
         {
             Random r = new Random();
 
-            _oldMouseState = new MouseState();
+            InitializeInputDevices();
 
             _ship = new Ship(new Vector2(WorldWidth / 2, WorldHeight / 2));
             _camera = new Camera(_ship);
@@ -82,6 +71,84 @@ namespace Ctrl_Space
             base.Initialize();
         }
 
+        private void InitializeInputDevices()
+        {
+            _inputDevices = new InputDevices(this);
+            _inputDevices.Initialize();
+
+            this.Activated += new EventHandler<EventArgs>(Game_Activated);
+            this.Deactivated += new EventHandler<EventArgs>(Game_Deactivated);
+
+            _inputDevices.AddAction(InputActionType.ExitGame, this.Exit);
+            _inputDevices.AddAction(InputActionType.DebugMode,
+                delegate
+                {
+                    GameOptions.IsDebugMode = !GameOptions.IsDebugMode;
+                });
+            _inputDevices.AddAction(InputActionType.PlayStopMediaPlayer,
+                delegate
+                {
+                    if (MediaPlayer.Queue.ActiveSong != null)
+                    {
+                        if (MediaPlayer.State == MediaState.Paused)
+                            MediaPlayer.Resume();
+                        else
+                            MediaPlayer.Pause();
+                    }
+                    else MediaPlayer.Play(_song);
+                });
+
+            var strafeAcceleration = 0.5f;
+            _inputDevices.AddActionFloat(InputActionFloatType.MoveRightLeft,
+                delegate(float sensitivity)
+                {
+                    _ship.Strafe(strafeAcceleration * sensitivity);
+                });
+
+            var moveAcceleration = 0.5f;
+            _inputDevices.AddActionFloat(InputActionFloatType.MoveUpDown,
+                delegate(float sensitivity)
+                {
+                    _ship.SpeedUp(moveAcceleration * sensitivity);
+                });
+
+            _inputDevices.AddAction(InputActionType.Strike,
+                delegate
+                {
+                    var kickRocket = 40f;
+                    var speedRocket = 14.9f;
+
+                    PlasmaBullet plasmaBullet = new PlasmaBullet();
+                    plasmaBullet.Size = 10;
+                    plasmaBullet.Position = new Vector2(_ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation)), 
+                        _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation)));
+                    plasmaBullet.Speed = new Vector2(_ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation)),
+                        _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation)));
+                    _world.Add(plasmaBullet);
+                });
+            _inputDevices.AddAction(InputActionType.Rocket,
+                delegate
+                {
+                    RocketWeapon rocket = new RocketWeapon(_ship.Position, _ship.Rotation);
+                    _world.Add(rocket);
+                });
+            _inputDevices.AddActionFloat(InputActionFloatType.Rotate,
+                delegate(float dx)
+                {
+                    _ship.Rotate(dx * 0.1f);
+                });
+        }
+
+        void Game_Activated(object sender, EventArgs e)
+        {
+            _inputDevices.StartUpdate();
+        }
+
+        void Game_Deactivated(object sender, EventArgs e)
+        {
+            _inputDevices.StopUpdate();
+        }
+
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -96,7 +163,7 @@ namespace Ctrl_Space
 
         protected override void Update(GameTime gameTime)
         {
-            InputDeviceUpdate(gameTime);
+            _inputDevices.Update(gameTime);
 
             foreach (var obj in _world)
                 obj.Update();
@@ -104,76 +171,6 @@ namespace Ctrl_Space
             Collisions.Detect(_world);
 
             base.Update(gameTime);
-        }
-
-        private void InputDeviceUpdate(GameTime gameTime)
-        {
-            _keyboardState = Keyboard.GetState();
-            _gamePadState = GamePad.GetState(0);
-            _mouseState = Mouse.GetState();
-
-            if (_keyboardState.IsKeyDown(Keys.Escape) || _gamePadState.IsButtonDown(Buttons.Back))
-                this.Exit();
-
-            if (_keyboardState.IsKeyUp(Keys.F1) && _oldKeyboardState.IsKeyDown(Keys.F1))
-                GameOptions.IsDebugMode = !GameOptions.IsDebugMode;
-
-            if (_keyboardState.IsKeyUp(Keys.Tab) && _oldKeyboardState.IsKeyDown(Keys.Tab))
-                if (MediaPlayer.Queue.ActiveSong != null)
-                {
-                    if (MediaPlayer.State == MediaState.Paused)
-                        MediaPlayer.Resume();
-                    else
-                        MediaPlayer.Pause();
-                }
-                else MediaPlayer.Play(_song);
-
-            var acceleration = 0.5f;
-            if (_keyboardState.IsKeyDown(Keys.Right) || _gamePadState.IsButtonDown(Buttons.DPadRight) || _keyboardState.IsKeyDown(Keys.D))
-            {
-                _ship.Strafe(acceleration);
-            }
-            else if (_keyboardState.IsKeyDown(Keys.Left) || _gamePadState.IsButtonDown(Buttons.DPadLeft) || _keyboardState.IsKeyDown(Keys.A))
-            {
-                _ship.Strafe(-acceleration);
-            }
-
-            if (_keyboardState.IsKeyDown(Keys.Up) || _gamePadState.IsButtonDown(Buttons.DPadUp) || _keyboardState.IsKeyDown(Keys.W))
-            {
-                _ship.SpeedUp(acceleration);
-            }
-            else if (_keyboardState.IsKeyDown(Keys.Down) || _gamePadState.IsButtonDown(Buttons.DPadDown) || _keyboardState.IsKeyDown(Keys.S))
-            {
-                _ship.SpeedUp(-acceleration);
-            }
-
-            if ((_keyboardState.IsKeyDown(Keys.Space) && _oldKeyboardState.IsKeyUp(Keys.Space)) ||
-                (_gamePadState.IsButtonDown(Buttons.A) && _oldGamePadState.IsButtonUp(Buttons.A)) ||
-                (_mouseState.LeftButton == ButtonState.Pressed && _oldMouseState.LeftButton == ButtonState.Released))
-            {
-                var kickRocket = 40f;
-                var speedRocket = 4.9f;
-
-                PlasmaBullet plasmaBullet = new PlasmaBullet();
-                plasmaBullet.Size = 10;
-                plasmaBullet.Position = new Vector2(_ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation)), _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation)));
-                plasmaBullet.Speed = new Vector2(_ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation)), _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation)));
-                _world.Add(plasmaBullet);
-            }
-
-            if ((_keyboardState.IsKeyDown(Keys.LeftShift) && _oldKeyboardState.IsKeyUp(Keys.LeftShift)) ||
-                (_gamePadState.IsButtonDown(Buttons.B) && _oldGamePadState.IsButtonUp(Buttons.B)))
-            {
-                RocketWeapon rocket = new RocketWeapon(_ship.Position, _ship.Rotation);
-                _world.Add(rocket);
-            }
-
-            _ship.Rotate((_mouseState.X - GraphicsDevice.Viewport.Width / 2) * -0.002f);
-
-            _oldKeyboardState = _keyboardState;
-            _oldGamePadState = _gamePadState;
-            Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-            _oldMouseState = _mouseState;
         }
 
         protected override void Draw(GameTime gameTime)

@@ -26,8 +26,8 @@ namespace Ctrl_Space
         {
             Position += Speed;
             Position = new Vector2(
-                (Position.X + Game1.WorldWidth) % Game1.WorldWidth,
-                (Position.Y + Game1.WorldHeight) % Game1.WorldHeight);
+                (Position.X + Game.WorldWidth) % Game.WorldWidth,
+                (Position.Y + Game.WorldHeight) % Game.WorldHeight);
             Rotation += RotationSpeed;
         }
 
