@@ -168,10 +168,11 @@ namespace Ctrl_Space
                 _world.Add(rocket);
             }
 
-            _ship.Rotate((_oldMouseState.X - _mouseState.X) * -0.002f);
+            _ship.Rotate((_mouseState.X - GraphicsDevice.Viewport.Width / 2) * -0.002f);
 
             _oldKeyboardState = _keyboardState;
             _oldGamePadState = _gamePadState;
+            Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             _oldMouseState = _mouseState;
         }
 
