@@ -12,8 +12,8 @@ namespace Ctrl_Space
         public RocketWeapon(Vector2 position, float rotation)
         {
             Position = position;
-            Size = 5;
-            Speed = new Vector2(0.1f * (float)Math.Sin(rotation), -0.1f * (float)Math.Cos(rotation));
+            Size = 16;
+            Speed = new Vector2(2f * (float)Math.Sin(rotation), -2f * (float)Math.Cos(rotation));
             Rotation = rotation;
         }
 
