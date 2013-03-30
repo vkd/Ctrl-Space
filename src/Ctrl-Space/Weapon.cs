@@ -9,11 +9,11 @@ namespace Ctrl_Space
 {
     class RocketWeapon : GameObject
     {
-        public RocketWeapon(Vector2 position, float rotation)
+        public RocketWeapon(Vector2 position, Vector2 speed, float rotation)
         {
             Position = position;
             Size = 16;
-            Speed = new Vector2(2f * (float)Math.Sin(rotation), -2f * (float)Math.Cos(rotation));
+            Speed = speed + new Vector2(7f * (float)Math.Sin(rotation), -7f * (float)Math.Cos(rotation));
             Rotation = rotation;
         }
 

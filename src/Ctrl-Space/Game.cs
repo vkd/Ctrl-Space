@@ -129,8 +129,10 @@ namespace Ctrl_Space
             _inputDevices.AddAction(InputActionType.Rocket,
                 delegate
                 {
-                    RocketWeapon rocket = new RocketWeapon(_ship.Position, _ship.Rotation);
-                    _world.Add(rocket);
+                    RocketWeapon rocket1 = new RocketWeapon(_ship.Position + new Vector2(-40f * (float)Math.Cos(_ship.Rotation), -40f * (float)Math.Sin(_ship.Rotation)), _ship.Speed, _ship.Rotation);
+                    RocketWeapon rocket2 = new RocketWeapon(_ship.Position + new Vector2(40f * (float)Math.Cos(_ship.Rotation), 40f * (float)Math.Sin(_ship.Rotation)), _ship.Speed, _ship.Rotation);
+                    _world.Add(rocket1);
+                    _world.Add(rocket2);
                 });
             _inputDevices.AddActionFloat(InputActionFloatType.Rotate,
                 delegate(float dx)
