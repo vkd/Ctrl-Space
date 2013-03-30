@@ -10,7 +10,7 @@ namespace Ctrl_Space
 {
     public class Ship : GameObject
     {
-        public Ship(Vector2 position)
+        public Ship(Vector2 position) : base()
         {
             Position = position;
             Size = 48;
@@ -39,9 +39,9 @@ namespace Ctrl_Space
             Speed *= .99f;
         }
 
-        public override Texture2D GetTexture(TextureManager textureManager)
+        public override Texture2D GetTexture()
         {
-            return textureManager.ShipTexture;
+            return TextureManager.ShipAnimation;
         }
     }
 }

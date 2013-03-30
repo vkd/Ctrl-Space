@@ -3,19 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ctrl_Space
 {
     class Asteroid : GameObject
     {
-        public Asteroid()
+        public override Texture2D GetTexture()
         {
-
-        }
-
-        public override Microsoft.Xna.Framework.Graphics.Texture2D GetTexture(TextureManager textureManager)
-        {
-            return textureManager.AsteroidTexture;
+            return TextureManager.AsteroidTexture;
         }
     }
 }

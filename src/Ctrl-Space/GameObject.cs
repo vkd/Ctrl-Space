@@ -15,10 +15,11 @@ namespace Ctrl_Space
         public float Mass = 1f;
         public float Rotation;
         public float RotationSpeed;
+        private Animation _animation;
 
         public GameObject()
         {
-
+            _animation = new Animation();
         }
 
         public virtual void Update()
@@ -30,13 +31,14 @@ namespace Ctrl_Space
             Rotation += RotationSpeed;
         }
 
-        public void Draw(SpriteBatch spriteBatch, TextureManager textureManager)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            var tex = GetTexture(textureManager);
-            var s = Math.Max(tex.Width, tex.Height);
-            spriteBatch.Draw(tex, Position, null, Color.White, Rotation, new Vector2(tex.Width / 2, tex.Height / 2), Size / s, SpriteEffects.None, 0f);
+            var tex = GetTexture();
+            var rect = _animation.GetAnimation(gameTime, tex);
+            var s = Math.Max(rect.Width, rect.Height);
+            spriteBatch.Draw(tex, Position, rect, Color.White, Rotation, new Vector2(rect.Width / 2, rect.Height / 2), Size / s, SpriteEffects.None, 0f);
         }
 
-        public abstract Texture2D GetTexture(TextureManager textureManager);
+        public abstract Texture2D GetTexture();
     }
 }

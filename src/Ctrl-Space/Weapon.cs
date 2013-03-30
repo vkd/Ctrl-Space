@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ctrl_Space
 {
@@ -16,9 +17,9 @@ namespace Ctrl_Space
             Rotation = rotation;
         }
 
-        public override Microsoft.Xna.Framework.Graphics.Texture2D GetTexture(TextureManager textureManager)
+        public override Texture2D GetTexture()
         {
-            return textureManager.RocketTexture;
+            return TextureManager.RocketTexture;
         }
     }
 }

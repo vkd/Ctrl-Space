@@ -72,6 +72,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation.cs" />
     <Compile Include="Asteroid.cs" />
     <Compile Include="Bonus.cs" />
     <Compile Include="Camera.cs" />

@@ -4,28 +4,31 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework;
 
 namespace Ctrl_Space
 {
-    public class TextureManager
+    public static class TextureManager
     {
-        public Texture2D ShipTexture { get; set; }
-        public Texture2D ShipOffTexture { get; set; }
-        public Texture2D RocketTexture { get; set; }
-        public Texture2D AsteroidTexture { get; set; }
-        public Texture2D SpeedBonusTexture { get; set; }
-        public Texture2D SpaceTexture { get; set; }
-        public Texture2D PlasmaBulletTexture { get; set; }
+        public static Texture2D ShipTexture { get; set; }
+        public static Texture2D ShipAnimation { get; set; }
+        public static Texture2D ShipOffTexture { get; set; }
+        public static Texture2D RocketTexture { get; set; }
+        public static Texture2D AsteroidTexture { get; set; }
+        public static Texture2D SpeedBonusTexture { get; set; }
+        public static Texture2D SpaceTexture { get; set; }
+        public static Texture2D PlasmaBulletTexture { get; set; }
 
-        public TextureManager(ContentManager contentManaget)
+        public static void LoadTextures(ContentManager contentManager)
         {
-            ShipTexture = contentManaget.Load<Texture2D>("Ship");
-            ShipOffTexture = contentManaget.Load<Texture2D>("Ship-off");
-            AsteroidTexture = contentManaget.Load<Texture2D>("Asteroid");
-            RocketTexture = contentManaget.Load<Texture2D>("Rocket");
-            SpeedBonusTexture = contentManaget.Load<Texture2D>("SpeedBonus");
-            SpaceTexture = contentManaget.Load<Texture2D>("Space");
-            PlasmaBulletTexture = contentManaget.Load<Texture2D>("PlasmaBullet");
+            ShipTexture = contentManager.Load<Texture2D>("Ship");
+            ShipAnimation = contentManager.Load<Texture2D>("ShipAnimation");
+            ShipOffTexture = contentManager.Load<Texture2D>("Ship-off");
+            AsteroidTexture = contentManager.Load<Texture2D>("Asteroid");
+            RocketTexture = contentManager.Load<Texture2D>("Rocket");
+            SpeedBonusTexture = contentManager.Load<Texture2D>("SpeedBonus");
+            SpaceTexture = contentManager.Load<Texture2D>("Space");
+            PlasmaBulletTexture = contentManager.Load<Texture2D>("PlasmaBullet");
         }
     }
 }

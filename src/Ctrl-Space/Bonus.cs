@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ctrl_Space
 {
@@ -14,9 +15,9 @@ namespace Ctrl_Space
             Size = 15;
         }
 
-        public override Microsoft.Xna.Framework.Graphics.Texture2D GetTexture(TextureManager textureManager)
+        public override Texture2D GetTexture()
         {
-            return textureManager.SpeedBonusTexture;
+            return TextureManager.SpeedBonusTexture;
         }
     }
 }
