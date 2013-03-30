@@ -12,6 +12,7 @@ namespace Ctrl_Space
     {
         public Ship(Vector2 position) : base()
         {
+            Mass = 20f;
             Position = position;
             Size = 48;
         }
