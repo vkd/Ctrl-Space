@@ -43,7 +43,7 @@ namespace Ctrl_Space
                         go1.Speed = nrm * go1rsp + tan * go1tan;
                         go2.Speed = nrm * go2rsp + tan * go2tan;
 
-                        float gp = (float)Math.Sqrt(ol2) / 2;
+                        float gp = Maf.Sqrt(ol2) / 2;
                         go1.Position -= gp * nrm;
                         go2.Position += gp * nrm;
                     }

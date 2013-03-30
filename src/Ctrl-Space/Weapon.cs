@@ -13,7 +13,7 @@ namespace Ctrl_Space
         {
             Position = position;
             Size = 16;
-            Speed = speed + new Vector2(7f * (float)Math.Sin(rotation), -7f * (float)Math.Cos(rotation));
+            Speed = speed + new Vector2(7f * Maf.Sin(rotation), -7f * Maf.Cos(rotation));
             Rotation = rotation;
         }
 

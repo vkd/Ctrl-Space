@@ -120,17 +120,17 @@ namespace Ctrl_Space
 
                     PlasmaBullet plasmaBullet = new PlasmaBullet();
                     plasmaBullet.Size = 10;
-                    plasmaBullet.Position = new Vector2(_ship.Position.X + (float)(kickRocket * Math.Sin(_ship.Rotation)), 
-                        _ship.Position.Y - (float)(kickRocket * Math.Cos(_ship.Rotation)));
-                    plasmaBullet.Speed = new Vector2(_ship.Speed.X + (float)(speedRocket * Math.Sin(_ship.Rotation)),
-                        _ship.Speed.Y - (float)(speedRocket * Math.Cos(_ship.Rotation)));
+                    plasmaBullet.Position = new Vector2(_ship.Position.X + kickRocket * Maf.Sin(_ship.Rotation), 
+                        _ship.Position.Y - kickRocket * Maf.Cos(_ship.Rotation));
+                    plasmaBullet.Speed = new Vector2(_ship.Speed.X + speedRocket * Maf.Sin(_ship.Rotation),
+                        _ship.Speed.Y - speedRocket * Maf.Cos(_ship.Rotation));
                     _world.Add(plasmaBullet);
                 });
             _inputDevices.AddAction(InputActionType.Rocket,
                 delegate
                 {
-                    RocketWeapon rocket1 = new RocketWeapon(_ship.Position + new Vector2(-40f * (float)Math.Cos(_ship.Rotation), -40f * (float)Math.Sin(_ship.Rotation)), _ship.Speed, _ship.Rotation);
-                    RocketWeapon rocket2 = new RocketWeapon(_ship.Position + new Vector2(40f * (float)Math.Cos(_ship.Rotation), 40f * (float)Math.Sin(_ship.Rotation)), _ship.Speed, _ship.Rotation);
+                    RocketWeapon rocket1 = new RocketWeapon(_ship.Position + new Vector2(-40f * Maf.Cos(_ship.Rotation), -40f * Maf.Sin(_ship.Rotation)), _ship.Speed, _ship.Rotation);
+                    RocketWeapon rocket2 = new RocketWeapon(_ship.Position + new Vector2(40f * Maf.Cos(_ship.Rotation), 40f * Maf.Sin(_ship.Rotation)), _ship.Speed, _ship.Rotation);
                     _world.Add(rocket1);
                     _world.Add(rocket2);
                 });

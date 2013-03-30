@@ -24,14 +24,14 @@ namespace Ctrl_Space
 
         public void Strafe(float strafeStep)
         {
-            Speed.X += (float)(strafeStep * Math.Cos(Rotation));
-            Speed.Y += (float)(strafeStep * Math.Sin(Rotation));
+            Speed.X += strafeStep * Maf.Cos(Rotation);
+            Speed.Y += strafeStep * Maf.Sin(Rotation);
         }
 
         public void SpeedUp(float acceleration)
         {
-            Speed.X += (float)(acceleration * Math.Sin(Rotation));
-            Speed.Y -= (float)(acceleration * Math.Cos(Rotation));
+            Speed.X += acceleration * Maf.Sin(Rotation);
+            Speed.Y -= acceleration * Maf.Cos(Rotation);
         }
 
         public override void Update()
