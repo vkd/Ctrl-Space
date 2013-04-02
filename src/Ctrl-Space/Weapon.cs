@@ -21,5 +21,11 @@ namespace Ctrl_Space
         {
             return TextureManager.RocketTexture;
         }
+
+        public override void Update()
+        {
+            base.Update();
+            Rotation = (float)Math.Atan2(Speed.X, -Speed.Y);
+        }
     }
 }
