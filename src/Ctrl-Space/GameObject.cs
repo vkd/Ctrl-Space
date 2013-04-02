@@ -31,12 +31,12 @@ namespace Ctrl_Space
             Rotation += RotationSpeed;
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Vector2 offset)
         {
             var tex = GetTexture();
             var rect = _animation.GetAnimation(gameTime, tex);
             var s = Math.Max(rect.Width, rect.Height);
-            spriteBatch.Draw(tex, Position, rect, Color.White, Rotation, new Vector2(rect.Width / 2, rect.Height / 2), Size / s, SpriteEffects.None, 0f);
+            spriteBatch.Draw(tex, Position + offset, rect, Color.White, Rotation, new Vector2(rect.Width / 2, rect.Height / 2), Size / s, SpriteEffects.None, 0f);
         }
 
         public abstract Texture2D GetTexture();

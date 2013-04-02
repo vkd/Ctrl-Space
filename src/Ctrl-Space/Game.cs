@@ -120,7 +120,7 @@ namespace Ctrl_Space
 
                     PlasmaBullet plasmaBullet = new PlasmaBullet();
                     plasmaBullet.Size = 10;
-                    plasmaBullet.Position = new Vector2(_ship.Position.X + kickRocket * Maf.Sin(_ship.Rotation), 
+                    plasmaBullet.Position = new Vector2(_ship.Position.X + kickRocket * Maf.Sin(_ship.Rotation),
                         _ship.Position.Y - kickRocket * Maf.Cos(_ship.Rotation));
                     plasmaBullet.Speed = new Vector2(_ship.Speed.X + speedRocket * Maf.Sin(_ship.Rotation),
                         _ship.Speed.Y - speedRocket * Maf.Cos(_ship.Rotation));
@@ -160,7 +160,7 @@ namespace Ctrl_Space
 
         protected override void UnloadContent()
         {
-            
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -169,6 +169,8 @@ namespace Ctrl_Space
 
             foreach (var obj in _world)
                 obj.Update();
+
+            _world.Clusterize();
 
             Collisions.Detect(_world);
 
@@ -191,8 +193,14 @@ namespace Ctrl_Space
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetTransform());
 
-            foreach (var obj in _world)
-                obj.Draw(_spriteBatch, gameTime);
+            foreach (var cluster in _world.GetClustersAroundPosition(_ship.Position, 512f))
+            {
+                Vector2 offset = new Vector2(cluster.ShiftX * WorldWidth, cluster.ShiftY * WorldHeight);
+                foreach (var obj in cluster.GameObjects)
+                    obj.Draw(_spriteBatch, gameTime, offset);
+            }
+            //foreach (var obj in _world)
+            //    obj.Draw(_spriteBatch, gameTime);
 
             _spriteBatch.End();
 
