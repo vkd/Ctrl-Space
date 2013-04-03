@@ -11,6 +11,7 @@ namespace Ctrl_Space
     {
         public SpeedBonus(Vector2 position)
         {
+            Position = position;
             Speed = Vector2.Zero;
             Size = 15;
         }
