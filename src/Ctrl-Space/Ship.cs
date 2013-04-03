@@ -42,7 +42,7 @@ namespace Ctrl_Space
 
         public override Texture2D GetTexture()
         {
-            return TextureManager.ShipAnimation;
+            return TextureManager.ShipOffTexture;
         }
     }
 }

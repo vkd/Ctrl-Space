@@ -15,6 +15,8 @@ namespace Ctrl_Space
         public float Mass = 1f;
         public float Rotation;
         public float RotationSpeed;
+        public Color Color = Color.White;
+        public float Alpha = 1f;
         private Animation _animation;
 
         public GameObject()
@@ -36,7 +38,7 @@ namespace Ctrl_Space
             var tex = GetTexture();
             var rect = _animation.GetAnimation(gameTime, tex);
             var s = Math.Max(rect.Width, rect.Height);
-            spriteBatch.Draw(tex, Position + offset, rect, Color.White, Rotation, new Vector2(rect.Width / 2, rect.Height / 2), Size / s, SpriteEffects.None, 0f);
+            spriteBatch.Draw(tex, Position + offset, rect, Color * Alpha, Rotation, new Vector2(rect.Width / 2, rect.Height / 2), Size / s, SpriteEffects.None, 0f);
         }
 
         public abstract Texture2D GetTexture();
