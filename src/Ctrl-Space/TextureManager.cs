@@ -29,6 +29,7 @@ namespace Ctrl_Space
             RocketTexture = contentManager.Load<Texture2D>("Rocket");
             SpeedBonusTexture = contentManager.Load<Texture2D>("SpeedBonus");
             SpaceTexture = contentManager.Load<Texture2D>("Space");
+            PlasmaBulletTexture = contentManager.Load<Texture2D>("PlasmaBullet");
             SimpleGlowTexture = contentManager.Load<Texture2D>("SimpleGlow");
         }
     }
