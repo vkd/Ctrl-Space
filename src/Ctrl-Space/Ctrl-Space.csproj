@@ -76,6 +76,7 @@
     <Compile Include="Asteroid.cs" />
     <Compile Include="Bonus.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Chaos.cs" />
     <Compile Include="Collisions.cs" />
     <Compile Include="FPS.cs" />
     <Compile Include="GameObject.cs" />
