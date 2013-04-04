@@ -112,6 +112,8 @@ namespace Ctrl_Space
                 delegate(float sensitivity)
                 {
                     _ship.SpeedUp(moveAcceleration * sensitivity);
+                    if(sensitivity > 0)
+                        _particles.Emit(_ship.Position - new Vector2(10f * Maf.Sin(_ship.Rotation), -10f * Maf.Cos(_ship.Rotation)), _ship.Speed - new Vector2(4f * Maf.Sin(_ship.Rotation), -4f * Maf.Cos(_ship.Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
                 });
 
             _inputDevices.AddAction(InputActionType.Strike,
@@ -169,10 +171,10 @@ namespace Ctrl_Space
         {
             _inputDevices.Update(gameTime);
 
+            
+
             foreach (var obj in _world)
                 obj.Update();
-
-            _particles.Emit(_ship.Position - new Vector2(10f * Maf.Sin(_ship.Rotation), -10f * Maf.Cos(_ship.Rotation)), -new Vector2(2f * Maf.Sin(_ship.Rotation), -2f * Maf.Cos(_ship.Rotation)));
 
             _particles.Update();
 
