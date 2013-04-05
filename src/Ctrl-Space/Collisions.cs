@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +8,12 @@ namespace Ctrl_Space
 {
     class Collisions
     {
-        public static void Detect(List<GameObject> gameObjects)
+        public static void Detect(List<GameObject> gameObjects, Particles _particles)
         {
             for (int j = 0; j < gameObjects.Count; j++)
                 for (int i = 0; i < gameObjects.Count; i++)
                 {
-                    if (i == j) continue;
+                    if (i == j || i < 0 || j < 0) continue;
                     var go1 = gameObjects[i];
                     var go2 = gameObjects[j];
                     float dx = go2.Position.X - go1.Position.X;
@@ -22,6 +22,27 @@ namespace Ctrl_Space
                     float ol2 = rr * rr - dx * dx - dy * dy;
                     if (ol2 > 0)
                     {
+                        if ((go1 is RocketWeapon || go1 is PlasmaBullet) && (go2 is Asteroid || go2 is Ship))
+                        {
+                            for(int h = 0; h < 100; h++)
+                                _particles.Emit((go1.Position + go2.Position) / 2f, 3f * Chaos.GetFloat() * Chaos.GetVector2());
+                            gameObjects.RemoveAt(i--);
+                            if (go2 is Asteroid)
+                            {
+                                go2.Size -= 20f;
+                                if (go2.Size < 40f)
+                                    gameObjects.RemoveAt(j--);
+                            }
+                            continue;
+                        }
+
+                        if ((go1 is Ship) && go2 is SpeedBonus)
+                        {
+                            go1.Speed += new Vector2(10f * Maf.Sin(go1.Rotation), -10f * Maf.Cos(go1.Rotation));
+                            gameObjects.RemoveAt(j--);
+                            continue;
+                        }
+
                         // ось столкновения и нормаль к ней
                         var nrm = new Vector2(dx, dy);
                         var tan = new Vector2(dy, -dx);
