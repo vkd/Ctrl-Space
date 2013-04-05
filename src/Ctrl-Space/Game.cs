@@ -46,7 +46,7 @@ namespace Ctrl_Space
             _ship = new Ship(new Vector2(WorldWidth / 2, WorldHeight / 2));
             _camera = new Camera(_ship);
 
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 100; ++i)
             {
                 Asteroid asteroid = new Asteroid();
                 asteroid.Size = (float)(r.NextDouble() * 60 + 20);
@@ -58,7 +58,7 @@ namespace Ctrl_Space
                 _world.Add(asteroid);
             }
 
-            for (int i = 0; i < 5; ++i)
+            for (int i = 0; i < 25; ++i)
             {
                 SpeedBonus bonus = new SpeedBonus(
                     new Vector2((float)(r.NextDouble() * WorldWidth),
@@ -171,16 +171,26 @@ namespace Ctrl_Space
         {
             _inputDevices.Update(gameTime);
 
-            
+
 
             foreach (var obj in _world)
+            {
                 obj.Update();
+                if (obj is RocketWeapon)
+                {
+                    _particles.Emit(obj.Position - new Vector2(13f * Maf.Sin(obj.Rotation), -13f * Maf.Cos(obj.Rotation)), 1f * Chaos.GetFloat() * Chaos.GetVector2());
+                }
+                if (obj is PlasmaBullet)
+                {
+                    _particles.Emit(obj.Position, 1f * Chaos.GetFloat() * Chaos.GetVector2());
+                }
+            }
 
             _particles.Update();
 
             _world.Clusterize();
 
-            Collisions.Detect(_world);
+            Collisions.Detect(_world, _particles);
 
             base.Update(gameTime);
         }
