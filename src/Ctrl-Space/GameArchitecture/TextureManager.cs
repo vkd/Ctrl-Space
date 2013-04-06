@@ -22,15 +22,15 @@ namespace Ctrl_Space
 
         public static void LoadTextures(ContentManager contentManager)
         {
-            ShipTexture = contentManager.Load<Texture2D>("Ship");
-            ShipAnimation = contentManager.Load<Texture2D>("ShipAnimation");
-            ShipOffTexture = contentManager.Load<Texture2D>("Ship-off");
-            AsteroidTexture = contentManager.Load<Texture2D>("Asteroid");
-            RocketTexture = contentManager.Load<Texture2D>("Rocket");
-            SpeedBonusTexture = contentManager.Load<Texture2D>("SpeedBonus");
-            SpaceTexture = contentManager.Load<Texture2D>("Space");
-            PlasmaBulletTexture = contentManager.Load<Texture2D>("PlasmaBullet");
-            SimpleGlowTexture = contentManager.Load<Texture2D>("SimpleGlow");
+            ShipTexture = contentManager.Load<Texture2D>("Textures/Ship/Ship");
+            ShipAnimation = contentManager.Load<Texture2D>("Textures/Ship/ShipAnimation");
+            ShipOffTexture = contentManager.Load<Texture2D>("Textures/Ship/Ship-off");
+            AsteroidTexture = contentManager.Load<Texture2D>("Textures/SpaceObjects/Asteroid");
+            RocketTexture = contentManager.Load<Texture2D>("Textures/Weapon/Rocket");
+            SpeedBonusTexture = contentManager.Load<Texture2D>("Textures/Bonuses/SpeedBonus");
+            SpaceTexture = contentManager.Load<Texture2D>("Textures/Space/Space");
+            PlasmaBulletTexture = contentManager.Load<Texture2D>("Textures/Weapon/PlasmaBullet");
+            SimpleGlowTexture = contentManager.Load<Texture2D>("Textures/Particles/SimpleGlow");
         }
     }
 }

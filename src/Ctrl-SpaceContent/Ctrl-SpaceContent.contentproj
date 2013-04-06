@@ -30,7 +30,7 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SpeedBonus.bmp">
+    <Compile Include="Textures\Bonuses\SpeedBonus.bmp">
       <Name>SpeedBonus</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -51,54 +51,54 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ship-off.png">
+    <Compile Include="Textures\Ship\Ship-off.png">
       <Name>Ship-off</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Ship.png">
+    <Compile Include="Textures\Ship\Ship.png">
       <Name>Ship</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Asteroid.png">
+    <Compile Include="Textures\SpaceObjects\Asteroid.png">
       <Name>Asteroid</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Rocket.png">
+    <Compile Include="Textures\Weapon\Rocket.png">
       <Name>Rocket</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Space.jpg">
+    <Compile Include="Textures\Space\Space.jpg">
       <Name>Space</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlasmaBullet.png">
+    <Compile Include="Textures\Weapon\PlasmaBullet.png">
       <Name>PlasmaBullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ShipAnimation.png">
+    <Compile Include="Textures\Ship\ShipAnimation.png">
       <Name>ShipAnimation</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SimpleGlow.png">
+    <Compile Include="Textures\Particles\SimpleGlow.png">
       <Name>SimpleGlow</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
