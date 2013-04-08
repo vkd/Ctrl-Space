@@ -8,7 +8,7 @@ namespace Ctrl_Space
 {
     class Collisions
     {
-        public static void Detect(List<GameObject> gameObjects, Particles _particles)
+        public static void Detect(List<GameObject> gameObjects, Particles particles, ParticleParameters particleParameters)
         {
             for (int j = 0; j < gameObjects.Count; j++)
                 for (int i = 0; i < gameObjects.Count; i++)
@@ -25,7 +25,7 @@ namespace Ctrl_Space
                         if ((go1 is RocketWeapon || go1 is PlasmaBullet) && (go2 is Asteroid || go2 is Ship))
                         {
                             for(int h = 0; h < 100; h++)
-                                _particles.Emit((go1.Position + go2.Position) / 2f, 3f * Chaos.GetFloat() * Chaos.GetVector2());
+                                particles.Emit(particleParameters, (go1.Position + go2.Position) / 2f, 3f * Chaos.GetFloat() * Chaos.GetVector2());
                             gameObjects.RemoveAt(i--);
                             if (go2 is Asteroid)
                             {

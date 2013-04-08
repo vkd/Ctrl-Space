@@ -25,6 +25,42 @@ namespace Ctrl_Space
 
         World _world = new World();
 
+        ParticleParameters _ppFire = new ParticleParameters()
+        {
+            Duration = 20f,
+            TextureGetter = () => TextureManager.SimpleGlowTexture,
+            Colors = new Color[] { Color.Orange, Color.Red },
+            Alphas = new float[] { 1f, 0f },
+            Sizes = new float[] { 32f, 0f }
+        };
+
+        ParticleParameters _ppRocket = new ParticleParameters()
+        {
+            Duration = 20f,
+            TextureGetter = () => TextureManager.SimpleGlowTexture,
+            Colors = new Color[] { Color.Orange, Color.Red },
+            Alphas = new float[] { 1f, 0f },
+            Sizes = new float[] { 16f, 0f }
+        };
+
+        ParticleParameters _ppPlasma = new ParticleParameters()
+        {
+            Duration = 20f,
+            TextureGetter = () => TextureManager.SimpleGlowTexture,
+            Colors = new Color[] { Color.RoyalBlue, Color.DarkBlue },
+            Alphas = new float[] { 1f, 0f },
+            Sizes = new float[] { 16f, 0f }
+        };
+
+        ParticleParameters _ppExplosion = new ParticleParameters()
+        {
+            Duration = 40f,
+            TextureGetter = () => TextureManager.SimpleGlowTexture,
+            Colors = new Color[] { Color.Orange, Color.Red },
+            Alphas = new float[] { 1f, 0f },
+            Sizes = new float[] { 48f, 0f }
+        };
+
         Particles _particles = new Particles();
 
         WorldLoop _worldLoop = new WorldLoop();
@@ -116,7 +152,7 @@ namespace Ctrl_Space
                 {
                     _ship.SpeedUp(moveAcceleration * sensitivity);
                     if(sensitivity > 0)
-                        _particles.Emit(_ship.Position - new Vector2(10f * Maf.Sin(_ship.Rotation), -10f * Maf.Cos(_ship.Rotation)), _ship.Speed - new Vector2(4f * Maf.Sin(_ship.Rotation), -4f * Maf.Cos(_ship.Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
+                        _particles.Emit(_ppFire, _ship.Position - new Vector2(10f * Maf.Sin(_ship.Rotation), -10f * Maf.Cos(_ship.Rotation)), _ship.Speed - new Vector2(4f * Maf.Sin(_ship.Rotation), -4f * Maf.Cos(_ship.Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
                 });
 
             _inputDevices.AddAction(InputActionType.Strike,
@@ -174,24 +210,22 @@ namespace Ctrl_Space
         {
             _inputDevices.Update(gameTime);
 
-
-
             foreach (var obj in _world)
             {
                 obj.Update();
                 if (obj is RocketWeapon)
                 {
-                    _particles.Emit(obj.Position - new Vector2(13f * Maf.Sin(obj.Rotation), -13f * Maf.Cos(obj.Rotation)), 1f * Chaos.GetFloat() * Chaos.GetVector2());
+                    _particles.Emit(_ppRocket, obj.Position - new Vector2(10f * Maf.Sin(obj.Rotation), -10f * Maf.Cos(obj.Rotation)), 1f * Chaos.GetFloat() * Chaos.GetVector2());
                 }
                 if (obj is PlasmaBullet)
                 {
-                    _particles.Emit(obj.Position, 1f * Chaos.GetFloat() * Chaos.GetVector2());
+                    _particles.Emit(_ppPlasma, obj.Position, 1f * Chaos.GetFloat() * Chaos.GetVector2());
                 }
             }
 
             _particles.Update();
 
-            Collisions.Detect(_world, _particles);
+            Collisions.Detect(_world, _particles, _ppExplosion);
 
             _worldLoopParticles.Clusterize(_particles.ParticlesList);
             _worldLoop.Clusterize(_world);

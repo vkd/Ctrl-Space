@@ -77,6 +77,7 @@
     <Compile Include="GameClasses\Bonus.cs" />
     <Compile Include="GameArchitecture\Camera.cs" />
     <Compile Include="GameDevHelpers\Chaos.cs" />
+    <Compile Include="GameGraphics\ParticleParameters.cs" />
     <Compile Include="GameGraphics\WorldLoop.cs" />
     <Compile Include="GamePhysics\Collisions.cs" />
     <Compile Include="GameComponents\FPS.cs" />
