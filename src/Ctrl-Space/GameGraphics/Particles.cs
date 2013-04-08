@@ -8,7 +8,7 @@ namespace Ctrl_Space
 {
     class Particles
     {
-        private List<Particle> _particles = new List<Particle>();
+        private List<GameObject> _particles = new List<GameObject>();
 
         public void Emit(Vector2 position, Vector2 speed)
         {
@@ -20,12 +20,12 @@ namespace Ctrl_Space
             for (int i = 0; i < _particles.Count; i++)
             {
                 _particles[i].Update();
-                if (_particles[i].IsDestroyed)
+                if (((Particle)_particles[i]).IsDestroyed)
                     _particles.RemoveAt(i--);
             }
         }
 
-        public List<Particle> ParticlesList { get { return _particles; } }
+        public List<GameObject> ParticlesList { get { return _particles; } }
     }
 
     class Particle : GameObject

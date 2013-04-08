@@ -27,6 +27,9 @@ namespace Ctrl_Space
 
         Particles _particles = new Particles();
 
+        WorldLoop _worldLoop = new WorldLoop();
+        WorldLoop _worldLoopParticles = new WorldLoop();
+
         private Song _song;
 
         public Game()
@@ -188,9 +191,10 @@ namespace Ctrl_Space
 
             _particles.Update();
 
-            _world.Clusterize();
-
             Collisions.Detect(_world, _particles);
+
+            _worldLoopParticles.Clusterize(_particles.ParticlesList);
+            _worldLoop.Clusterize(_world);
 
             base.Update(gameTime);
         }
@@ -214,7 +218,14 @@ namespace Ctrl_Space
             foreach (var obj in _particles.ParticlesList)
                 obj.Draw(_spriteBatch, gameTime, Vector2.Zero);
 
-            foreach (var cluster in _world.GetClustersAroundPosition(_ship.Position, 512f))
+            foreach (var cluster in _worldLoopParticles.GetClustersAroundPosition(_ship.Position, 512f))
+            {
+                Vector2 offset = new Vector2(cluster.ShiftX * WorldWidth, cluster.ShiftY * WorldHeight);
+                foreach (var obj in cluster.GameObjects)
+                    obj.Draw(_spriteBatch, gameTime, offset);
+            }
+
+            foreach (var cluster in _worldLoop.GetClustersAroundPosition(_ship.Position, 512f))
             {
                 Vector2 offset = new Vector2(cluster.ShiftX * WorldWidth, cluster.ShiftY * WorldHeight);
                 foreach (var obj in cluster.GameObjects)
