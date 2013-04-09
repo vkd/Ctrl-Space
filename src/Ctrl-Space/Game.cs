@@ -161,12 +161,14 @@ namespace Ctrl_Space
                     var kickRocket = 40f;
                     var speedRocket = 14.9f;
 
-                    PlasmaBullet plasmaBullet = new PlasmaBullet();
-                    plasmaBullet.Size = 10;
-                    plasmaBullet.Position = new Vector2(_ship.Position.X + kickRocket * Maf.Sin(_ship.Rotation), 
-                        _ship.Position.Y - kickRocket * Maf.Cos(_ship.Rotation));
-                    plasmaBullet.Speed = new Vector2(_ship.Speed.X + speedRocket * Maf.Sin(_ship.Rotation),
-                        _ship.Speed.Y - speedRocket * Maf.Cos(_ship.Rotation));
+                    PlasmaBullet plasmaBullet = new PlasmaBullet()
+                    {
+                        Size = 10,
+                        Position = new Vector2(_ship.Position.X + kickRocket * Maf.Sin(_ship.Rotation),
+                            _ship.Position.Y - kickRocket * Maf.Cos(_ship.Rotation)),
+                        Speed = new Vector2(_ship.Speed.X + speedRocket * Maf.Sin(_ship.Rotation),
+                            _ship.Speed.Y - speedRocket * Maf.Cos(_ship.Rotation))
+                    };
                     _world.Add(plasmaBullet);
                 });
             _inputDevices.AddAction(InputActionType.Rocket,
@@ -210,16 +212,22 @@ namespace Ctrl_Space
         {
             _inputDevices.Update(gameTime);
 
-            foreach (var obj in _world)
+            for (int i = 0; i < _world.Count; i++)
             {
+                var obj = _world[i];
                 obj.Update();
+                if (obj.IsDestroyed)
+                {
+                    _world.RemoveAt(i--);
+                }
+
                 if (obj is RocketWeapon)
                 {
                     _particles.Emit(_ppRocket, obj.Position - new Vector2(10f * Maf.Sin(obj.Rotation), -10f * Maf.Cos(obj.Rotation)), 1f * Chaos.GetFloat() * Chaos.GetVector2());
                 }
                 if (obj is PlasmaBullet)
                 {
-                    _particles.Emit(_ppPlasma, obj.Position, 1f * Chaos.GetFloat() * Chaos.GetVector2());
+                    _particles.Emit(_ppPlasma, obj.Position, Vector2.Zero);
                 }
             }
 
