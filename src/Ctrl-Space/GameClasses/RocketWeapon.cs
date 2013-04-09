@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +9,8 @@ namespace Ctrl_Space
 {
     class RocketWeapon : GameObject
     {
+        private float State = 1.0f;
+
         public RocketWeapon(Vector2 position, Vector2 speed, float rotation)
         {
             Position = position;
@@ -26,6 +28,9 @@ namespace Ctrl_Space
         {
             base.Update();
             Rotation = (float)Math.Atan2(Speed.X, -Speed.Y);
+            State -= .01f;
+            if (State < 0f)
+                IsDestroyed = true;
         }
     }
 }
