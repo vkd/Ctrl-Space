@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +20,7 @@ namespace Ctrl_Space
             for (int i = 0; i < _particles.Count; i++)
             {
                 _particles[i].Update();
-                if (((Particle)_particles[i]).IsDestroyed)
+                if ((_particles[i]).IsDestroyed)
                     _particles.RemoveAt(i--);
             }
         }
@@ -31,8 +31,6 @@ namespace Ctrl_Space
     class Particle : GameObject
     {
         ParticleParameters _particleParameters;
-
-        public bool IsDestroyed = false;
 
         private float _state = 1.0f;
         private float _step = .1f;
