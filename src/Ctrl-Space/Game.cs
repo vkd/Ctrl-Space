@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using Ctrl_Space.GameClasses.Bullets;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace Ctrl_Space
@@ -207,7 +202,7 @@ namespace Ctrl_Space
                     _world.RemoveAt(i--);
                 }
 
-                if (obj is RocketWeapon)
+                if (obj is Rocket)
                 {
                     _particles.Emit(_ppRocket, obj.Position - new Vector2(10f * Maf.Sin(obj.Rotation), -10f * Maf.Cos(obj.Rotation)), 1f * Chaos.GetFloat() * Chaos.GetVector2());
                 }

@@ -1,13 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ctrl_Space.GameClasses.Weapon;
 
 namespace Ctrl_Space
 {
     class Ship : GameObject
     {
+        private WeaponBase _weapon;
+        private WeaponBase _weaponAlt;
+
         public Ship(Vector2 position)
             : base()
         {
+            _weapon = new PlasmaGun(this);
+            _weaponAlt = new RocketLauncher(this);
+
             Mass = 20f;
             Position = position;
             Size = 48;
@@ -32,24 +39,12 @@ namespace Ctrl_Space
 
         public void Shoot(World world)
         {
-            var kickRocket = 20f;
-            var speedRocket = 14.9f;
-
-            PlasmaBullet plasmaBullet = new PlasmaBullet()
-            {
-                Size = 10,
-                Position = Position + kickRocket * new Vector2(Maf.Sin(Rotation), -Maf.Cos(Rotation)),
-                Speed = Speed + speedRocket * new Vector2(Maf.Sin(Rotation), -Maf.Cos(Rotation))
-            };
-            world.Add(plasmaBullet);
+            _weapon.Shoot(world);
         }
 
         public void ShootAlt(World world)
         {
-            RocketWeapon rocket1 = new RocketWeapon(Position + new Vector2(-40f * Maf.Cos(Rotation), -40f * Maf.Sin(Rotation)), Speed, Rotation);
-            RocketWeapon rocket2 = new RocketWeapon(Position + new Vector2(40f * Maf.Cos(Rotation), 40f * Maf.Sin(Rotation)), Speed, Rotation);
-            world.Add(rocket1);
-            world.Add(rocket2);
+            _weaponAlt.Shoot(world);
         }
 
         public override void Update()

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using Ctrl_Space.GameClasses.Bullets;
 using Microsoft.Xna.Framework;
 
 namespace Ctrl_Space
@@ -22,7 +20,7 @@ namespace Ctrl_Space
                     float ol2 = rr * rr - dx * dx - dy * dy;
                     if (ol2 > 0)
                     {
-                        if ((go1 is RocketWeapon || go1 is PlasmaBullet) && (go2 is Asteroid || go2 is Ship))
+                        if ((go1 is Rocket || go1 is PlasmaBullet) && (go2 is Asteroid || go2 is Ship))
                         {
                             for(int h = 0; h < 100; h++)
                                 particles.Emit(particleParameters, (go1.Position + go2.Position) / 2f, 3f * Chaos.GetFloat() * Chaos.GetVector2());

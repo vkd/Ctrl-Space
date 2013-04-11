@@ -72,6 +72,9 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameClasses\Weapon\PlasmaGun.cs" />
+    <Compile Include="GameClasses\Weapon\RocketLauncher.cs" />
+    <Compile Include="GameClasses\Weapon\WeaponBase.cs" />
     <Compile Include="GameGraphics\Animation.cs" />
     <Compile Include="GameClasses\Asteroid.cs" />
     <Compile Include="GameClasses\Bonus.cs" />
@@ -86,13 +89,13 @@
     <Compile Include="GameArchitecture\InputDevices.cs" />
     <Compile Include="GameDevHelpers\Maf.cs" />
     <Compile Include="GameGraphics\Particles.cs" />
-    <Compile Include="GameClasses\PlasmaBullet.cs" />
+    <Compile Include="GameClasses\Bullets\PlasmaBullet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameClasses\Ship.cs" />
     <Compile Include="GameArchitecture\TextureManager.cs" />
-    <Compile Include="GameClasses\RocketWeapon.cs" />
+    <Compile Include="GameClasses\Bullets\Rocket.cs" />
     <Compile Include="GameClasses\World.cs" />
   </ItemGroup>
   <ItemGroup>
