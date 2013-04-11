@@ -11,7 +11,7 @@ namespace Ctrl_Space
     delegate void InputActionDelegate(); 
     delegate void InputActionDelegateFloat(float floatParam);
 
-    class InputDevices
+    class InputManager
     {
         private bool _isActive = false;
 
@@ -36,7 +36,7 @@ namespace Ctrl_Space
 
         private Game _game;
 
-        public InputDevices(Game game)
+        public InputManager(Game game)
         {
             _game = game;
         }
@@ -145,13 +145,15 @@ namespace Ctrl_Space
             TryActionFloat(InputActionFloatType.MoveRightLeft,
                 _gamePadState.ThumbSticks.Left.X * SensitivityThumbSticks);
 
-            if (ButtonsPressed(Buttons.A))
+            if (IsButtonDown(Buttons.A))
                 TryAction(InputActionType.Strike);
-            if (ButtonsPressed(Buttons.B))
+            if (IsButtonDown(Buttons.B))
                 TryAction(InputActionType.Rocket);
 
-            if (ButtonsPressed(Buttons.RightShoulder))
+            if (IsButtonDown(Buttons.RightShoulder))
                 TryAction(InputActionType.Strike);
+            if (IsButtonDown(Buttons.LeftShoulder))
+                TryAction(InputActionType.Rocket);
 
             TryActionFloat(InputActionFloatType.Rotate,
                 _gamePadState.ThumbSticks.Right.X * SensitivityThumbSticks);

@@ -86,7 +86,7 @@
     <Compile Include="GameComponents\FPS.cs" />
     <Compile Include="GameClasses\GameObject.cs" />
     <Compile Include="GameOptions.cs" />
-    <Compile Include="GameArchitecture\InputDevices.cs" />
+    <Compile Include="GameArchitecture\InputManager.cs" />
     <Compile Include="GameDevHelpers\Maf.cs" />
     <Compile Include="GameGraphics\Particles.cs" />
     <Compile Include="GameClasses\Bullets\PlasmaBullet.cs" />

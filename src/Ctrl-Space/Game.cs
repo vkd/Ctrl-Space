@@ -16,7 +16,7 @@ namespace Ctrl_Space
         private Ship _ship;
 
         private Camera _camera;
-        private InputDevices _inputDevices;
+        private InputManager _inputDevices;
 
         World _world = new World();
 
@@ -75,7 +75,7 @@ namespace Ctrl_Space
         {
             Random r = new Random();
 
-            InitializeInputDevices();
+            InitializeInputManager();
 
             _ship = new Ship(new Vector2(WorldWidth / 2, WorldHeight / 2));
             _camera = new Camera(_ship);
@@ -107,9 +107,9 @@ namespace Ctrl_Space
             base.Initialize();
         }
 
-        private void InitializeInputDevices()
+        private void InitializeInputManager()
         {
-            _inputDevices = new InputDevices(this);
+            _inputDevices = new InputManager(this);
             _inputDevices.Initialize();
 
             this.Activated += new EventHandler<EventArgs>(Game_Activated);
