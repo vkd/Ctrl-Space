@@ -1,11 +1,15 @@
 ﻿using Ctrl_Space.GameClasses.Bullets;
+using Ctrl_Space.Input;
 using Microsoft.Xna.Framework;
 
 namespace Ctrl_Space.GameClasses.Weapon
 {
     class PlasmaGun : WeaponBase
     {
-        public PlasmaGun(GameObject owner) : base(owner) { }
+        public PlasmaGun(GameObject owner) : base(owner)
+        {
+            _shootingInterval = 33;
+        }
 
         public override void Shoot(World world)
         {
