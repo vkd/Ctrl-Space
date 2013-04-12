@@ -7,12 +7,16 @@ namespace Ctrl_Space
 {
     class Ship : GameObject
     {
+        private World _world;
+
         private WeaponBase _weapon;
         private WeaponBase _weaponAlt;
 
-        public Ship(Vector2 position)
+        public Ship(Vector2 position, World world)
             : base()
         {
+            _world = world;
+
             _weapon = new PlasmaGun(this);
             _weaponAlt = new RocketLauncher(this);
 
@@ -38,20 +42,28 @@ namespace Ctrl_Space
             Speed.Y -= acceleration * Maf.Cos(Rotation);
         }
 
-        public void Shoot(InputDigitalState state, World world)
+        public void Shoot(InputDigitalState state)
         {
-            _weapon.Shoot(state, world);
+            if (state == InputDigitalState.Pressed)
+                _weapon.On();
+            else
+                _weapon.Off();
         }
 
-        public void ShootAlt(InputDigitalState state, World world)
+        public void ShootAlt(InputDigitalState state)
         {
-            _weaponAlt.Shoot(state, world);
+            if (state == InputDigitalState.Pressed)
+                _weaponAlt.On();
+            else
+                _weaponAlt.Off();
         }
 
         public override void Update()
         {
             base.Update();
             Speed *= .99f;
+            _weapon.Update(_world);
+            _weaponAlt.Update(_world);
         }
 
         public override Texture2D GetTexture()

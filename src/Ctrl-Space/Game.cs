@@ -78,7 +78,7 @@ namespace Ctrl_Space
 
             InitializeInputManager();
 
-            _ship = new Ship(new Vector2(WorldWidth / 2, WorldHeight / 2));
+            _ship = new Ship(new Vector2(WorldWidth / 2, WorldHeight / 2), _world);
             _camera = new Camera(_ship);
 
             for (int i = 0; i < 100; ++i)
@@ -141,8 +141,8 @@ namespace Ctrl_Space
                         _particles.Emit(_ppFire, _ship.Position - new Vector2(10f * Maf.Sin(_ship.Rotation), -10f * Maf.Cos(_ship.Rotation)), _ship.Speed - new Vector2(4f * Maf.Sin(_ship.Rotation), -4f * Maf.Cos(_ship.Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
                 };
 
-            _inputManager.PrimaryWeapon += e => _ship.Shoot(e.State, _world);
-            _inputManager.SecondaryWeapon += e => _ship.ShootAlt(e.State, _world);
+            _inputManager.PrimaryWeapon += e => _ship.Shoot(e.State);
+            _inputManager.SecondaryWeapon += e => _ship.ShootAlt(e.State);
 
             _inputManager.Rotate += e => _ship.Rotate(e.Value * 0.1f);
         }
