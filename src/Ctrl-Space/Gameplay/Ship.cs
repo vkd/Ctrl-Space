@@ -1,17 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Ctrl_Space.GameClasses.Weapon;
+using Ctrl_Space.Input;
 
 namespace Ctrl_Space
 {
     class Ship : GameObject
     {
+        private World _world;
+
         private WeaponBase _weapon;
         private WeaponBase _weaponAlt;
 
-        public Ship(Vector2 position)
+        public Ship(Vector2 position, World world)
             : base()
         {
+            _world = world;
+
             _weapon = new PlasmaGun(this);
             _weaponAlt = new RocketLauncher(this);
 
@@ -37,18 +42,26 @@ namespace Ctrl_Space
             Speed.Y -= acceleration * Maf.Cos(Rotation);
         }
 
-        public void Shoot(World world)
+        public void Shoot(InputDigitalState state)
         {
-            _weapon.Shoot(world);
+            if (state == InputDigitalState.Pressed)
+                _weapon.On();
+            else
+                _weapon.Off();
         }
 
-        public void ShootAlt(World world)
+        public void ShootAlt(InputDigitalState state)
         {
-            _weaponAlt.Shoot(world);
+            if (state == InputDigitalState.Pressed)
+                _weaponAlt.On();
+            else
+                _weaponAlt.Off();
         }
 
         public override void Update()
         {
+            _weapon.Update(_world);
+            _weaponAlt.Update(_world);
             base.Update();
             Speed *= .99f;
         }
