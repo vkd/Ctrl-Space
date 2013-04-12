@@ -1,5 +1,6 @@
 using System;
 using Ctrl_Space.GameClasses.Bullets;
+using Ctrl_Space.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
@@ -16,7 +17,7 @@ namespace Ctrl_Space
         private Ship _ship;
 
         private Camera _camera;
-        private InputManager _inputDevices;
+        private IInputManager _inputManager = null;
 
         World _world = new World();
 
@@ -109,20 +110,15 @@ namespace Ctrl_Space
 
         private void InitializeInputManager()
         {
-            _inputDevices = new InputManager(this);
-            _inputDevices.Initialize();
+            //_inputManager = new InputManager(this);
+            //_inputManager.Initialize();
 
             this.Activated += new EventHandler<EventArgs>(Game_Activated);
             this.Deactivated += new EventHandler<EventArgs>(Game_Deactivated);
 
-            _inputDevices.AddAction(InputActionType.ExitGame, this.Exit);
-            _inputDevices.AddAction(InputActionType.DebugMode,
-                delegate
-                {
-                    GameOptions.IsDebugMode = !GameOptions.IsDebugMode;
-                });
-            _inputDevices.AddAction(InputActionType.PlayStopMediaPlayer,
-                delegate
+            _inputManager.ExitGame += () => Exit();
+            _inputManager.DebugMode += () => GameOptions.IsDebugMode = !GameOptions.IsDebugMode;
+            _inputManager.PlayStopMediaPlayer += () =>
                 {
                     if (MediaPlayer.Queue.ActiveSong != null)
                     {
@@ -132,51 +128,35 @@ namespace Ctrl_Space
                             MediaPlayer.Pause();
                     }
                     else MediaPlayer.Play(_song);
-                });
+                };
 
             var strafeAcceleration = 0.5f;
-            _inputDevices.AddActionFloat(InputActionFloatType.MoveRightLeft,
-                delegate(float sensitivity)
-                {
-                    _ship.Strafe(strafeAcceleration * sensitivity);
-                });
+            _inputManager.MoveRightLeft += e => _ship.Strafe(strafeAcceleration * e.Value);
 
             var moveAcceleration = 0.5f;
-            _inputDevices.AddActionFloat(InputActionFloatType.MoveUpDown,
-                delegate(float sensitivity)
+            _inputManager.MoveUpDown += e =>
                 {
-                    _ship.SpeedUp(moveAcceleration * sensitivity);
-                    if(sensitivity > 0)
+                    _ship.SpeedUp(moveAcceleration * e.Value);
+                    if (e.Value > 0)
                         _particles.Emit(_ppFire, _ship.Position - new Vector2(10f * Maf.Sin(_ship.Rotation), -10f * Maf.Cos(_ship.Rotation)), _ship.Speed - new Vector2(4f * Maf.Sin(_ship.Rotation), -4f * Maf.Cos(_ship.Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
-                });
+                };
 
-            _inputDevices.AddAction(InputActionType.Strike,
-                delegate
-                {
-                    _ship.Shoot(_world);
-                });
-            _inputDevices.AddAction(InputActionType.Rocket,
-                delegate
-                {
-                    _ship.ShootAlt(_world);
-                });
-            _inputDevices.AddActionFloat(InputActionFloatType.Rotate,
-                delegate(float dx)
-                {
-                    _ship.Rotate(dx * 0.1f);
-                });
+            _inputManager.PrimaryWeapon += e => _ship.Shoot(e.State, _world);
+            _inputManager.SecondaryWeapon += e => _ship.ShootAlt(e.State, _world);
+
+            _inputManager.Rotate += e => _ship.Rotate(e.Value * 0.1f);
         }
 
         void Game_Activated(object sender, EventArgs e)
         {
             this.IsMouseVisible = false;
-            _inputDevices.StartUpdate();
+            _inputManager.StartUpdate();
         }
 
         void Game_Deactivated(object sender, EventArgs e)
         {
             this.IsMouseVisible = true;
-            _inputDevices.StopUpdate();
+            _inputManager.StopUpdate();
         }
 
         protected override void LoadContent()
@@ -188,12 +168,12 @@ namespace Ctrl_Space
 
         protected override void UnloadContent()
         {
-            
+
         }
 
         protected override void Update(GameTime gameTime)
         {
-            _inputDevices.Update(gameTime);
+            _inputManager.Update(gameTime);
 
             for (int i = 0; i < _world.Count; i++)
             {

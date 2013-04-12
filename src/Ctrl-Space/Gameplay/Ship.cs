@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Ctrl_Space.GameClasses.Weapon;
+using Ctrl_Space.Input;
 
 namespace Ctrl_Space
 {
@@ -37,14 +38,14 @@ namespace Ctrl_Space
             Speed.Y -= acceleration * Maf.Cos(Rotation);
         }
 
-        public void Shoot(World world)
+        public void Shoot(InputDigitalState state, World world)
         {
-            _weapon.Shoot(world);
+            _weapon.Shoot(state, world);
         }
 
-        public void ShootAlt(World world)
+        public void ShootAlt(InputDigitalState state, World world)
         {
-            _weaponAlt.Shoot(world);
+            _weaponAlt.Shoot(state, world);
         }
 
         public override void Update()
