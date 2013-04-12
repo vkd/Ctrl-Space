@@ -13,6 +13,37 @@ namespace Ctrl_Space.GameClasses.Weapon
 
         public GameObject Owner { get { return _owner; } }
 
-        public abstract void Shoot(InputDigitalState state, World world);
+        // implementation of hold-to-shoot
+        // maybe must be moved to IntervalWeaponBase or smth.
+        protected int _shootingInterval = 50;
+        private int _currentInterval = 0;
+        private bool _fire = false;
+        private bool _fireOnce = false;
+
+        public void On()
+        {
+            _fire = true;
+            _fireOnce = true;
+        }
+
+        public void Off()
+        {
+            _fire = false;
+        }
+
+        public void Update(World world)
+        {
+            if ((_fire || _fireOnce) && _currentInterval == 0)
+            {
+                Shoot(world);
+                _fireOnce = false;
+            }
+            if (_fire || _currentInterval != 0)
+                _currentInterval++;
+            if (_currentInterval > _shootingInterval)
+                _currentInterval = 0;
+        }
+
+        public abstract void Shoot(World world);
     }
 }

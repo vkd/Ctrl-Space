@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Ctrl_Space.Input
 {
-    public class InputManager : IInputManager
+    class InputManager : IInputManager
     {
         private bool _isActive = false;
 
@@ -144,7 +144,7 @@ namespace Ctrl_Space.Input
                 SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
             }
 
-            Rotate(new InputAnalogEventArgs(_gamePadState.ThumbSticks.Right.X);
+            Rotate(new InputAnalogEventArgs(_gamePadState.ThumbSticks.Right.X));
 
             _oldGamePadState = _gamePadState;
         }
