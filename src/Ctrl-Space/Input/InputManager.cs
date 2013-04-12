@@ -75,9 +75,7 @@ namespace Ctrl_Space.Input
                 SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
             }
 
-            Rotate(new InputAnalogEventArgs(_mouseState.X - _mouseCenterPosition.X));
-            //TryActionFloat(InputActionFloatType.Rotate,
-            //    (_mouseState.X - _mouseCenterPosition.X) * SensitivityMouse);
+            Rotate(new InputAnalogEventArgs((_mouseState.X - _mouseCenterPosition.X) * 0.02f));
 
             Mouse.SetPosition(_mouseCenterPosition.X, _mouseCenterPosition.Y);
             _oldMouseState = _mouseState;
@@ -96,17 +94,12 @@ namespace Ctrl_Space.Input
                 MoveRightLeft(new InputAnalogEventArgs(-1.0f));
 
             if (IsButtonDown(Buttons.DPadUp))
-                MoveUpDown(new InputAnalogEventArgs(-1.0f));
-            else if (IsButtonDown(Buttons.DPadDown))
                 MoveUpDown(new InputAnalogEventArgs(1.0f));
+            else if (IsButtonDown(Buttons.DPadDown))
+                MoveUpDown(new InputAnalogEventArgs(-1.0f));
 
             MoveUpDown(new InputAnalogEventArgs(_gamePadState.ThumbSticks.Left.Y));
             MoveRightLeft(new InputAnalogEventArgs(_gamePadState.ThumbSticks.Left.X));
-
-            //TryActionFloat(InputActionFloatType.MoveUpDown,
-            //    _gamePadState.ThumbSticks.Left.Y * SensitivityThumbSticks);
-            //TryActionFloat(InputActionFloatType.MoveRightLeft,
-            //    _gamePadState.ThumbSticks.Left.X * SensitivityThumbSticks);
 
             if (ButtonsPressed(Buttons.A))
             {
@@ -180,15 +173,15 @@ namespace Ctrl_Space.Input
             if (KeysPressed(Keys.Tab))
                 PlayStopMediaPlayer();
 
-            if (KeysPressed(Keys.D))
+            if (IsKeyDown(Keys.D))
                 MoveRightLeft(new InputAnalogEventArgs(1.0f));
-            if (KeysPressed(Keys.A))
+            if (IsKeyDown(Keys.A))
                 MoveRightLeft(new InputAnalogEventArgs(-1.0f));
 
-            if (KeysPressed(Keys.W))
-                MoveUpDown(new InputAnalogEventArgs(-1.0f));
-            if (KeysPressed(Keys.S))
+            if (IsKeyDown(Keys.W))
                 MoveUpDown(new InputAnalogEventArgs(1.0f));
+            if (IsKeyDown(Keys.S))
+                MoveUpDown(new InputAnalogEventArgs(-1.0f));
 
             //if (IsKeyDown(Keys.D) || IsKeyDown(Keys.Right))
             //    TryActionFloat(InputActionFloatType.MoveRightLeft, SensitivityKeyboard);
@@ -209,9 +202,6 @@ namespace Ctrl_Space.Input
                 SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
             if (KeysReleased(Keys.LeftShift))
                 SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
-
-            //if (KeysPressed(Keys.LeftShift))
-            //    TryAction(InputActionType.Rocket);
 
             _oldKeyboardState = _keyboardState;
         }

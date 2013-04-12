@@ -86,12 +86,13 @@
     <Compile Include="Input\InputAnalogEvent.cs" />
     <Compile Include="Input\InputDigitalEvent.cs" />
     <Compile Include="Input\InputDigitalState.cs" />
+    <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\InputPressEvent.cs" />
     <Compile Include="Physics\Collisions.cs" />
     <Compile Include="Graphics\FPS.cs" />
     <Compile Include="Gameplay\GameObject.cs" />
     <Compile Include="GameOptions.cs" />
-    <Compile Include="Input\InputManager.cs" />
+    <Compile Include="Input\Archive_InputManager.cs" />
     <Compile Include="Helpers\Maf.cs" />
     <Compile Include="Graphics\Particles.cs" />
     <Compile Include="Gameplay\Bullets\PlasmaBullet.cs" />
