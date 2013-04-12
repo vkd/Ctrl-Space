@@ -1,4 +1,6 @@
-﻿namespace Ctrl_Space.GameClasses.Weapon
+﻿using Ctrl_Space.Input;
+
+namespace Ctrl_Space.GameClasses.Weapon
 {
     abstract class WeaponBase
     {
@@ -11,6 +13,6 @@
 
         public GameObject Owner { get { return _owner; } }
 
-        public abstract void Shoot(World world);
+        public abstract void Shoot(InputDigitalState state, World world);
     }
 }
