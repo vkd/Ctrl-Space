@@ -38,7 +38,7 @@ namespace Ctrl_Space.GameClasses.Weapon
                 Shoot(world);
                 _fireOnce = false;
             }
-            if (_fire || _currentInterval != 0)
+            if ((_fire || _fireOnce) || _currentInterval != 0)
                 _currentInterval++;
             if (_currentInterval > _shootingInterval)
                 _currentInterval = 0;
