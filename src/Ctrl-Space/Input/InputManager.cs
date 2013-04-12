@@ -24,9 +24,19 @@ namespace Ctrl_Space.Input
         private MouseState _oldMouseState;
         private Point _mouseCenterPosition;
 
-        public InputManager()
+        private Game _game;
+
+        public InputManager(Game game)
         {
+            _game = game;
+
             _isActive = true;
+
+            _mouseCenterPosition = new Point(_game._graphics.GraphicsDevice.Viewport.Width / 2,
+                _game._graphics.GraphicsDevice.Viewport.Height / 2);
+
+            _oldMouseState = new MouseState();
+            _game.IsMouseVisible = false;
         }
 
         public void StartUpdate()
