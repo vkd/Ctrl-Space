@@ -110,8 +110,7 @@ namespace Ctrl_Space
 
         private void InitializeInputManager()
         {
-            _inputManager = new InputManager();
-            //_inputManager.Initialize();
+            _inputManager = new InputManager(this);
 
             this.Activated += new EventHandler<EventArgs>(Game_Activated);
             this.Deactivated += new EventHandler<EventArgs>(Game_Deactivated);
