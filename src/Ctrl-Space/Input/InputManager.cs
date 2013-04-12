@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Ctrl_Space
+namespace Ctrl_Space.Input
 {
-    delegate void InputActionDelegate(); 
-    delegate void InputActionDelegateFloat(float floatParam);
-
-    class InputManager
+    public class InputManager : IInputManager
     {
         private bool _isActive = false;
 
@@ -28,42 +24,9 @@ namespace Ctrl_Space
         private MouseState _oldMouseState;
         private Point _mouseCenterPosition;
 
-        private Dictionary<InputActionType, InputActionDelegate> _actions = 
-            new Dictionary<InputActionType, InputActionDelegate>();
-
-        private Dictionary<InputActionFloatType, InputActionDelegateFloat> _actionsFloat =
-            new Dictionary<InputActionFloatType, InputActionDelegateFloat>();
-
-        private Game _game;
-
-        public InputManager(Game game)
-        {
-            _game = game;
-        }
-
-        public void Initialize()
+        public InputManager()
         {
             _isActive = true;
-
-            SensitivityMouse = 0.02f;
-            SensitivityThumbSticks = 1.0f;
-            SensitivityKeyboard = 1.0f;
-
-            _mouseCenterPosition = new Point(_game._graphics.GraphicsDevice.Viewport.Width / 2,
-                _game._graphics.GraphicsDevice.Viewport.Height / 2);
-
-            _oldMouseState = new MouseState();
-            _game.IsMouseVisible = false;
-        }
-
-        public void AddAction(InputActionType inputActionType, InputActionDelegate inputAction)
-        {
-            _actions.Add(inputActionType, inputAction);
-        }
-
-        public void AddActionFloat(InputActionFloatType inputActionFloatType, InputActionDelegateFloat inputMouseDelegate)
-        {
-            _actionsFloat.Add(inputActionFloatType, inputMouseDelegate);
         }
 
         public void StartUpdate()
@@ -76,25 +39,11 @@ namespace Ctrl_Space
             _isActive = false;
         }
 
-        private void TryAction(InputActionType inputActionType)
-        {
-            InputActionDelegate del;
-            if (_actions.TryGetValue(inputActionType, out del))
-                del();
-        }
-
-        private void TryActionFloat(InputActionFloatType inputActionFloatType, float param)
-        {
-            InputActionDelegateFloat del;
-            if (_actionsFloat.TryGetValue(inputActionFloatType, out del))
-                del(param);
-        }
-
         public void Update(GameTime gameTime)
         {
             UpdateMouse(gameTime);
             UpdateGamePad(gameTime);
-            UpdateKeyboard(gameTime);          
+            UpdateKeyboard(gameTime);  
         }
 
         private void UpdateMouse(GameTime gameTime)
@@ -104,20 +53,31 @@ namespace Ctrl_Space
 
             _mouseState = Mouse.GetState();
 
-            if (_mouseState.LeftButton == ButtonState.Pressed &&
-                _oldMouseState.LeftButton == ButtonState.Released)
+            if (_mouseState.LeftButton == ButtonState.Pressed 
+                && _oldMouseState.LeftButton == ButtonState.Released)
             {
-                TryAction(InputActionType.Strike);
+                PrimaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
+            }
+            if (_mouseState.LeftButton == ButtonState.Released
+                && _oldMouseState.LeftButton == ButtonState.Pressed)
+            {
+                PrimaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
             }
 
-            if (_mouseState.RightButton == ButtonState.Pressed &&
-                _oldMouseState.RightButton == ButtonState.Released)
+            if (_mouseState.RightButton == ButtonState.Pressed
+                && _oldMouseState.RightButton == ButtonState.Released)
             {
-                TryAction(InputActionType.Rocket);
+                SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
+            }
+            if (_mouseState.RightButton == ButtonState.Released
+                && _oldMouseState.RightButton == ButtonState.Pressed)
+            {
+                SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
             }
 
-            TryActionFloat(InputActionFloatType.Rotate, 
-                (_mouseState.X - _mouseCenterPosition.X) * SensitivityMouse);
+            Rotate(new InputAnalogEventArgs(_mouseState.X - _mouseCenterPosition.X));
+            //TryActionFloat(InputActionFloatType.Rotate,
+            //    (_mouseState.X - _mouseCenterPosition.X) * SensitivityMouse);
 
             Mouse.SetPosition(_mouseCenterPosition.X, _mouseCenterPosition.Y);
             _oldMouseState = _mouseState;
@@ -128,42 +88,75 @@ namespace Ctrl_Space
             _gamePadState = GamePad.GetState(0);
 
             if (IsButtonDown(Buttons.Back))
-                TryAction(InputActionType.ExitGame);
+                ExitGame();
 
             if (IsButtonDown(Buttons.DPadRight))
-                TryActionFloat(InputActionFloatType.MoveRightLeft, SensitivityKeyboard);
-            else if (IsButtonDown(Buttons.DPadLeft))
-                TryActionFloat(InputActionFloatType.MoveRightLeft, -SensitivityKeyboard);
+                MoveRightLeft(new InputAnalogEventArgs(1.0f));
+            if (IsButtonDown(Buttons.DPadLeft))
+                MoveRightLeft(new InputAnalogEventArgs(-1.0f));
 
             if (IsButtonDown(Buttons.DPadUp))
-                TryActionFloat(InputActionFloatType.MoveUpDown, SensitivityKeyboard);
+                MoveUpDown(new InputAnalogEventArgs(-1.0f));
             else if (IsButtonDown(Buttons.DPadDown))
-                TryActionFloat(InputActionFloatType.MoveUpDown, -SensitivityKeyboard);
+                MoveUpDown(new InputAnalogEventArgs(1.0f));
 
-            TryActionFloat(InputActionFloatType.MoveUpDown,
-                _gamePadState.ThumbSticks.Left.Y * SensitivityThumbSticks);
-            TryActionFloat(InputActionFloatType.MoveRightLeft,
-                _gamePadState.ThumbSticks.Left.X * SensitivityThumbSticks);
+            MoveUpDown(new InputAnalogEventArgs(_gamePadState.ThumbSticks.Left.Y));
+            MoveRightLeft(new InputAnalogEventArgs(_gamePadState.ThumbSticks.Left.X));
 
-            if (IsButtonDown(Buttons.A))
-                TryAction(InputActionType.Strike);
-            if (IsButtonDown(Buttons.B))
-                TryAction(InputActionType.Rocket);
+            //TryActionFloat(InputActionFloatType.MoveUpDown,
+            //    _gamePadState.ThumbSticks.Left.Y * SensitivityThumbSticks);
+            //TryActionFloat(InputActionFloatType.MoveRightLeft,
+            //    _gamePadState.ThumbSticks.Left.X * SensitivityThumbSticks);
 
-            if (IsButtonDown(Buttons.RightShoulder))
-                TryAction(InputActionType.Strike);
-            if (IsButtonDown(Buttons.LeftShoulder))
-                TryAction(InputActionType.Rocket);
+            if (ButtonsPressed(Buttons.A))
+            {
+                PrimaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
+            }
+            if (ButtonsReleased(Buttons.A))
+            {
+                PrimaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
+            }
 
-            TryActionFloat(InputActionFloatType.Rotate,
-                _gamePadState.ThumbSticks.Right.X * SensitivityThumbSticks);
-            
+            if (ButtonsPressed(Buttons.B))
+            {
+                SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
+            }
+            if (ButtonsReleased(Buttons.B))
+            {
+                SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
+            }
+
+            if (ButtonsPressed(Buttons.RightShoulder))
+            {
+                PrimaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
+            }
+            if (ButtonsReleased(Buttons.RightShoulder))
+            {
+                PrimaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
+            }
+
+            if (ButtonsPressed(Buttons.LeftShoulder))
+            {
+                SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
+            }
+            if (ButtonsReleased(Buttons.LeftShoulder))
+            {
+                SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
+            }
+
+            Rotate(new InputAnalogEventArgs(_gamePadState.ThumbSticks.Right.X);
+
             _oldGamePadState = _gamePadState;
         }
 
         private bool ButtonsPressed(Buttons buttons)
         {
             return _gamePadState.IsButtonDown(buttons) && _oldGamePadState.IsButtonUp(buttons);
+        }
+
+        private bool ButtonsReleased(Buttons buttons)
+        {
+            return _gamePadState.IsButtonUp(buttons) && _oldGamePadState.IsButtonDown(buttons);
         }
 
         private bool IsButtonDown(Buttons buttons)
@@ -179,29 +172,46 @@ namespace Ctrl_Space
             _keyboardState = Keyboard.GetState();
 
             if (KeysPressed(Keys.Escape))
-                TryAction(InputActionType.ExitGame);
+                ExitGame();
 
             if (KeysPressed(Keys.F1))
-                TryAction(InputActionType.DebugMode);
+                DebugMode();
 
             if (KeysPressed(Keys.Tab))
-                TryAction(InputActionType.PlayStopMediaPlayer);
+                PlayStopMediaPlayer();
 
-            if (IsKeyDown(Keys.D) || IsKeyDown(Keys.Right))
-                TryActionFloat(InputActionFloatType.MoveRightLeft, SensitivityKeyboard);
-            else if (IsKeyDown(Keys.A) || IsKeyDown(Keys.Left))
-                TryActionFloat(InputActionFloatType.MoveRightLeft, -SensitivityKeyboard);
+            if (KeysPressed(Keys.D))
+                MoveRightLeft(new InputAnalogEventArgs(1.0f));
+            if (KeysPressed(Keys.A))
+                MoveRightLeft(new InputAnalogEventArgs(-1.0f));
 
-            if (IsKeyDown(Keys.W) || IsKeyDown(Keys.Up))
-                TryActionFloat(InputActionFloatType.MoveUpDown, SensitivityKeyboard);
-            else if (IsKeyDown(Keys.S) || IsKeyDown(Keys.Down))
-                TryActionFloat(InputActionFloatType.MoveUpDown, -SensitivityKeyboard);
+            if (KeysPressed(Keys.W))
+                MoveUpDown(new InputAnalogEventArgs(-1.0f));
+            if (KeysPressed(Keys.S))
+                MoveUpDown(new InputAnalogEventArgs(1.0f));
+
+            //if (IsKeyDown(Keys.D) || IsKeyDown(Keys.Right))
+            //    TryActionFloat(InputActionFloatType.MoveRightLeft, SensitivityKeyboard);
+            //else if (IsKeyDown(Keys.A) || IsKeyDown(Keys.Left))
+            //    TryActionFloat(InputActionFloatType.MoveRightLeft, -SensitivityKeyboard);
+
+            //if (IsKeyDown(Keys.W) || IsKeyDown(Keys.Up))
+            //    TryActionFloat(InputActionFloatType.MoveUpDown, SensitivityKeyboard);
+            //else if (IsKeyDown(Keys.S) || IsKeyDown(Keys.Down))
+            //    TryActionFloat(InputActionFloatType.MoveUpDown, -SensitivityKeyboard);
 
             if (KeysPressed(Keys.Space))
-                TryAction(InputActionType.Strike);
+                PrimaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
+            if (KeysReleased(Keys.Space))
+                PrimaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
 
             if (KeysPressed(Keys.LeftShift))
-                TryAction(InputActionType.Rocket);
+                SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
+            if (KeysReleased(Keys.LeftShift))
+                SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
+
+            //if (KeysPressed(Keys.LeftShift))
+            //    TryAction(InputActionType.Rocket);
 
             _oldKeyboardState = _keyboardState;
         }
@@ -211,43 +221,30 @@ namespace Ctrl_Space
             return _keyboardState.IsKeyDown(keys) && _oldKeyboardState.IsKeyUp(keys);
         }
 
+        private bool KeysReleased(Keys keys)
+        {
+            return _keyboardState.IsKeyUp(keys) && _oldKeyboardState.IsKeyDown(keys);
+        }
+
         private bool IsKeyDown(Keys keys)
         {
             return _keyboardState.IsKeyDown(keys);
         }
 
-        public float SensitivityMouse
-        {
-            get;
-            set;
-        }
+        public event InputAnalogEventHandler MoveUpDown;
 
-        public float SensitivityThumbSticks
-        {
-            get;
-            set;
-        }
+        public event InputAnalogEventHandler MoveRightLeft;
 
-        public float SensitivityKeyboard
-        {
-            get;
-            set;
-        }
-    }
+        public event InputAnalogEventHandler Rotate;
 
-    enum InputActionType
-    {
-        ExitGame,
-        DebugMode,
-        PlayStopMediaPlayer,
-        Rocket,
-        Strike
-    }
+        public event InputDigitalEventHandler PrimaryWeapon;
 
-    enum InputActionFloatType
-    {
-        MoveRightLeft,
-        MoveUpDown,
-        Rotate
+        public event InputDigitalEventHandler SecondaryWeapon;
+
+        public event InputPressEventHandler DebugMode;
+
+        public event InputPressEventHandler PlayStopMediaPlayer;
+
+        public event InputPressEventHandler ExitGame;
     }
 }
