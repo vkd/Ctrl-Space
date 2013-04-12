@@ -60,10 +60,10 @@ namespace Ctrl_Space
 
         public override void Update()
         {
-            base.Update();
-            Speed *= .99f;
             _weapon.Update(_world);
             _weaponAlt.Update(_world);
+            base.Update();
+            Speed *= .99f;
         }
 
         public override Texture2D GetTexture()
