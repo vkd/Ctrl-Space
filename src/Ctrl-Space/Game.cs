@@ -169,11 +169,13 @@ namespace Ctrl_Space
 
         void Game_Activated(object sender, EventArgs e)
         {
+            this.IsMouseVisible = false;
             _inputDevices.StartUpdate();
         }
 
         void Game_Deactivated(object sender, EventArgs e)
         {
+            this.IsMouseVisible = true;
             _inputDevices.StopUpdate();
         }
 
