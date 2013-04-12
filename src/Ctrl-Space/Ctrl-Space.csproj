@@ -72,31 +72,31 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameClasses\Weapon\PlasmaGun.cs" />
-    <Compile Include="GameClasses\Weapon\RocketLauncher.cs" />
-    <Compile Include="GameClasses\Weapon\WeaponBase.cs" />
-    <Compile Include="GameGraphics\Animation.cs" />
-    <Compile Include="GameClasses\Asteroid.cs" />
-    <Compile Include="GameClasses\Bonus.cs" />
-    <Compile Include="GameArchitecture\Camera.cs" />
-    <Compile Include="GameDevHelpers\Chaos.cs" />
-    <Compile Include="GameGraphics\ParticleParameters.cs" />
-    <Compile Include="GameGraphics\WorldLoop.cs" />
-    <Compile Include="GamePhysics\Collisions.cs" />
-    <Compile Include="GameComponents\FPS.cs" />
-    <Compile Include="GameClasses\GameObject.cs" />
+    <Compile Include="Classes\Weapon\PlasmaGun.cs" />
+    <Compile Include="Classes\Weapon\RocketLauncher.cs" />
+    <Compile Include="Classes\Weapon\WeaponBase.cs" />
+    <Compile Include="Graphics\Animation.cs" />
+    <Compile Include="Classes\Asteroid.cs" />
+    <Compile Include="Classes\Bonus.cs" />
+    <Compile Include="Architecture\Camera.cs" />
+    <Compile Include="DevHelpers\Chaos.cs" />
+    <Compile Include="Graphics\ParticleParameters.cs" />
+    <Compile Include="Graphics\WorldLoop.cs" />
+    <Compile Include="Physics\Collisions.cs" />
+    <Compile Include="Components\FPS.cs" />
+    <Compile Include="Classes\GameObject.cs" />
     <Compile Include="GameOptions.cs" />
-    <Compile Include="GameArchitecture\InputManager.cs" />
-    <Compile Include="GameDevHelpers\Maf.cs" />
-    <Compile Include="GameGraphics\Particles.cs" />
-    <Compile Include="GameClasses\Bullets\PlasmaBullet.cs" />
+    <Compile Include="Architecture\InputManager.cs" />
+    <Compile Include="DevHelpers\Maf.cs" />
+    <Compile Include="Graphics\Particles.cs" />
+    <Compile Include="Classes\Bullets\PlasmaBullet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GameClasses\Ship.cs" />
-    <Compile Include="GameArchitecture\TextureManager.cs" />
-    <Compile Include="GameClasses\Bullets\Rocket.cs" />
-    <Compile Include="GameClasses\World.cs" />
+    <Compile Include="Classes\Ship.cs" />
+    <Compile Include="Architecture\TextureManager.cs" />
+    <Compile Include="Classes\Bullets\Rocket.cs" />
+    <Compile Include="Classes\World.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
