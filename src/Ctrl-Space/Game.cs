@@ -196,10 +196,10 @@ namespace Ctrl_Space
 
             _particles.Update();
 
-            Collisions.Detect(_world, _particles, _ppExplosion);
-
             _worldLoopParticles.Clusterize(_particles.ParticlesList);
             _worldLoop.Clusterize(_world);
+
+            Collisions.Detect(_worldLoop.Clusters, _world, _particles, _ppExplosion);
 
             base.Update(gameTime);
         }
