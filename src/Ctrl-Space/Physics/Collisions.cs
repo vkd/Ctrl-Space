@@ -21,6 +21,8 @@ namespace Ctrl_Space
                         {
                             int clui = (wi + di + ww) % ww;
                             int cluj = (wj + dj + wh) % wh;
+                            float fx = (wi + di - clui) * 256f; //!HARDCODE!
+                            float fy = (wj + dj - cluj) * 256f; //!HARDCODE!
                             // обсчёт столкновений 9 кластеров
                             for (int j = 0; j < clusters[wj, wi].Count; j++)
                                 for (int i = 0; i < clusters[cluj, clui].Count; i++)
@@ -28,8 +30,8 @@ namespace Ctrl_Space
                                     if (i == j || i < 0 || j < 0) continue;
                                     var go1 = clusters[cluj, clui][i];
                                     var go2 = clusters[wj, wi][j];
-                                    float dx = go2.Position.X - go1.Position.X;
-                                    float dy = go2.Position.Y - go1.Position.Y;
+                                    float dx = go2.Position.X - go1.Position.X - fx;
+                                    float dy = go2.Position.Y - go1.Position.Y - fy;
                                     float dv = go2.Speed.X - go1.Speed.X;
                                     float du = go2.Speed.Y - go1.Speed.Y;
                                     float rr = go2.Size / 2 + go1.Size / 2;
