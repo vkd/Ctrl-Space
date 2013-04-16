@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Ctrl_Space.Input
@@ -30,8 +26,6 @@ namespace Ctrl_Space.Input
         {
             _game = game;
 
-            _isActive = true;
-
             _mouseCenterPosition = new Point(_game._graphics.GraphicsDevice.Viewport.Width / 2,
                 _game._graphics.GraphicsDevice.Viewport.Height / 2);
 
@@ -41,6 +35,7 @@ namespace Ctrl_Space.Input
 
         public void StartUpdate()
         {
+            SetPosition(_mouseCenterPosition);
             _isActive = true;
         }
 
@@ -87,8 +82,13 @@ namespace Ctrl_Space.Input
 
             Rotate(new InputAnalogEventArgs((_mouseState.X - _mouseCenterPosition.X) * 0.02f));
 
-            Mouse.SetPosition(_mouseCenterPosition.X, _mouseCenterPosition.Y);
+            SetPosition(_mouseCenterPosition);
             _oldMouseState = _mouseState;
+        }
+
+        private void SetPosition(Point position)
+        {
+            Mouse.SetPosition(position.X, position.Y);
         }
 
         private void UpdateGamePad(GameTime gameTime)
