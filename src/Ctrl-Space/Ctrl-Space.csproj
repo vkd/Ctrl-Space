@@ -88,6 +88,7 @@
     <Compile Include="Input\InputDigitalState.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\InputPressEvent.cs" />
+    <Compile Include="Physics\Collision.cs" />
     <Compile Include="Physics\Collisions.cs" />
     <Compile Include="Graphics\FPS.cs" />
     <Compile Include="Gameplay\GameObject.cs" />
