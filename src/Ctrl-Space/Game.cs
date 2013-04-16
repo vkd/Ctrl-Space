@@ -115,7 +115,7 @@ namespace Ctrl_Space
             this.Activated += new EventHandler<EventArgs>(Game_Activated);
             this.Deactivated += new EventHandler<EventArgs>(Game_Deactivated);
 
-            _inputManager.ExitGame += () => Exit();
+            _inputManager.ExitGame += Exit;
             _inputManager.DebugMode += () => GameOptions.IsDebugMode = !GameOptions.IsDebugMode;
             _inputManager.PlayStopMediaPlayer += () =>
                 {
