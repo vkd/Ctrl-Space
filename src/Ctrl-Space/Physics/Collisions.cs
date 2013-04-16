@@ -40,8 +40,8 @@ namespace Ctrl_Space
                             {
                                 if (cluj == wj && clui == wi && i == j)  // skip self
                                     continue;
-                                var go1 = clusters[cluj, clui][i];
-                                var go2 = clusters[wj, wi][j];
+                                var go1 = clusters[cluj, clui][j];
+                                var go2 = clusters[wj, wi][i];
                                 float dx = go2.Position.X - go1.Position.X - fx;
                                 float dy = go2.Position.Y - go1.Position.Y - fy;
                                 float dv = go2.Speed.X - go1.Speed.X;
