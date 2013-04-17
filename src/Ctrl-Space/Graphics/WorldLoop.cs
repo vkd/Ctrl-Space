@@ -76,7 +76,7 @@ namespace Ctrl_Space
         }
     }
 
-    public class Cluster
+    class Cluster
     {
         public int ShiftX;
         public int ShiftY;

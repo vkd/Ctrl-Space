@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Ctrl_Space
 {
-    public abstract class GameObject
+    abstract class GameObject
     {
         public Vector2 Position;
         public Vector2 Speed;
@@ -40,6 +37,10 @@ namespace Ctrl_Space
             var rect = _animation.GetAnimation(gameTime, tex);
             var s = Math.Max(rect.Width, rect.Height);
             spriteBatch.Draw(tex, Position + offset, rect, Color * Alpha, Rotation, new Vector2(rect.Width / 2, rect.Height / 2), Size / s, SpriteEffects.None, 0f);
+        }
+
+        public virtual void Collided(GameObject go, World world, Particles particles)
+        {
         }
 
         public abstract Texture2D GetTexture();

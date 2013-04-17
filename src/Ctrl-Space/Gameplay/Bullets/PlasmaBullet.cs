@@ -18,5 +18,10 @@ namespace Ctrl_Space.GameClasses.Bullets
             if (State < 0f)
                 IsDestroyed = true;
         }
+
+        public override void Collided(GameObject go, World world, Particles particles)
+        {
+            IsDestroyed = true;
+        }
     }
 }

@@ -199,7 +199,12 @@ namespace Ctrl_Space
             _worldLoopParticles.Clusterize(_particles.ParticlesList);
             _worldLoop.Clusterize(_world);
 
-            Collisions.Detect(_worldLoop.Clusters, _world, _particles, _ppExplosion);
+            var collisions = Collisions.Detect(_worldLoop.Clusters, _world, _particles, _ppExplosion);
+            foreach (var collision in collisions)
+            {
+                collision.GameObjectA.Collided(collision.GameObjectB, _world, _particles);
+                collision.GameObjectB.Collided(collision.GameObjectA, _world, _particles);
+            }
 
             base.Update(gameTime);
         }
