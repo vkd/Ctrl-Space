@@ -1,7 +1,7 @@
-﻿using Ctrl_Space.GameClasses.Bullets;
+﻿using Ctrl_Space.Gameplay.Bullets;
 using Microsoft.Xna.Framework;
 
-namespace Ctrl_Space.GameClasses.Weapon
+namespace Ctrl_Space.Gameplay.Weapon
 {
     class RocketLauncher : WeaponBase
     {

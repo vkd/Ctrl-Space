@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ctrl_Space.Physics;
+using Ctrl_Space.Gameplay;
+using Microsoft.Xna.Framework;
 
-namespace Ctrl_Space
+namespace Ctrl_Space.Physics
 {
     class Collisions
     {
@@ -53,8 +54,8 @@ namespace Ctrl_Space
                                     float ol2 = rr * rr - dx * dx - dy * dy;
                                     if (ol2 > 0)
                                     {
-                                        go1.Collisions.Add(new Collision { GameObject = go2, Depth = ol2, Time = 0f });
-                                        go2.Collisions.Add(new Collision { GameObject = go1, Depth = ol2, Time = 0f });
+                                        go1.Collisions.Add(new Collision { GameObject = go2, DepthSquared = ol2, Time = 0f, Delta = new Vector2(dx, dy) });
+                                        go2.Collisions.Add(new Collision { GameObject = go1, DepthSquared = ol2, Time = 0f, Delta = new Vector2(-dx, -dy) });
                                     }
                                 }
                                 else
@@ -74,8 +75,8 @@ namespace Ctrl_Space
                                     float ol2 = rr * rr - dx * dx - dy * dy;
                                     if (min < 1f && max >= 0f)
                                     {
-                                        go1.Collisions.Add(new Collision { GameObject = go2, Depth = ol2, Time = min });
-                                        go2.Collisions.Add(new Collision { GameObject = go1, Depth = ol2, Time = min });
+                                        go1.Collisions.Add(new Collision { GameObject = go2, DepthSquared = ol2, Time = min, Delta = new Vector2(dx, dy) });
+                                        go2.Collisions.Add(new Collision { GameObject = go1, DepthSquared = ol2, Time = min, Delta = new Vector2(-dx, -dy) });
                                     }
                                 }
                             }

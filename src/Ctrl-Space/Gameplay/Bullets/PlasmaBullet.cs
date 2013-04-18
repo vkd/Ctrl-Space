@@ -2,7 +2,7 @@ using Ctrl_Space.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ctrl_Space.GameClasses.Bullets
+namespace Ctrl_Space.Gameplay.Bullets
 {
     class PlasmaBullet : GameObject
     {

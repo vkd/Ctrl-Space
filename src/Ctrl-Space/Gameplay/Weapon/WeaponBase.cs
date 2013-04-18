@@ -1,4 +1,4 @@
-﻿namespace Ctrl_Space.GameClasses.Weapon
+﻿namespace Ctrl_Space.Gameplay.Weapon
 {
     abstract class WeaponBase
     {

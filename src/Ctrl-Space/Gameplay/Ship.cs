@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Ctrl_Space.GameClasses.Weapon;
+﻿using Ctrl_Space.Gameplay.Weapon;
 using Ctrl_Space.Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Ctrl_Space
+namespace Ctrl_Space.Gameplay
 {
     class Ship : GameObject
     {

@@ -4,7 +4,7 @@ using Ctrl_Space.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ctrl_Space
+namespace Ctrl_Space.Gameplay
 {
     abstract class GameObject
     {

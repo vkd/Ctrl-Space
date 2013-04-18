@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
 
-namespace Ctrl_Space
+namespace Ctrl_Space.Gameplay
 {
     class World : List<GameObject>
     {
