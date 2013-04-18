@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Ctrl_Space.Input
@@ -146,6 +146,18 @@ namespace Ctrl_Space.Input
             {
                 SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
             }
+
+            const float TRIGGER_TTH = .5f;
+
+            if (_oldGamePadState.Triggers.Right < TRIGGER_TTH && _gamePadState.Triggers.Right >= TRIGGER_TTH)
+                PrimaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
+            if (_oldGamePadState.Triggers.Right >= TRIGGER_TTH && _gamePadState.Triggers.Right < TRIGGER_TTH)
+                PrimaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
+
+            if(_oldGamePadState.Triggers.Left < TRIGGER_TTH && _gamePadState.Triggers.Left >= TRIGGER_TTH)
+                SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Pressed));
+            if (_oldGamePadState.Triggers.Left >= TRIGGER_TTH && _gamePadState.Triggers.Left < TRIGGER_TTH)
+                SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
 
             Rotate(new InputAnalogEventArgs(_gamePadState.ThumbSticks.Right.X));
 
