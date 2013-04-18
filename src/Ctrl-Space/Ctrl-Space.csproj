@@ -77,7 +77,7 @@
     <Compile Include="Gameplay\Weapon\WeaponBase.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Gameplay\Asteroid.cs" />
-    <Compile Include="Gameplay\Bonus.cs" />
+    <Compile Include="Gameplay\SpeedBonus.cs" />
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\ParticleManager.cs" />
     <Compile Include="Helpers\Chaos.cs" />

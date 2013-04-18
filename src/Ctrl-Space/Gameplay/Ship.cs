@@ -1,5 +1,6 @@
 ﻿using Ctrl_Space.Gameplay.Weapon;
 using Ctrl_Space.Input;
+using Ctrl_Space.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -62,8 +63,18 @@ namespace Ctrl_Space.Gameplay
         {
             _weapon.Update(_world);
             _weaponAlt.Update(_world);
+            foreach (var col in Collisions)
+                Collided(col, world, particles);
             base.Update(world, particles);
             Speed *= .99f;
+        }
+
+        private void Collided(Collision col, World world, Particles particles)
+        {
+            if (col.GameObject is SpeedBonus)
+            {
+                Speed += new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation));
+            }
         }
 
         public override Texture2D GetTexture()
