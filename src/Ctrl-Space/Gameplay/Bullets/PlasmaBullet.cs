@@ -1,3 +1,5 @@
+using Ctrl_Space.Graphics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Ctrl_Space.GameClasses.Bullets
@@ -11,15 +13,18 @@ namespace Ctrl_Space.GameClasses.Bullets
             return TextureManager.PlasmaBulletTexture;
         }
 
-        public override void Update()
+        public override void Update(World world, Particles particles)
         {
-            base.Update();
+            foreach (var col in Collisions)
+                Collided(col.GameObject, world, particles);
+            base.Update(world, particles);
             State -= .01f;
             if (State < 0f)
                 IsDestroyed = true;
+            particles.Emit(ParticleManager.PlasmaTrail, Position, Vector2.Zero);
         }
 
-        public override void Collided(GameObject go, World world, Particles particles)
+        public void Collided(GameObject go, World world, Particles particles)
         {
             IsDestroyed = true;
         }

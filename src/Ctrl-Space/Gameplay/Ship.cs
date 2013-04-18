@@ -58,11 +58,11 @@ namespace Ctrl_Space
                 _weaponAlt.Off();
         }
 
-        public override void Update()
+        public override void Update(World world, Particles particles)
         {
             _weapon.Update(_world);
             _weaponAlt.Update(_world);
-            base.Update();
+            base.Update(world, particles);
             Speed *= .99f;
         }
 

@@ -79,6 +79,7 @@
     <Compile Include="Gameplay\Asteroid.cs" />
     <Compile Include="Gameplay\Bonus.cs" />
     <Compile Include="Graphics\Camera.cs" />
+    <Compile Include="Graphics\ParticleManager.cs" />
     <Compile Include="Helpers\Chaos.cs" />
     <Compile Include="Graphics\ParticleParameters.cs" />
     <Compile Include="Graphics\WorldLoop.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Helpers\Maf.cs" />
     <Compile Include="Graphics\Particles.cs" />
     <Compile Include="Gameplay\Bullets\PlasmaBullet.cs" />
+    <Compile Include="Physics\Response.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game.cs" />

@@ -1,5 +1,5 @@
 using System;
-using Ctrl_Space.GameClasses.Bullets;
+using Ctrl_Space.Graphics;
 using Ctrl_Space.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,42 +20,6 @@ namespace Ctrl_Space
         private IInputManager _inputManager = null;
 
         World _world = new World();
-
-        ParticleParameters _ppFire = new ParticleParameters()
-        {
-            Duration = 20f,
-            TextureGetter = () => TextureManager.SimpleGlowTexture,
-            Colors = new Color[] { Color.Orange, Color.Red },
-            Alphas = new float[] { 1f, 0f },
-            Sizes = new float[] { 32f, 0f }
-        };
-
-        ParticleParameters _ppRocket = new ParticleParameters()
-        {
-            Duration = 20f,
-            TextureGetter = () => TextureManager.SimpleGlowTexture,
-            Colors = new Color[] { Color.Orange, Color.Red },
-            Alphas = new float[] { 1f, 0f },
-            Sizes = new float[] { 16f, 0f }
-        };
-
-        ParticleParameters _ppPlasma = new ParticleParameters()
-        {
-            Duration = 20f,
-            TextureGetter = () => TextureManager.SimpleGlowTexture,
-            Colors = new Color[] { Color.RoyalBlue, Color.DarkBlue },
-            Alphas = new float[] { 1f, 0f },
-            Sizes = new float[] { 16f, 0f }
-        };
-
-        ParticleParameters _ppExplosion = new ParticleParameters()
-        {
-            Duration = 40f,
-            TextureGetter = () => TextureManager.SimpleGlowTexture,
-            Colors = new Color[] { Color.Orange, Color.Red },
-            Alphas = new float[] { 1f, 0f },
-            Sizes = new float[] { 48f, 0f }
-        };
 
         Particles _particles = new Particles();
 
@@ -105,6 +69,9 @@ namespace Ctrl_Space
 
             Components.Add(new FPS(this, "Fonts/FPSFont", Vector2.Zero));
 
+            _worldLoopParticles.Clusterize(_particles.ParticlesList);
+            _worldLoop.Clusterize(_world);
+
             base.Initialize();
         }
 
@@ -138,7 +105,7 @@ namespace Ctrl_Space
                 {
                     _ship.SpeedUp(moveAcceleration * e.Value);
                     if (e.Value > 0)
-                        _particles.Emit(_ppFire, _ship.Position - new Vector2(10f * Maf.Sin(_ship.Rotation), -10f * Maf.Cos(_ship.Rotation)), _ship.Speed - new Vector2(4f * Maf.Sin(_ship.Rotation), -4f * Maf.Cos(_ship.Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
+                        _particles.Emit(ParticleManager.EngineFire, _ship.Position - new Vector2(10f * Maf.Sin(_ship.Rotation), -10f * Maf.Cos(_ship.Rotation)), _ship.Speed - new Vector2(4f * Maf.Sin(_ship.Rotation), -4f * Maf.Cos(_ship.Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
                 };
 
             _inputManager.PrimaryWeapon += e => _ship.Shoot(e.State);
@@ -175,36 +142,23 @@ namespace Ctrl_Space
         {
             _inputManager.Update(gameTime);
 
+            Collisions.Detect(_worldLoop.Clusters, _world);
+
             for (int i = 0; i < _world.Count; i++)
             {
                 var obj = _world[i];
-                obj.Update();
+                obj.Update(_world, _particles);
                 if (obj.IsDestroyed)
                 {
-                    _world.RemoveAt(i--);
-                }
-
-                if (obj is Rocket)
-                {
-                    _particles.Emit(_ppRocket, obj.Position - new Vector2(10f * Maf.Sin(obj.Rotation), -10f * Maf.Cos(obj.Rotation)), 1f * Chaos.GetFloat() * Chaos.GetVector2());
-                }
-                if (obj is PlasmaBullet)
-                {
-                    _particles.Emit(_ppPlasma, obj.Position, Vector2.Zero);
+                    _world[i] = null;
                 }
             }
+            _world.RemoveAll(o => o == null);
 
-            _particles.Update();
+            _particles.Update(_world, _particles);
 
             _worldLoopParticles.Clusterize(_particles.ParticlesList);
             _worldLoop.Clusterize(_world);
-
-            var collisions = Collisions.Detect(_worldLoop.Clusters, _world, _particles, _ppExplosion);
-            foreach (var collision in collisions)
-            {
-                collision.GameObjectA.Collided(collision.GameObjectB, _world, _particles);
-                collision.GameObjectB.Collided(collision.GameObjectA, _world, _particles);
-            }
 
             base.Update(gameTime);
         }
@@ -224,9 +178,6 @@ namespace Ctrl_Space
             _spriteBatch.End();
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetTransform());
-
-            foreach (var obj in _particles.ParticlesList)
-                obj.Draw(_spriteBatch, gameTime, Vector2.Zero);
 
             foreach (var cluster in _worldLoopParticles.GetClustersAroundPosition(_ship.Position, 512f))
             {

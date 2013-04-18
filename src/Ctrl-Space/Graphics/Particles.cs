@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace Ctrl_Space
@@ -15,14 +12,15 @@ namespace Ctrl_Space
             _particles.Add(new Particle(particleParameters) { Position = position, Speed = speed });
         }
 
-        public void Update()
+        public void Update(World world, Particles particles)
         {
             for (int i = 0; i < _particles.Count; i++)
             {
-                _particles[i].Update();
+                _particles[i].Update(world, particles);
                 if ((_particles[i]).IsDestroyed)
-                    _particles.RemoveAt(i--);
+                    _particles[i] = null;
             }
+            _particles.RemoveAll(p => p == null);
         }
 
         public List<GameObject> ParticlesList { get { return _particles; } }
@@ -48,9 +46,9 @@ namespace Ctrl_Space
             return _particleParameters.TextureGetter();
         }
 
-        public override void Update()
+        public override void Update(World world, Particles particles)
         {
-            base.Update();
+            base.Update(world, particles);
             if (_state <= 0f) { IsDestroyed = true; return; }
             // TODO Linear interpolated multiple states
             Size = _particleParameters.Sizes[0] * _state + _particleParameters.Sizes[1] * (1f - _state);

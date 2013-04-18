@@ -11,7 +11,14 @@ namespace Ctrl_Space
             return TextureManager.AsteroidTexture;
         }
 
-        public override void Collided(GameObject go, World world, Particles particles)
+        public override void Update(World world, Particles particles)
+        {
+            foreach (var col in Collisions)
+                Collided(col.GameObject, world, particles);
+            base.Update(world, particles);
+        }
+
+        public void Collided(GameObject go, World world, Particles particles)
         {
             ParticleParameters ppExplosion = new ParticleParameters()
             {

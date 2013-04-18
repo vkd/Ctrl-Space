@@ -4,7 +4,6 @@
     {
         public float Time;
         public float Depth;
-        public GameObject GameObjectA;
-        public GameObject GameObjectB;
+        public GameObject GameObject;
     }
 }
