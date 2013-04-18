@@ -3,6 +3,7 @@ using Ctrl_Space.Input;
 using Ctrl_Space.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ctrl_Space.Graphics;
 
 namespace Ctrl_Space.Gameplay
 {
@@ -12,6 +13,8 @@ namespace Ctrl_Space.Gameplay
 
         private WeaponBase _weapon;
         private WeaponBase _weaponAlt;
+
+        private float _acceleration = 0f;
 
         public Ship(Vector2 position, World world)
             : base()
@@ -39,6 +42,7 @@ namespace Ctrl_Space.Gameplay
 
         public void SpeedUp(float acceleration)
         {
+            _acceleration = acceleration;
             Speed.X += acceleration * Maf.Sin(Rotation);
             Speed.Y -= acceleration * Maf.Cos(Rotation);
         }
@@ -65,6 +69,8 @@ namespace Ctrl_Space.Gameplay
             _weaponAlt.Update(_world);
             foreach (var col in Collisions)
                 Collided(col, world, particles);
+            if (_acceleration > 0)
+                particles.Emit(ParticleManager.EngineFire, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), Speed - _acceleration * new Vector2(8f * Maf.Sin(Rotation), -8f * Maf.Cos(Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
             base.Update(world, particles);
             Speed *= .99f;
         }

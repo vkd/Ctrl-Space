@@ -1,6 +1,5 @@
 using System;
 using Ctrl_Space.Gameplay;
-using Ctrl_Space.Graphics;
 using Ctrl_Space.Input;
 using Ctrl_Space.Physics;
 using Microsoft.Xna.Framework;
@@ -21,12 +20,12 @@ namespace Ctrl_Space
         private Camera _camera;
         private IInputManager _inputManager = null;
 
-        World _world = new World();
+        private World _world = new World();
 
-        Particles _particles = new Particles();
+        private Particles _particles = new Particles();
 
-        WorldLoop _worldLoop = new WorldLoop();
-        WorldLoop _worldLoopParticles = new WorldLoop();
+        private WorldLoop _worldLoop = new WorldLoop();
+        private WorldLoop _worldLoopParticles = new WorldLoop();
 
         private Song _song;
 
@@ -103,12 +102,7 @@ namespace Ctrl_Space
             _inputManager.MoveRightLeft += e => _ship.Strafe(strafeAcceleration * e.Value);
 
             var moveAcceleration = 0.5f;
-            _inputManager.MoveUpDown += e =>
-                {
-                    _ship.SpeedUp(moveAcceleration * e.Value);
-                    if (e.Value > 0)
-                        _particles.Emit(ParticleManager.EngineFire, _ship.Position - new Vector2(10f * Maf.Sin(_ship.Rotation), -10f * Maf.Cos(_ship.Rotation)), _ship.Speed - new Vector2(4f * Maf.Sin(_ship.Rotation), -4f * Maf.Cos(_ship.Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
-                };
+            _inputManager.MoveUpDown += e => _ship.SpeedUp(moveAcceleration * e.Value);
 
             _inputManager.PrimaryWeapon += e => _ship.Shoot(e.State);
             _inputManager.SecondaryWeapon += e => _ship.ShootAlt(e.State);
