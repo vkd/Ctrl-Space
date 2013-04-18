@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace Ctrl_Space
+namespace Ctrl_Space.Helpers
 {
     static class Chaos
     {

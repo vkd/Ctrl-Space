@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ctrl_Space
+namespace Ctrl_Space.Graphics
 {
     class Animation
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Ctrl_Space.Gameplay;
 using Microsoft.Xna.Framework;
 
-namespace Ctrl_Space
+namespace Ctrl_Space.Graphics
 {
     class WorldLoop
     {

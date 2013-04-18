@@ -1,5 +1,3 @@
-using System;
-
 namespace Ctrl_Space
 {
 #if WINDOWS || XBOX
@@ -18,4 +16,3 @@ namespace Ctrl_Space
     }
 #endif
 }
-
