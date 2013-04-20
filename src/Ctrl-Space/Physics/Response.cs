@@ -10,9 +10,15 @@ namespace Ctrl_Space.Physics
             var go1 = go;
             var go2 = collision.GameObject;
 
+            if (collision.Time > 0)
+            {
+                go1.Position += go1.Speed * collision.Time;
+                go2.Position += go2.Speed * collision.Time;
+            }
+
             // ось столкновения и нормаль к ней
-            var nrm = collision.Delta;
-            var tan = new Vector2(collision.Delta.Y, -collision.Delta.X);
+            var nrm = collision.Delta + go2.Speed * collision.Time - go1.Speed * collision.Time;
+            var tan = new Vector2(nrm.Y, -nrm.X);
             nrm.Normalize();
             tan.Normalize();
 
@@ -30,6 +36,12 @@ namespace Ctrl_Space.Physics
 
             go1.Speed = nrm * go1rsp + tan * go1tan;
             go2.Speed = nrm * go2rsp + tan * go2tan;
+
+            if (collision.Time > 0)
+            {
+                go1.Position -= go1.Speed * collision.Time;
+                go2.Position -= go2.Speed * collision.Time;
+            }
 
             //float gp = Maf.Sqrt(collision.DepthSquared);
             //go1.Position -= gp * go2.Mass / (go1.Mass + go2.Mass) * nrm;
