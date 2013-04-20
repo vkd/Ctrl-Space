@@ -84,6 +84,7 @@
     <Compile Include="Helpers\Chaos.cs" />
     <Compile Include="Graphics\ParticleParameters.cs" />
     <Compile Include="Graphics\WorldLoop.cs" />
+    <Compile Include="Helpers\Lerp.cs" />
     <Compile Include="Input\IInputManager.cs" />
     <Compile Include="Input\InputAnalogEvent.cs" />
     <Compile Include="Input\InputDigitalEvent.cs" />
