@@ -1,5 +1,6 @@
 ﻿using Ctrl_Space.Gameplay;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ctrl_Space.Graphics
 {
@@ -14,11 +15,9 @@ namespace Ctrl_Space.Graphics
         {
             _particleParameters = particleParameters;
             _step = 1f / _particleParameters.Duration;
-            Size = 16f;
-            Color = Color.Red;
         }
 
-        public override Microsoft.Xna.Framework.Graphics.Texture2D GetTexture()
+        public override Texture2D GetTexture()
         {
             return _particleParameters.TextureGetter();
         }
@@ -29,7 +28,7 @@ namespace Ctrl_Space.Graphics
             if (_state <= 0f) { IsDestroyed = true; return; }
             // TODO Linear interpolated multiple states
             Size = _particleParameters.Sizes[0] * _state + _particleParameters.Sizes[1] * (1f - _state);
-            Color = new Color(_particleParameters.Colors[0].ToVector3() * _state + _particleParameters.Colors[1].ToVector3() * (1f - _state));
+            Color = new Color(_particleParameters.Colors[0].ToVector4() * _state + _particleParameters.Colors[1].ToVector4() * (1f - _state));
             Alpha = _particleParameters.Alphas[0] * _state + _particleParameters.Alphas[1] * (1f - _state); ;
             _state -= _step;
         }
