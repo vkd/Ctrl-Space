@@ -176,14 +176,14 @@ namespace Ctrl_Space
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetTransform());
 
-            foreach (var cluster in _worldLoopParticles.GetClustersAroundPosition(_ship.Position, 512f))
+            foreach (var cluster in _worldLoopParticles.GetClustersAroundPosition(_ship.Position, 600f))
             {
                 Vector2 offset = new Vector2(cluster.ShiftX * WorldWidth, cluster.ShiftY * WorldHeight);
                 foreach (var obj in cluster.GameObjects)
                     obj.Draw(_spriteBatch, gameTime, offset);
             }
 
-            foreach (var cluster in _worldLoop.GetClustersAroundPosition(_ship.Position, 512f))
+            foreach (var cluster in _worldLoop.GetClustersAroundPosition(_ship.Position, 600f))
             {
                 Vector2 offset = new Vector2(cluster.ShiftX * WorldWidth, cluster.ShiftY * WorldHeight);
                 foreach (var obj in cluster.GameObjects)
