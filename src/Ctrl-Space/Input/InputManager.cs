@@ -31,6 +31,14 @@ namespace Ctrl_Space.Input
 
             _oldMouseState = new MouseState();
             _game.IsMouseVisible = false;
+
+            Devices.RawInputMouse.Initialize(game.Window.Handle);
+            Devices.RawInputMouse.MouseMove += new Devices.MouseMoveHandler(RawInputMouse_MouseMove);
+        }
+
+        void RawInputMouse_MouseMove(object sender, Devices.MouseMoveEventArgs e)
+        {
+            Rotate(new InputAnalogEventArgs((e.X * 0.02f)));
         }
 
         public void StartUpdate()
@@ -80,7 +88,7 @@ namespace Ctrl_Space.Input
                 SecondaryWeapon(new InputDigitalEventArgs(InputDigitalState.Released));
             }
 
-            Rotate(new InputAnalogEventArgs((_mouseState.X - _mouseCenterPosition.X) * 0.02f));
+            //Rotate(new InputAnalogEventArgs((_mouseState.X - _mouseCenterPosition.X) * 0.02f));
 
             SetPosition(_mouseCenterPosition);
             _oldMouseState = _mouseState;
