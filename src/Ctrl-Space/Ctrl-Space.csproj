@@ -85,6 +85,8 @@
     <Compile Include="Graphics\ParticleParameters.cs" />
     <Compile Include="Graphics\WorldLoop.cs" />
     <Compile Include="Helpers\Lerp.cs" />
+    <Compile Include="Input\Devices\CharEntered.cs" />
+    <Compile Include="Input\Devices\KeyEvent.cs" />
     <Compile Include="Input\Devices\RawStructures\ButtonsStr.cs" />
     <Compile Include="Input\Devices\RawStructures\HIDUsage.cs" />
     <Compile Include="Input\Devices\RawStructures\HIDUsagePage.cs" />
@@ -102,7 +104,7 @@
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\InputPressEvent.cs" />
     <Compile Include="Input\Devices\MouseMoveEvent.cs" />
-    <Compile Include="Input\Devices\RawInputMouse.cs" />
+    <Compile Include="Input\Devices\RawInputDevices.cs" />
     <Compile Include="Physics\Collision.cs" />
     <Compile Include="Physics\Collisions.cs" />
     <Compile Include="Graphics\FPS.cs" />

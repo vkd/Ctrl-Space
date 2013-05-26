@@ -32,8 +32,53 @@ namespace Ctrl_Space.Input
             _oldMouseState = new MouseState();
             _game.IsMouseVisible = false;
 
-            Devices.RawInputMouse.Initialize(game.Window.Handle);
-            Devices.RawInputMouse.MouseMove += new Devices.MouseMoveHandler(RawInputMouse_MouseMove);
+            Devices.RawInputDevices.Initialize(game.Window.Handle);
+            Devices.RawInputDevices.MouseMove += new Devices.MouseMoveHandler(RawInputMouse_MouseMove);
+            Devices.RawInputDevices.CharEntered += new Devices.CharEnteredHandler(RawInputMouse_CharEntered);
+            Devices.RawInputDevices.KeyDown += new Devices.KeyEventHandler(RawInputMouse_KeyDown);
+        }
+
+        void RawInputMouse_KeyDown(object sender, Devices.KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case 'I':
+                    MoveUpDown(new InputAnalogEventArgs(1.0f));
+                    break;
+                case 'K':
+                    MoveUpDown(new InputAnalogEventArgs(-1.0f));
+                    break;
+                case 'L':
+                    MoveRightLeft(new InputAnalogEventArgs(1.0f));
+                    break;
+                case 'J':
+                    MoveRightLeft(new InputAnalogEventArgs(-1.0f));
+                    break;
+            }
+        }
+
+        void RawInputMouse_CharEntered(object sender, Devices.CharacterEventArgs e)
+        {
+            string t = "";
+            if (char.IsControl(e.Character))
+            {
+                switch (e.Character)
+                {
+                    case '\b':
+                        if (t.Length > 0)
+                        {
+                            t = t.Substring(0, t.Length - 1);
+                        }
+                        break;
+                    case '\r':
+                        //enter
+                        break;
+                }
+            }
+            else
+            {
+                t += e.Character;
+            }
         }
 
         void RawInputMouse_MouseMove(object sender, Devices.MouseMoveEventArgs e)
@@ -108,7 +153,7 @@ namespace Ctrl_Space.Input
 
             if (IsButtonDown(Buttons.DPadRight))
                 MoveRightLeft(new InputAnalogEventArgs(1.0f));
-            if (IsButtonDown(Buttons.DPadLeft))
+            else if (IsButtonDown(Buttons.DPadLeft))
                 MoveRightLeft(new InputAnalogEventArgs(-1.0f));
 
             if (IsButtonDown(Buttons.DPadUp))
