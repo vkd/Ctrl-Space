@@ -85,7 +85,10 @@
     <Compile Include="Graphics\ParticleParameters.cs" />
     <Compile Include="Graphics\WorldLoop.cs" />
     <Compile Include="Helpers\Lerp.cs" />
+    <Compile Include="Input\ControlMapping.cs" />
+    <Compile Include="Input\DeviceData.cs" />
     <Compile Include="Input\Devices\CharEntered.cs" />
+    <Compile Include="Input\Devices\XNAGamePad.cs" />
     <Compile Include="Input\Devices\KeyEvent.cs" />
     <Compile Include="Input\Devices\RawStructures\ButtonsStr.cs" />
     <Compile Include="Input\Devices\RawStructures\HIDUsage.cs" />
@@ -97,7 +100,9 @@
     <Compile Include="Input\Devices\RawStructures\RawInputHeader.cs" />
     <Compile Include="Input\Devices\RawStructures\RawKeyboard.cs" />
     <Compile Include="Input\Devices\RawStructures\RawMouse.cs" />
-    <Compile Include="Input\IInputManager.cs" />
+    <Compile Include="Input\Devices\XNAKeyboard.cs" />
+    <Compile Include="Input\Devices\XNAMouse.cs" />
+    <Compile Include="Input\IDevice.cs" />
     <Compile Include="Input\InputAnalogEvent.cs" />
     <Compile Include="Input\InputDigitalEvent.cs" />
     <Compile Include="Input\InputDigitalState.cs" />
@@ -105,6 +110,7 @@
     <Compile Include="Input\InputPressEvent.cs" />
     <Compile Include="Input\Devices\MouseMoveEvent.cs" />
     <Compile Include="Input\Devices\RawInputDevices.cs" />
+    <Compile Include="Input\InputState.cs" />
     <Compile Include="Physics\Collision.cs" />
     <Compile Include="Physics\Collisions.cs" />
     <Compile Include="Graphics\FPS.cs" />

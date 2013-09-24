@@ -19,7 +19,7 @@ namespace Ctrl_Space
         private Ship _ship;
 
         private Camera _camera;
-        private IInputManager _inputManager = null;
+        private InputManager _inputManager = null;
 
         private World _world = new World();
 
