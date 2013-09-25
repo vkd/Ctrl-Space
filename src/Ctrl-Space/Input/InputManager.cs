@@ -32,7 +32,24 @@ namespace Ctrl_Space.Input
                 new ControlMapping { Device = "XNAKeyboard", Event = "Escape", Method = "Exit" },
                 new ControlMapping { Device = "XNAMouse", Event = "X", Method = "RotateCW" },
                 new ControlMapping { Device = "XNAMouse", Event = "LMB", Method = "PrimaryWeapon" },
-                new ControlMapping { Device = "XNAMouse", Event = "RMB", Method = "SecondaryWeapon" }
+                new ControlMapping { Device = "XNAMouse", Event = "RMB", Method = "SecondaryWeapon" },
+                
+                new ControlMapping { Device = "XNAGamePad", Event = "Up", Method = "Up"},
+                new ControlMapping { Device = "XNAGamePad", Event = "Down", Method = "Down"},
+                new ControlMapping { Device = "XNAGamePad", Event = "Left", Method = "Left"},
+                new ControlMapping { Device = "XNAGamePad", Event = "Right", Method = "Right"},
+                new ControlMapping { Device = "XNAGamePad", Event = "LeftY", Method = "Up"},
+                new ControlMapping { Device = "XNAGamePad", Event = "LeftX", Method = "Right"},
+                new ControlMapping { Device = "XNAGamePad", Event = "Back", Method = "Exit" },
+                new ControlMapping { Device = "XNAGamePad", Event = "RightX", Method = "RotateCW" },
+                new ControlMapping { Device = "XNAGamePad", Event = "A", Method = "PrimaryWeapon" },
+                new ControlMapping { Device = "XNAGamePad", Event = "B", Method = "SecondaryWeapon" },
+                new ControlMapping { Device = "XNAGamePad", Event = "X", Method = "PrimaryWeapon" },
+                new ControlMapping { Device = "XNAGamePad", Event = "Y", Method = "SecondaryWeapon" },
+                new ControlMapping { Device = "XNAGamePad", Event = "RightTrigger", Method = "PrimaryWeapon" },
+                new ControlMapping { Device = "XNAGamePad", Event = "LeftTrigger", Method = "SecondaryWeapon" },
+                new ControlMapping { Device = "XNAGamePad", Event = "RightShoulder", Method = "PrimaryWeapon" },
+                new ControlMapping { Device = "XNAGamePad", Event = "LeftShoulder", Method = "SecondaryWeapon" }
             };
         }
 
