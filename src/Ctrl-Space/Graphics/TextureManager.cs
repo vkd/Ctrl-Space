@@ -14,6 +14,7 @@ namespace Ctrl_Space.Graphics
         public static Texture2D SpaceTexture { get; set; }
         public static Texture2D PlasmaBulletTexture { get; set; }
         public static Texture2D SimpleGlowTexture { get; set; }
+        public static Texture2D EnemyTexture { get; set; }
 
         public static void LoadTextures(ContentManager contentManager)
         {
@@ -26,6 +27,7 @@ namespace Ctrl_Space.Graphics
             SpaceTexture = contentManager.Load<Texture2D>("Textures/Space/Space");
             PlasmaBulletTexture = contentManager.Load<Texture2D>("Textures/Weapon/PlasmaBullet");
             SimpleGlowTexture = contentManager.Load<Texture2D>("Textures/Particles/SimpleGlow");
+            EnemyTexture = contentManager.Load<Texture2D>("Textures/Ship/Ship2");
         }
     }
 }

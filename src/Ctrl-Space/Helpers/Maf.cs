@@ -19,5 +19,10 @@ namespace Ctrl_Space.Helpers
         {
             return (float)Math.Sqrt(d);
         }
+
+        public static float Atan2(float y, float x)
+        {
+            return (float)Math.Atan2(y, x);
+        }
     }
 }

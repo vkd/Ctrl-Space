@@ -17,6 +17,7 @@ namespace Ctrl_Space
         private SpriteBatch _spriteBatch;
 
         private Ship _ship;
+        private Ship _enemyShip;
 
         private Camera _camera;
         private InputManager _inputManager = null;
@@ -45,6 +46,7 @@ namespace Ctrl_Space
             InitializeInputManager();
 
             _ship = new Ship(new Vector2(WorldWidth / 2, WorldHeight / 2), _world);
+            _enemyShip = new EnemyShip(new Vector2(0.0f, 0.0f), _world, _ship);
             _camera = new Camera(_ship);
 
             for (int i = 0; i < 100; ++i)
@@ -67,6 +69,7 @@ namespace Ctrl_Space
                 _world.Add(bonus);
             }
 
+            _world.Add(_enemyShip);
             _world.Add(_ship);
 
             Components.Add(new FPS(this, "Fonts/FPSFont", Vector2.Zero));

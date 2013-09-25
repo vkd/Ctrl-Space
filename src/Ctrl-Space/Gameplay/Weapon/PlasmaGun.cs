@@ -8,7 +8,7 @@ namespace Ctrl_Space.Gameplay.Weapon
     {
         public PlasmaGun(GameObject owner) : base(owner)
         {
-            _shootingInterval = 33;
+            _shootingInterval = 10;
         }
 
         public override void Shoot(World world)
