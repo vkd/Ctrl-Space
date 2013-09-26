@@ -1,7 +1,6 @@
 ﻿using Ctrl_Space.Gameplay;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Ctrl_Space.Helpers;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ctrl_Space.Graphics
 {
@@ -14,8 +13,15 @@ namespace Ctrl_Space.Graphics
 
         public Particle(ParticleParameters particleParameters)
         {
+            Reset(particleParameters);
+        }
+
+        public void Reset(ParticleParameters particleParameters)
+        {
+            IsDestroyed = false;
             _particleParameters = particleParameters;
             _step = 1f / _particleParameters.Duration;
+            _state = 0f;
         }
 
         public override Texture2D GetTexture()

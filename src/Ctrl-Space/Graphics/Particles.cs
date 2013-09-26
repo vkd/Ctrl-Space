@@ -6,11 +6,15 @@ namespace Ctrl_Space.Graphics
 {
     class Particles
     {
+        private ParticlePool _particlePool = new ParticlePool();
         private List<GameObject> _particles = new List<GameObject>();
 
         public void Emit(ParticleParameters particleParameters, Vector2 position, Vector2 speed)
         {
-            _particles.Add(new Particle(particleParameters) { Position = position, Speed = speed });
+            var particle = _particlePool.GetParticle(particleParameters);
+            particle.Position = position;
+            particle.Speed = speed;
+            _particles.Add(particle);
         }
 
         public void Update(World world, Particles particles)
@@ -19,7 +23,10 @@ namespace Ctrl_Space.Graphics
             {
                 _particles[i].Update(world, particles);
                 if ((_particles[i]).IsDestroyed)
+                {
+                    _particlePool.PutParticle((Particle)_particles[i]);
                     _particles[i] = null;
+                }
             }
             _particles.RemoveAll(p => p == null);
         }
