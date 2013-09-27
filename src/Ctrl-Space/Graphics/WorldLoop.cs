@@ -7,14 +7,13 @@ namespace Ctrl_Space.Graphics
 {
     class WorldLoop
     {
-        // hardcode
-        private List<GameObject>[,] _clusters = new List<GameObject>[8, 8];
+        private List<GameObject>[,] _clusters = new List<GameObject>[Game.WorldHeihgtInClusters, Game.WorldWidthInClusters];
 
         public WorldLoop()
         {
-            for (int j = 0; j < 8; j++)
+            for (int j = 0; j < Game.WorldHeihgtInClusters; j++)
             {
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < Game.WorldWidthInClusters; i++)
                 {
                     _clusters[j, i] = new List<GameObject>();
                 }
@@ -31,9 +30,9 @@ namespace Ctrl_Space.Graphics
 
         public void Clusterize(params IList<GameObject>[] gameObjects)
         {
-            for (int j = 0; j < 8; j++)
+            for (int j = 0; j < Game.WorldHeihgtInClusters; j++)
             {
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < Game.WorldWidthInClusters; i++)
                 {
                     _clusters[j, i].Clear();
                 }
@@ -43,37 +42,39 @@ namespace Ctrl_Space.Graphics
             {
                 foreach (var go in gameObject)
                 {
-                    int i = (int)(((long)go.Position.X) >> 8);
-                    int j = (int)(((long)go.Position.Y) >> 8);
-                    i = (i + 8) % 8;
-                    j = (j + 8) % 8;
+                    int i = (int)(((long)go.Position.X) >> Game.ClusterSizeInPowerOfTwo);
+                    int j = (int)(((long)go.Position.Y) >> Game.ClusterSizeInPowerOfTwo);
+                    i = (i + Game.WorldWidthInClusters) % Game.WorldWidthInClusters;
+                    j = (j + Game.WorldHeihgtInClusters) % Game.WorldHeihgtInClusters;
                     _clusters[j, i].Add(go);
                 }
             }
         }
 
+        private List<Cluster> _getClustersAroundPositionResult = new List<Cluster>();
+
         // simple AABB approach
         public List<Cluster> GetClustersAroundPosition(Vector2 position, float distance)
         {
-            List<Cluster> result = new List<Cluster>();
-            int i1 = (int)Math.Floor((position.X - distance) / 256);
-            int j1 = (int)Math.Floor((position.Y - distance) / 256);
-            int i2 = (int)Math.Floor((position.X + distance) / 256);
-            int j2 = (int)Math.Floor((position.Y + distance) / 256);
+            _getClustersAroundPositionResult.Clear();
+            int i1 = (int)Math.Floor((position.X - distance) / Game.ClusterSize);
+            int j1 = (int)Math.Floor((position.Y - distance) / Game.ClusterSize);
+            int i2 = (int)Math.Floor((position.X + distance) / Game.ClusterSize);
+            int j2 = (int)Math.Floor((position.Y + distance) / Game.ClusterSize);
 
             for (int j = j1; j <= j2; j++)
             {
                 for (int i = i1; i <= i2; i++)
                 {
                     Cluster cluster = new Cluster();
-                    cluster.ShiftX = (i + 65536) / 8 - 8192; // TODO hackaway
-                    cluster.ShiftY = (j + 65536) / 8 - 8192; // TODO hackaway
-                    cluster.GameObjects = _clusters[(j + 65536) % 8, (i + 65536) % 8]; // TODO hackaway
-                    result.Add(cluster);
+                    cluster.ShiftX = i < 0 ? ((i - Game.WorldWidthInClusters + 1) / Game.WorldWidthInClusters) : (i / Game.WorldWidthInClusters);
+                    cluster.ShiftY = j < 0 ? ((j - Game.WorldHeihgtInClusters + 1) / Game.WorldHeihgtInClusters) : (j / Game.WorldHeihgtInClusters);
+                    cluster.GameObjects = _clusters[j - cluster.ShiftY * Game.WorldHeihgtInClusters, i - cluster.ShiftX * Game.WorldWidthInClusters];
+                    _getClustersAroundPositionResult.Add(cluster);
                 }
             }
 
-            return result;
+            return _getClustersAroundPositionResult;
         }
     }
 

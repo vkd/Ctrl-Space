@@ -11,8 +11,13 @@ namespace Ctrl_Space
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
-        public static readonly int WorldWidth = 2048;
-        public static readonly int WorldHeight = 2048;
+        public static readonly int WorldWidthInClusters = 8;
+        public static readonly int WorldHeihgtInClusters = 8;
+        public static readonly int ClusterSizeInPowerOfTwo = 8;
+        public static readonly int ClusterSize = 1 << ClusterSizeInPowerOfTwo;
+        public static readonly int WorldWidth = WorldWidthInClusters * ClusterSize;
+        public static readonly int WorldHeight = WorldHeihgtInClusters * ClusterSize;
+
         public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 

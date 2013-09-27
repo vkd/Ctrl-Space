@@ -13,8 +13,8 @@ namespace Ctrl_Space.Physics
             for (int k = 0; k < gameObjects.Count; k++)
                 gameObjects[k].Collisions.Clear();
 
-            int ww = clusters.GetLength(0);
-            int wh = clusters.GetLength(1);
+            int ww = clusters.GetLength(1);
+            int wh = clusters.GetLength(0);
 
             // обход по кластерам
             for (int wj = 0; wj < wh; wj++)
