@@ -17,6 +17,8 @@ namespace Ctrl_Space.Gameplay
             _target = target;
         }
 
+        public Vector2 TargetPos;
+
         public override void Update(World world, Particles particles)
         {
             float dx = _target.Position.X - Position.X;
@@ -31,10 +33,13 @@ namespace Ctrl_Space.Gameplay
                 dy += Game.WorldHeight;
 
             var vect = new Vector2(dx, dy);
+            var time = vect.Length() / 14.9f; //Speed of PlasmaBullet
+
+            TargetPos = new Vector2(Position.X + dx - time * (Speed.X - _target.Speed.X), Position.Y + dy - time * (Speed.Y - _target.Speed.Y));
 
             var move = new Vector2(vect.X, vect.Y);
             move.Normalize();
-            float ang = Maf.Atan2(vect.Y, vect.X);
+            float ang = Maf.Atan2(vect.Y - time * (Speed.Y - _target.Speed.Y), vect.X - time * (Speed.X - _target.Speed.X));
             Rotation = ang + MathHelper.PiOver2;
 
             var dir = new Vector2(Maf.Cos(ang), Maf.Sin(ang));
@@ -47,7 +52,7 @@ namespace Ctrl_Space.Gameplay
             {
                 SpeedUp(accel);
                 Strafe(strafe);
-                ShootAlt(Input.InputDigitalState.Released);
+                //ShootAlt(Input.InputDigitalState.Released);
             }
             else if (distance > 400.0f)
             {
@@ -55,7 +60,7 @@ namespace Ctrl_Space.Gameplay
                 _accel = Chaos.GetFloat(-.05f, .05f);
                 SpeedUp(0.4f * accel);
                 Strafe(0.4f * strafe);
-                Shoot(Input.InputDigitalState.Released);
+                //Shoot(Input.InputDigitalState.Released);
             }
             else if (distance < 200.0f)
             {
@@ -63,20 +68,22 @@ namespace Ctrl_Space.Gameplay
                 _accel = Chaos.GetFloat(-.05f, .05f);
                 SpeedUp(-0.2f * accel);
                 Strafe(-0.2f * strafe);
-                Shoot(Input.InputDigitalState.Pressed);
+                //Shoot(Input.InputDigitalState.Pressed);
             }
             else if (distance < 100.0f)
             {
                 SpeedUp(-accel);
                 Strafe(-strafe);
-                Shoot(Input.InputDigitalState.Pressed);
+                //Shoot(Input.InputDigitalState.Pressed);
             }
             else
             {
                 SpeedUp(_accel);
                 Strafe(_strafe);
-                ShootAlt(Input.InputDigitalState.Pressed);
+                //ShootAlt(Input.InputDigitalState.Pressed);
             }
+
+            Shoot(Input.InputDigitalState.Pressed);
             
             base.Update(world, particles);
         }
