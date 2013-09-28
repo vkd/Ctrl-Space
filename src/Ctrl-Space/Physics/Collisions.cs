@@ -35,8 +35,8 @@ namespace Ctrl_Space.Physics
                         }
                         int clui = (wi + di + ww) % ww;
                         int cluj = (wj + dj + wh) % wh;
-                        float fx = (wi + di - clui) * 256f; //!HARDCODE!
-                        float fy = (wj + dj - cluj) * 256f; //!HARDCODE!
+                        float fx = (wi + di - clui) * Game.ClusterSize;
+                        float fy = (wj + dj - cluj) * Game.ClusterSize;
                         // обсчёт столкновений 9 кластеров
                         for (int j = 0; j < clusters[cluj, clui].Count; j++)
                             for (int i = k == 0 ? j : 0; i < clusters[wj, wi].Count; i++)
