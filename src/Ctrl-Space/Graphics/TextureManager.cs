@@ -5,6 +5,8 @@ namespace Ctrl_Space.Graphics
 {
     public static class TextureManager
     {
+        public static SpriteFont Font { get; set; }
+
         public static Texture2D ShipTexture { get; set; }
         public static Texture2D ShipAnimation { get; set; }
         public static Texture2D ShipOffTexture { get; set; }
@@ -18,6 +20,8 @@ namespace Ctrl_Space.Graphics
 
         public static void LoadTextures(ContentManager contentManager)
         {
+            Font = contentManager.Load<SpriteFont>("Fonts/Font");
+
             ShipTexture = contentManager.Load<Texture2D>("Textures/Ship/Ship");
             ShipAnimation = contentManager.Load<Texture2D>("Textures/Ship/ShipAnimation");
             ShipOffTexture = contentManager.Load<Texture2D>("Textures/Ship/Ship-off");
