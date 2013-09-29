@@ -203,6 +203,12 @@ namespace Ctrl_Space
 
             _spriteBatch.End();
 
+            _spriteBatch.Begin();
+            _spriteBatch.DrawString(TextureManager.Font, "Score:", new Vector2(10, 0), Color.White);
+            _spriteBatch.DrawString(TextureManager.Font, "Ship - " + _ship.HP, new Vector2(10, 15), Color.Green);
+            _spriteBatch.DrawString(TextureManager.Font, "EnemyShip - " + _enemyShip.HP, new Vector2(10, 30), Color.Red);
+            _spriteBatch.End();
+
             _debugGeometry.Prepare(_camera.GetTransform());
             _debugGeometry.DrawLine(new Vector2(-WorldWidth, 0f), new Vector2(2f * WorldWidth, 0f), Color.Gray);
             _debugGeometry.DrawLine(new Vector2(-WorldWidth, WorldHeight), new Vector2(2f * WorldWidth, WorldHeight), Color.Gray);

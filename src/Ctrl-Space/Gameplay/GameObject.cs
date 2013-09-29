@@ -9,6 +9,8 @@ namespace Ctrl_Space.Gameplay
 {
     abstract class GameObject
     {
+        public int HP = 0;
+
         public Vector2 Position;
         public Vector2 Speed;
         public float Size;
