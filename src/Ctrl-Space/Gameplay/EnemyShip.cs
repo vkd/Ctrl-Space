@@ -33,9 +33,11 @@ namespace Ctrl_Space.Gameplay
                 dy += Game.WorldHeight;
 
             var vect = new Vector2(dx, dy);
-            var time = vect.Length() / 14.9f; //Speed of PlasmaBullet
+            var nrmvect = new Vector2(dx, dy);
+            nrmvect.Normalize();
+            var time = vect.Length() / (_weapon.Speed + Vector2.Dot(Speed, nrmvect));
 
-            TargetPos = new Vector2(Position.X + dx - time * (Speed.X - _target.Speed.X), Position.Y + dy - time * (Speed.Y - _target.Speed.Y));
+            TargetPos = new Vector2(_target.Position.X - time * (Speed.X - _target.Speed.X), _target.Position.Y - time * (Speed.Y - _target.Speed.Y));
 
             var move = new Vector2(vect.X, vect.Y);
             move.Normalize();

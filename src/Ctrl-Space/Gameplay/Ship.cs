@@ -5,6 +5,7 @@ using Ctrl_Space.Input;
 using Ctrl_Space.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ctrl_Space.Gameplay.Bullets;
 
 namespace Ctrl_Space.Gameplay
 {
@@ -12,8 +13,8 @@ namespace Ctrl_Space.Gameplay
     {
         private World _world;
 
-        private WeaponBase _weapon;
-        private WeaponBase _weaponAlt;
+        protected WeaponBase _weapon;
+        protected WeaponBase _weaponAlt;
 
         private float _acceleration = 0f;
 
@@ -82,6 +83,9 @@ namespace Ctrl_Space.Gameplay
             {
                 Speed += new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation));
             }
+
+            if (col.GameObject is PlasmaBullet || col.GameObject is Rocket)
+                HP += 1;
         }
 
         public override Texture2D GetTexture()

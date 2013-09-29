@@ -17,6 +17,8 @@
         private int _currentInterval = 0;
         private bool _fire = false;
 
+        public float Speed;
+
         public void On()
         {
             _fire = true;
