@@ -209,6 +209,23 @@ namespace Ctrl_Space
             _spriteBatch.DrawString(TextureManager.Font, "EnemyShip - " + _enemyShip.HP, new Vector2(10, 30), Color.Red);
             _spriteBatch.End();
 
+            // ======= DEBUG INFO =======
+            int k = 20;
+            int widthMap = (int)WorldWidth / k;
+            int heightMap = (int)WorldHeight / k;
+
+            Rectangle rectMap = new Rectangle(GraphicsDevice.Viewport.Width - 10 - widthMap, GraphicsDevice.Viewport.Height - 10 - heightMap, widthMap, heightMap);
+            Vector2 vectorShip = new Vector2(rectMap.X + _ship.Position.X / k, rectMap.Y + _ship.Position.Y / k);
+            Vector2 vectorEnemyShip = new Vector2(rectMap.X + _enemyShip.Position.X / k, rectMap.Y + _enemyShip.Position.Y / k);
+
+            _debugGeometry.Prepare(Matrix.Identity);
+            _debugGeometry.DrawLine(new Vector2(rectMap.X, rectMap.Y), new Vector2(rectMap.Right, rectMap.Y), Color.Blue);
+            _debugGeometry.DrawLine(new Vector2(rectMap.Right, rectMap.Y), new Vector2(rectMap.Right, rectMap.Bottom), Color.Blue);
+            _debugGeometry.DrawLine(new Vector2(rectMap.Right, rectMap.Bottom), new Vector2(rectMap.X, rectMap.Bottom), Color.Blue);
+            _debugGeometry.DrawLine(new Vector2(rectMap.X, rectMap.Bottom), new Vector2(rectMap.X, rectMap.Y), Color.Blue);
+            _debugGeometry.DrawCircle(vectorShip, 2, Color.Green);
+            _debugGeometry.DrawCircle(vectorEnemyShip, 2, Color.Red);
+
             _debugGeometry.Prepare(_camera.GetTransform());
             _debugGeometry.DrawLine(new Vector2(-WorldWidth, 0f), new Vector2(2f * WorldWidth, 0f), Color.Gray);
             _debugGeometry.DrawLine(new Vector2(-WorldWidth, WorldHeight), new Vector2(2f * WorldWidth, WorldHeight), Color.Gray);
