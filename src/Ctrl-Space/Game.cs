@@ -36,6 +36,8 @@ namespace Ctrl_Space
 
         private Song _song;
 
+        private DebugGeometry _debugGeometry;
+
         public Game()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -134,6 +136,7 @@ namespace Ctrl_Space
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _debugGeometry = new DebugGeometry(GraphicsDevice);
             TextureManager.LoadTextures(Content);
             _song = Content.Load<Song>("Music/SOUP - Q7");
         }
@@ -197,39 +200,21 @@ namespace Ctrl_Space
                 foreach (var obj in cluster.GameObjects)
                     obj.Draw(_spriteBatch, gameTime, offset);
             }
-
-            Texture2D circle = CreateCircle(24);
-            _spriteBatch.Draw(circle, ((EnemyShip)_enemyShip).TargetPos - new Vector2(10, 10), Color.Red);
-
             _spriteBatch.End();
 
+            _debugGeometry.Prepare(_camera.GetTransform());
+            _debugGeometry.DrawLine(new Vector2(-WorldWidth, 0f), new Vector2(2f * WorldWidth, 0f), Color.Gray);
+            _debugGeometry.DrawLine(new Vector2(-WorldWidth, WorldHeight), new Vector2(2f * WorldWidth, WorldHeight), Color.Gray);
+            _debugGeometry.DrawLine(new Vector2(0f, -WorldHeight), new Vector2(0f, 2f * WorldHeight), Color.Gray);
+            _debugGeometry.DrawLine(new Vector2(WorldWidth, -WorldHeight), new Vector2(WorldWidth, 2f * WorldHeight), Color.Gray);
+
+            _debugGeometry.DrawCircle(((EnemyShip)_enemyShip).TargetPos, 24f, Color.Red);
+            _debugGeometry.DrawCircle(((EnemyShip)_enemyShip).Position, 24f, Color.Green);
+            _debugGeometry.DrawLine(((EnemyShip)_enemyShip).Position, ((EnemyShip)_enemyShip).TargetPos, Color.Green);
+            _debugGeometry.DrawCircle(_ship.Position, 24f, Color.Blue);
+            _debugGeometry.DrawLine(_ship.Position, 32f, _ship.Rotation - MathHelper.PiOver2, Color.Blue);
+
             base.Draw(gameTime);
-        }
-
-        public Texture2D CreateCircle(int radius)
-        {
-            int outerRadius = radius * 2 + 2; // So circle doesn't go out of bounds
-            Texture2D texture = new Texture2D(GraphicsDevice, outerRadius, outerRadius);
-
-            Color[] data = new Color[outerRadius * outerRadius];
-
-            // Colour the entire texture transparent first.
-            for (int i = 0; i < data.Length; i++)
-                data[i] = Color.Transparent;
-
-            // Work out the minimum step necessary using trigonometry + sine approximation.
-            double angleStep = 1f / radius;
-
-            for (double angle = 0; angle < Math.PI * 2; angle += angleStep)
-            {
-                int x = (int)Math.Round(radius + radius * Math.Cos(angle));
-                int y = (int)Math.Round(radius + radius * Math.Sin(angle));
-
-                data[y * outerRadius + x + 1] = Color.White;
-            }
-
-            texture.SetData(data);
-            return texture;
         }
     }
 }
