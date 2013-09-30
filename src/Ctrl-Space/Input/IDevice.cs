@@ -4,6 +4,6 @@ namespace Ctrl_Space.Input
 {
     interface IDevice
     {
-        IEnumerable<DeviceData> GetData();
+        void GetData(List<DeviceData> data);
     }
 }

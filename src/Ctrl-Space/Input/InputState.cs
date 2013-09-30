@@ -12,6 +12,19 @@
         public bool SecondaryWeapon;
         public bool Exit;
 
+        public void Reset()
+        {
+            Up = 0.0f;
+            Down = 0.0f;
+            Left = 0.0f;
+            Right = 0.0f;
+            RotateCW = 0.0f;
+            RotateCCW = 0.0f;
+            PrimaryWeapon = false;
+            SecondaryWeapon = false;
+            Exit = false;
+        }
+
         public void Process(string method, float data)
         {
             switch (method)

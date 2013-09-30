@@ -63,41 +63,43 @@ namespace Ctrl_Space.Input
             _isActive = false;
         }
 
+        private List<DeviceData> _deviceData = new List<DeviceData>();
+        private InputState _inputState = new InputState();
+
         public void Update(GameTime gameTime)
         {
             if (!_isActive)
                 return;
 
-            List<DeviceData> data = new List<DeviceData>();
+            _deviceData.Clear();
+            _inputState.Reset();
             foreach (IDevice device in _devices)
             {
-                data.AddRange(device.GetData());
+                device.GetData(_deviceData);
             }
 
-            var inputState = new InputState();
-
-            foreach (DeviceData d in data)
+            foreach (DeviceData d in _deviceData)
             {
                 foreach (ControlMapping cm in _controlMapping)
                 {
                     if (d.Device == cm.Device && d.Event == cm.Event)
-                        inputState.Process(cm.Method, d.Data);
+                        _inputState.Process(cm.Method, d.Data);
                 }
             }
 
             Vector2 move = new Vector2();
-            move.X = inputState.Right - inputState.Left;
-            move.Y = inputState.Up - inputState.Down;
+            move.X = _inputState.Right - _inputState.Left;
+            move.Y = _inputState.Up - _inputState.Down;
 
             if (move.LengthSquared() > 1.0f)
                 move.Normalize();
 
             MoveRightLeft(new InputAnalogEventArgs(move.X));
             MoveUpDown(new InputAnalogEventArgs(move.Y));
-            Rotate(new InputAnalogEventArgs(inputState.RotateCW - inputState.RotateCCW));
-            PrimaryWeapon(new InputDigitalEventArgs(inputState.PrimaryWeapon ? InputDigitalState.Pressed : InputDigitalState.Released));
-            SecondaryWeapon(new InputDigitalEventArgs(inputState.SecondaryWeapon ? InputDigitalState.Pressed : InputDigitalState.Released));
-            if (inputState.Exit) ExitGame();
+            Rotate(new InputAnalogEventArgs(_inputState.RotateCW - _inputState.RotateCCW));
+            PrimaryWeapon(new InputDigitalEventArgs(_inputState.PrimaryWeapon ? InputDigitalState.Pressed : InputDigitalState.Released));
+            SecondaryWeapon(new InputDigitalEventArgs(_inputState.SecondaryWeapon ? InputDigitalState.Pressed : InputDigitalState.Released));
+            if (_inputState.Exit) ExitGame();
         }
 
         public event InputAnalogEventHandler MoveUpDown;

@@ -5,8 +5,6 @@ namespace Ctrl_Space.Input.Devices
 {
     class XNAGamePad : IDevice
     {
-        private List<DeviceData> _deviceData;
-
         public XNAGamePad(Game game)
         {
             _dataA = new DeviceData() { Device = Name, Event = "A", Data = 1.0f };
@@ -30,8 +28,6 @@ namespace Ctrl_Space.Input.Devices
             _dataRightY = new DeviceData() { Device = Name, Event = "RightY", Data = 0.0f };
             _dataLeftTrigger = new DeviceData() { Device = Name, Event = "LeftTrigger", Data = 0.0f };
             _dataRightTrigger = new DeviceData() { Device = Name, Event = "RightTrigger", Data = 0.0f };
-
-            _deviceData = new List<DeviceData>();
         }
 
         public string Name = "XNAGamePad";
@@ -58,72 +54,69 @@ namespace Ctrl_Space.Input.Devices
         private readonly DeviceData _dataLeftTrigger;
         private readonly DeviceData _dataRightTrigger;
 
-        public IEnumerable<DeviceData> GetData()
+        public void GetData(List<DeviceData> data)
         {
-            _deviceData.Clear();
-
             var state = GamePad.GetState(0);
             if (state.Buttons.A == ButtonState.Pressed)
-                _deviceData.Add(_dataA);
+                data.Add(_dataA);
             if (state.Buttons.B == ButtonState.Pressed)
-                _deviceData.Add(_dataB);
+                data.Add(_dataB);
             if (state.Buttons.X == ButtonState.Pressed)
-                _deviceData.Add(_dataX);
+                data.Add(_dataX);
             if (state.Buttons.Y == ButtonState.Pressed)
-                _deviceData.Add(_dataY);
+                data.Add(_dataY);
             if (state.Buttons.Back == ButtonState.Pressed)
-                _deviceData.Add(_dataBack);
+                data.Add(_dataBack);
             if (state.Buttons.Start == ButtonState.Pressed)
-                _deviceData.Add(_dataStart);
+                data.Add(_dataStart);
             if (state.Buttons.BigButton == ButtonState.Pressed)
-                _deviceData.Add(_dataBigButton);
+                data.Add(_dataBigButton);
             if (state.Buttons.LeftShoulder == ButtonState.Pressed)
-                _deviceData.Add(_dataLeftShoulder);
+                data.Add(_dataLeftShoulder);
             if (state.Buttons.RightShoulder == ButtonState.Pressed)
-                _deviceData.Add(_dataRightShoulder);
+                data.Add(_dataRightShoulder);
             if (state.Buttons.LeftStick == ButtonState.Pressed)
-                _deviceData.Add(_dataLeftStick);
+                data.Add(_dataLeftStick);
             if (state.Buttons.RightStick == ButtonState.Pressed)
-                _deviceData.Add(_dataRightStick);
+                data.Add(_dataRightStick);
             if (state.DPad.Up == ButtonState.Pressed)
-                _deviceData.Add(_dataUp);
+                data.Add(_dataUp);
             if (state.DPad.Down == ButtonState.Pressed)
-                _deviceData.Add(_dataDown);
+                data.Add(_dataDown);
             if (state.DPad.Left == ButtonState.Pressed)
-                _deviceData.Add(_dataLeft);
+                data.Add(_dataLeft);
             if (state.DPad.Right == ButtonState.Pressed)
-                _deviceData.Add(_dataRight);
+                data.Add(_dataRight);
             if (state.ThumbSticks.Left.X != 0.0f)
             {
                 _dataLeftX.Data = state.ThumbSticks.Left.X;
-                _deviceData.Add(_dataLeftX);
+                data.Add(_dataLeftX);
             }
             if (state.ThumbSticks.Left.Y != 0.0f)
             {
                 _dataLeftY.Data = state.ThumbSticks.Left.Y;
-                _deviceData.Add(_dataLeftY);
+                data.Add(_dataLeftY);
             }
             if (state.ThumbSticks.Right.X != 0.0f)
             {
                 _dataRightX.Data = state.ThumbSticks.Right.X;
-                _deviceData.Add(_dataRightX);
+                data.Add(_dataRightX);
             }
             if (state.ThumbSticks.Right.Y != 0.0f)
             {
                 _dataRightY.Data = state.ThumbSticks.Right.Y;
-                _deviceData.Add(_dataRightY);
+                data.Add(_dataRightY);
             }
             if (state.Triggers.Left != 0.0f)
             {
                 _dataLeftTrigger.Data = state.Triggers.Left;
-                _deviceData.Add(_dataLeftTrigger);
+                data.Add(_dataLeftTrigger);
             }
             if (state.Triggers.Right != 0.0f)
             {
                 _dataRightTrigger.Data = state.Triggers.Right;
-                _deviceData.Add(_dataRightTrigger);
+                data.Add(_dataRightTrigger);
             }
-            return _deviceData;
         }
     }
 }
