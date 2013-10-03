@@ -51,32 +51,49 @@ namespace Ctrl_Space.Graphics
             }
         }
 
-        private List<Cluster> _getClustersAroundPositionResult = new List<Cluster>();
+        private int _clusterLeft;
+        private int _clusterRight;
+        private int _clusterTop;
+        private int _clusterBottom;
+        private int _clusterX;
+        private int _clusterY;
+        private Cluster _cluster = new Cluster();
 
-        // simple AABB approach
-        public List<Cluster> GetClustersAroundPosition(Vector2 position, float distance)
+        public void PrepareClustersForRender(Vector2 position, float distance)
         {
-            _getClustersAroundPositionResult.Clear();
-            int i1 = (int)Math.Floor((position.X - distance) / Game.ClusterSize);
-            int j1 = (int)Math.Floor((position.Y - distance) / Game.ClusterSize);
-            int i2 = (int)Math.Floor((position.X + distance) / Game.ClusterSize);
-            int j2 = (int)Math.Floor((position.Y + distance) / Game.ClusterSize);
+            _clusterLeft = (int)Math.Floor((position.X - distance) / Game.ClusterSize);
+            _clusterBottom = (int)Math.Floor((position.Y - distance) / Game.ClusterSize);
+            _clusterRight = (int)Math.Floor((position.X + distance) / Game.ClusterSize);
+            _clusterTop = (int)Math.Floor((position.Y + distance) / Game.ClusterSize);
+            _clusterX = _clusterLeft;
+            _clusterY = _clusterBottom;
+        }
 
-            for (int j = j1; j <= j2; j++)
+        public bool FetchClustersForRender()
+        {
+            if (_clusterX > _clusterRight || _clusterY > _clusterTop)
+                return false;
+
+            _cluster.ShiftX = _clusterX < 0 ? ((_clusterX - Game.WorldWidthInClusters + 1) / Game.WorldWidthInClusters) : (_clusterX / Game.WorldWidthInClusters);
+            _cluster.ShiftY = _clusterY < 0 ? ((_clusterY - Game.WorldHeihgtInClusters + 1) / Game.WorldHeihgtInClusters) : (_clusterY / Game.WorldHeihgtInClusters);
+            _cluster.GameObjects = _clusters[_clusterY - _cluster.ShiftY * Game.WorldHeihgtInClusters, _clusterX - _cluster.ShiftX * Game.WorldWidthInClusters];
+
+            _clusterX++;
+            if (_clusterX > _clusterRight)
             {
-                for (int i = i1; i <= i2; i++)
-                {
-                    Cluster cluster = new Cluster();
-                    cluster.ShiftX = i < 0 ? ((i - Game.WorldWidthInClusters + 1) / Game.WorldWidthInClusters) : (i / Game.WorldWidthInClusters);
-                    cluster.ShiftY = j < 0 ? ((j - Game.WorldHeihgtInClusters + 1) / Game.WorldHeihgtInClusters) : (j / Game.WorldHeihgtInClusters);
-                    cluster.GameObjects = _clusters[j - cluster.ShiftY * Game.WorldHeihgtInClusters, i - cluster.ShiftX * Game.WorldWidthInClusters];
-                    _getClustersAroundPositionResult.Add(cluster);
-                }
+                _clusterX = _clusterLeft;
+                _clusterY++;
             }
+            return true;
+        }
 
-            return _getClustersAroundPositionResult;
+        public Cluster Cluster
+        {
+            get { return _cluster; }
         }
     }
+
+
 
     class Cluster
     {
