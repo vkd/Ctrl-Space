@@ -212,7 +212,7 @@ namespace Ctrl_Space
             _spriteBatch.End();
 
             // ======= DEBUG INFO =======
-            int k = 20;
+            int k = (WorldWidth > WorldHeight ? WorldWidth : WorldHeight) / 256;
             int widthMap = (int)WorldWidth / k;
             int heightMap = (int)WorldHeight / k;
 
