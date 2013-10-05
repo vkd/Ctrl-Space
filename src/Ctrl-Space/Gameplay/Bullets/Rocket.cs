@@ -10,8 +10,13 @@ namespace Ctrl_Space.Gameplay.Bullets
     {
         private float State = 1.0f;
 
-        public Rocket(Vector2 position, Vector2 speed, float rotation)
+        public Rocket()
         {
+        }
+
+        public void Reset(Vector2 position, Vector2 speed, float rotation)
+        {
+            State = 1.0f;
             Position = position;
             Size = 16;
             Speed = speed + new Vector2(7f * Maf.Sin(rotation), -7f * Maf.Cos(rotation));

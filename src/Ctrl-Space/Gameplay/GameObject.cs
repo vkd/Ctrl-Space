@@ -9,6 +9,7 @@ namespace Ctrl_Space.Gameplay
 {
     abstract class GameObject
     {
+        public int Id = -1;
         public int HP = 0;
 
         public Vector2 Position;
@@ -26,6 +27,12 @@ namespace Ctrl_Space.Gameplay
         public GameObject()
         {
             _animation = new Animation();
+        }
+
+        public void ResetGameObject()
+        {
+            IsDestroyed = false;
+            Collisions.Clear();
         }
 
         public virtual void Update(World world, Particles particles)

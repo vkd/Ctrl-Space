@@ -1,11 +1,11 @@
-﻿using Ctrl_Space.Gameplay.Weapon;
+﻿using Ctrl_Space.Gameplay.Bullets;
+using Ctrl_Space.Gameplay.Weapon;
 using Ctrl_Space.Graphics;
 using Ctrl_Space.Helpers;
 using Ctrl_Space.Input;
 using Ctrl_Space.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Ctrl_Space.Gameplay.Bullets;
 
 namespace Ctrl_Space.Gameplay
 {
@@ -18,8 +18,12 @@ namespace Ctrl_Space.Gameplay
 
         private float _acceleration = 0f;
 
-        public Ship(Vector2 position, World world)
+        public Ship()
             : base()
+        {
+        }
+
+        public void Reset(Vector2 position, World world)
         {
             _world = world;
 

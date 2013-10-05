@@ -11,10 +11,14 @@ namespace Ctrl_Space.Gameplay
         private float _strafe = 0.0f;
         private float _accel = 0.0f;
 
-        public EnemyShip(Vector2 position, World world, Ship target)
-            : base(position, world)
+        public EnemyShip()
+        {
+        }
+
+        public void Reset(Vector2 position, World world, Ship target)
         {
             _target = target;
+            base.Reset(position, world);
         }
 
         public Vector2 TargetPos;
@@ -86,7 +90,7 @@ namespace Ctrl_Space.Gameplay
             }
 
             Shoot(Input.InputDigitalState.Pressed);
-            
+
             base.Update(world, particles);
         }
 

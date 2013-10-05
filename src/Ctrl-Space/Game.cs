@@ -9,8 +9,10 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Ctrl_Space
 {
-    public class Game : Microsoft.Xna.Framework.Game
+    class Game : Microsoft.Xna.Framework.Game
     {
+        public static readonly GameObjects Objects = new GameObjects();
+
         public static readonly int WorldWidthInClusters = 8;
         public static readonly int WorldHeihgtInClusters = 8;
         public static readonly int ClusterSizeInPowerOfTwo = 8;
@@ -52,13 +54,13 @@ namespace Ctrl_Space
 
             InitializeInputManager();
 
-            _ship = new Ship(new Vector2(WorldWidth / 2, WorldHeight / 2), _world);
-            _enemyShip = new EnemyShip(new Vector2(0.0f, 0.0f), _world, _ship);
+            _ship = Game.Objects.CreateShip(new Vector2(WorldWidth / 2, WorldHeight / 2), _world);
+            _enemyShip = Game.Objects.CreateEnemyShip(new Vector2(0.0f, 0.0f), _world, _ship);
             _camera = new Camera(_ship);
 
-            for (int i = 0; i < 0; ++i)
+            for (int i = 0; i < 500; ++i)
             {
-                Asteroid asteroid = new Asteroid();
+                Asteroid asteroid = Game.Objects.CreateAsteroid();
                 asteroid.Size = (float)(r.NextDouble() * 60 + 20);
                 asteroid.Mass = asteroid.Size;
                 asteroid.Position = new Vector2((float)(r.NextDouble() * WorldWidth), (float)(r.NextDouble() * WorldHeight));
@@ -68,9 +70,9 @@ namespace Ctrl_Space
                 _world.Add(asteroid);
             }
 
-            for (int i = 0; i < 0; ++i)
+            for (int i = 0; i < 100; ++i)
             {
-                SpeedBonus bonus = new SpeedBonus(
+                SpeedBonus bonus = Game.Objects.CreateSpeedBonus(
                     new Vector2((float)(r.NextDouble() * WorldWidth),
                     (float)(r.NextDouble() * WorldHeight)));
                 _world.Add(bonus);
@@ -158,6 +160,8 @@ namespace Ctrl_Space
                 obj.Update(_world, _particles);
                 if (obj.IsDestroyed)
                 {
+                    obj.ResetGameObject();
+                    Game.Objects.ReleaseObject(obj);
                     _world[i] = null;
                 }
             }

@@ -8,6 +8,11 @@ namespace Ctrl_Space.Gameplay.Bullets
     {
         private float State = 1.0f;
 
+        public void Reset()
+        {
+            State = 1.0f;
+        }
+
         public override Texture2D GetTexture()
         {
             return TextureManager.PlasmaBulletTexture;

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Ctrl_Space.Graphics
 {
-    public class FPS : DrawableGameComponent
+    class FPS : DrawableGameComponent
     {
         private SpriteBatch _spriteBatch;
         private SpriteFont _spriteFont;

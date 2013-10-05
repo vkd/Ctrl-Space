@@ -17,12 +17,10 @@ namespace Ctrl_Space.Gameplay.Weapon
             var kickRocket = 20f;
             //var speedRocket = 14.9f;
 
-            PlasmaBullet plasmaBullet = new PlasmaBullet()
-            {
-                Size = 10,
-                Position = Owner.Position + kickRocket * new Vector2(Maf.Sin(Owner.Rotation), -Maf.Cos(Owner.Rotation)),
-                Speed = Owner.Speed + Speed * new Vector2(Maf.Sin(Owner.Rotation), -Maf.Cos(Owner.Rotation))
-            };
+            PlasmaBullet plasmaBullet = Game.Objects.CreatePlasmaBullet();
+            plasmaBullet.Size = 10;
+            plasmaBullet.Position = Owner.Position + kickRocket * new Vector2(Maf.Sin(Owner.Rotation), -Maf.Cos(Owner.Rotation));
+            plasmaBullet.Speed = Owner.Speed + Speed * new Vector2(Maf.Sin(Owner.Rotation), -Maf.Cos(Owner.Rotation));
             world.Add(plasmaBullet);
         }
     }

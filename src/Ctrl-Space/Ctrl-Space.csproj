@@ -18,6 +18,7 @@
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -30,7 +31,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gameplay\EnemyShip.cs" />
+    <Compile Include="Gameplay\GameObjects.cs" />
     <Compile Include="Gameplay\Weapon\PlasmaGun.cs" />
     <Compile Include="Gameplay\Weapon\RocketLauncher.cs" />
     <Compile Include="Gameplay\Weapon\WeaponBase.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Graphics\ParticleParameters.cs" />
     <Compile Include="Graphics\WorldLoop.cs" />
     <Compile Include="Helpers\Lerp.cs" />
+    <Compile Include="Helpers\Pool.cs" />
     <Compile Include="Input\ControlMapping.cs" />
     <Compile Include="Input\DeviceData.cs" />
     <Compile Include="Input\Devices\CharEntered.cs" />
