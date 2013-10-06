@@ -9,6 +9,7 @@ namespace Ctrl_Space.Gameplay.Bullets
     class Rocket : GameObject
     {
         private float State = 1.0f;
+        private Vector2 _acceleration = Vector2.Zero;
 
         public Rocket()
         {
@@ -19,7 +20,8 @@ namespace Ctrl_Space.Gameplay.Bullets
             State = 1.0f;
             Position = position;
             Size = 16;
-            Speed = speed + new Vector2(7f * Maf.Sin(rotation), -7f * Maf.Cos(rotation));
+            _acceleration = .5f * new Vector2(Maf.Sin(rotation), -Maf.Cos(rotation));
+            Speed = speed; // +new Vector2(7f * Maf.Sin(rotation), -7f * Maf.Cos(rotation));
             Rotation = rotation;
         }
 
@@ -30,14 +32,15 @@ namespace Ctrl_Space.Gameplay.Bullets
 
         public override void Update(World world, Particles particles)
         {
+            
+            Speed += _acceleration;
+            particles.Emit(ParticleManager.RocketFire, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), 1f * Chaos.GetFloat() * Chaos.GetVector2() + Speed);
             foreach (var col in Collisions)
                 Collided(col.GameObject, world, particles);
             base.Update(world, particles);
-            Rotation = (float)Math.Atan2(Speed.X, -Speed.Y);
             State -= .01f;
             if (State < 0f)
-                IsDestroyed = true;
-            particles.Emit(ParticleManager.RocketFire, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), 1f * Chaos.GetFloat() * Chaos.GetVector2());
+                IsDestroyed = true; 
         }
 
         public void Collided(GameObject go, World world, Particles particles)
