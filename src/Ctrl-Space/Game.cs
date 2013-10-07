@@ -225,10 +225,7 @@ namespace Ctrl_Space
             Vector2 vectorEnemyShip = new Vector2(rectMap.X + _enemyShip.Position.X / k, rectMap.Y + _enemyShip.Position.Y / k);
 
             _debugGeometry.Prepare(Matrix.Identity);
-            _debugGeometry.DrawLine(new Vector2(rectMap.X, rectMap.Y), new Vector2(rectMap.Right, rectMap.Y), Color.Blue);
-            _debugGeometry.DrawLine(new Vector2(rectMap.Right, rectMap.Y), new Vector2(rectMap.Right, rectMap.Bottom), Color.Blue);
-            _debugGeometry.DrawLine(new Vector2(rectMap.Right, rectMap.Bottom), new Vector2(rectMap.X, rectMap.Bottom), Color.Blue);
-            _debugGeometry.DrawLine(new Vector2(rectMap.X, rectMap.Bottom), new Vector2(rectMap.X, rectMap.Y), Color.Blue);
+            _debugGeometry.DrawRectangle(rectMap, Color.Blue);
             _debugGeometry.DrawCircle(vectorShip, 2, Color.Green);
             _debugGeometry.DrawCircle(vectorEnemyShip, 2, Color.Red);
 

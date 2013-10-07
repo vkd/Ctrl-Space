@@ -22,6 +22,8 @@ namespace Ctrl_Space.Graphics
         private int _circleStart;
         private int _circleCount;
         private int _circleSegments = 64;
+        private int _rectangleStart;
+        private int _rectangleCount;
 
         private VertexBuffer _vertexBuffer;
 
@@ -42,6 +44,15 @@ namespace Ctrl_Space.Graphics
                 vertexData.Add(new VertexPositionColor(new Microsoft.Xna.Framework.Vector3(Maf.Cos(MathHelper.TwoPi * i / _circleSegments), Maf.Sin(MathHelper.TwoPi * i / _circleSegments), 0f), Color.White));
             }
             _circleCount = vertexData.Count - _circleStart - 1;
+
+            // rectangle
+            _rectangleStart = vertexData.Count;
+            vertexData.Add(new VertexPositionColor(new Microsoft.Xna.Framework.Vector3(0f, 0f, 0f), Color.White));
+            vertexData.Add(new VertexPositionColor(new Microsoft.Xna.Framework.Vector3(1f, 0f, 0f), Color.White));
+            vertexData.Add(new VertexPositionColor(new Microsoft.Xna.Framework.Vector3(1f, 1f, 0f), Color.White));
+            vertexData.Add(new VertexPositionColor(new Microsoft.Xna.Framework.Vector3(0f, 1f, 0f), Color.White));
+            vertexData.Add(new VertexPositionColor(new Microsoft.Xna.Framework.Vector3(0f, 0f, 0f), Color.White));
+            _rectangleCount = vertexData.Count - _rectangleStart - 1;
 
             _vertexBuffer = new VertexBuffer(_graphicsDevice, typeof(VertexPositionColor), vertexData.Count, BufferUsage.None);
             _vertexBuffer.SetData<VertexPositionColor>(vertexData.ToArray());
@@ -84,6 +95,17 @@ namespace Ctrl_Space.Graphics
             {
                 pass.Apply();
                 _graphicsDevice.DrawPrimitives(PrimitiveType.LineStrip, _circleStart, _circleCount);
+            }
+        }
+
+        public void DrawRectangle(Rectangle rectangle, Color color)
+        {
+            _effect.World = Matrix.CreateScale(rectangle.Width, rectangle.Height, 0f) * Matrix.CreateTranslation(rectangle.X, rectangle.Y, 0f);
+            _effect.DiffuseColor = color.ToVector3();
+            foreach (var pass in _effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                _graphicsDevice.DrawPrimitives(PrimitiveType.LineStrip, _rectangleStart, _rectangleCount);
             }
         }
     }
