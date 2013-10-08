@@ -39,10 +39,13 @@ namespace Ctrl_Space
         private Song _song;
 
         private DebugGeometry _debugGeometry;
+        public static readonly DebugConsole DebugConsole = new DebugConsole();
 
         public Game()
         {
+            DebugConsole.CurrentLine.Append("Init game...");
             _graphics = new GraphicsDeviceManager(this);
+            DebugConsole.CurrentLine.Append("Init gfx...");
             Content.RootDirectory = "Content";
             _graphics.PreferredBackBufferWidth = 1024;
             _graphics.PreferredBackBufferHeight = 768;
@@ -160,6 +163,7 @@ namespace Ctrl_Space
                 obj.Update(_world, _particles);
                 if (obj.IsDestroyed)
                 {
+                    DebugConsole.CurrentLine.AppendFormat("Object destroyed (Id={0})", obj.Id);
                     obj.ResetGameObject();
                     Game.Objects.ReleaseObject(obj);
                     _world[i] = null;
@@ -240,6 +244,10 @@ namespace Ctrl_Space
             _debugGeometry.DrawLine(((EnemyShip)_enemyShip).Position, ((EnemyShip)_enemyShip).TargetPos, Color.Green);
             _debugGeometry.DrawCircle(_ship.Position, 24f, Color.Blue);
             _debugGeometry.DrawLine(_ship.Position, 32f, _ship.Rotation - MathHelper.PiOver2, Color.Blue);
+
+            _spriteBatch.Begin();
+            DebugConsole.Draw(_spriteBatch);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
