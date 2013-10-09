@@ -86,6 +86,7 @@
     <Compile Include="Graphics\Particle.cs" />
     <Compile Include="Graphics\ParticleManager.cs" />
     <Compile Include="Graphics\ParticlePool.cs" />
+    <Compile Include="Helpers\AwesomeStringBuilder.cs" />
     <Compile Include="Helpers\Chaos.cs" />
     <Compile Include="Graphics\ParticleParameters.cs" />
     <Compile Include="Graphics\WorldLoop.cs" />

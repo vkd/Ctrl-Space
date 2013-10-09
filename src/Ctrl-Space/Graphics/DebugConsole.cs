@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ctrl_Space.Helpers;
 
 namespace Ctrl_Space.Graphics
 {
@@ -10,22 +11,24 @@ namespace Ctrl_Space.Graphics
         private const int _showLinesCount = 32;
         private readonly StringBuilder[] _strings;
         private int _position;
+        private readonly AwesomeStringBuilder _currentString;
 
         public DebugConsole()
         {
+            _currentString = new AwesomeStringBuilder(1024);
             _strings = new StringBuilder[_consoleLinesCount];
             for (int i = 0; i < _consoleLinesCount; i++)
                 _strings[i] = new StringBuilder(64);
         }
 
-        public StringBuilder Current
+        public AwesomeStringBuilder Current
         {
-            get { return _strings[_position]; }
+            get { return _currentString; }
         }
 
-        public StringBuilder CurrentLine
+        public AwesomeStringBuilder CurrentLine
         {
-            get { var s = _strings[_position]; NewLine(); return s; }
+            get { return _currentString; }
         }
 
         public void NewLine()
@@ -34,6 +37,9 @@ namespace Ctrl_Space.Graphics
             if (_position >= _consoleLinesCount)
                 _position = 0;
             _strings[_position].Clear();
+            var c = _currentString.GetStringBuilder();
+            _strings[_position].Append(c);
+            _currentString.Clear();
         }
 
         public void Draw(SpriteBatch spriteBatch)
