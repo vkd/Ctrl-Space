@@ -37,8 +37,7 @@ namespace Ctrl_Space.Graphics
             if (_position >= _consoleLinesCount)
                 _position = 0;
             _strings[_position].Clear();
-            var c = _currentString.GetStringBuilder();
-            _strings[_position].Append(c);
+            _currentString.AppendToStringBuilder(_strings[_position]);
             _currentString.Clear();
         }
 

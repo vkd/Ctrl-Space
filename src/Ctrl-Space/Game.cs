@@ -163,7 +163,7 @@ namespace Ctrl_Space
                 obj.Update(_world, _particles);
                 if (obj.IsDestroyed)
                 {
-                    DebugConsole.CurrentLine.Append("Object destroyed (Id=").Append(obj.Id).Append(")");
+                    DebugConsole.CurrentLine.Append("Object destroyed (Id=").Append(obj.Id.ToString()).Append(")");
                     DebugConsole.NewLine();
                     obj.ResetGameObject();
                     Game.Objects.ReleaseObject(obj);
