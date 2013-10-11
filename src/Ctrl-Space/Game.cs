@@ -43,9 +43,9 @@ namespace Ctrl_Space
 
         public Game()
         {
-            DebugConsole.CurrentLine.Append("Init game...");
+            DebugConsole.Append("Init game...").NewLine();
             _graphics = new GraphicsDeviceManager(this);
-            DebugConsole.CurrentLine.Append("Init gfx...");
+            DebugConsole.Append("Init gfx...").NewLine();
             Content.RootDirectory = "Content";
             _graphics.PreferredBackBufferWidth = 1024;
             _graphics.PreferredBackBufferHeight = 768;
@@ -163,8 +163,7 @@ namespace Ctrl_Space
                 obj.Update(_world, _particles);
                 if (obj.IsDestroyed)
                 {
-                    DebugConsole.CurrentLine.Append("Object destroyed (Id=").Append(obj.Id).Append(")");
-                    DebugConsole.NewLine();
+                    DebugConsole.Append("Object destroyed (Id=").Append(obj.Id).Append(")").NewLine();
                     obj.ResetGameObject();
                     Game.Objects.ReleaseObject(obj);
                     _world[i] = null;

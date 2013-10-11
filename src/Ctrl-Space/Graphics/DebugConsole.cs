@@ -21,24 +21,27 @@ namespace Ctrl_Space.Graphics
                 _strings[i] = new StringBuilder(64);
         }
 
-        public AwesomeStringBuilder Current
+        public DebugConsole Append(string value)
         {
-            get { return _currentString; }
+            _currentString.Append(value);
+            return this;
         }
 
-        public AwesomeStringBuilder CurrentLine
+        public DebugConsole Append(int value)
         {
-            get { return _currentString; }
+            _currentString.Append(value);
+            return this;
         }
 
-        public void NewLine()
+        public DebugConsole NewLine()
         {
-            _position++;
-            if (_position >= _consoleLinesCount)
-                _position = 0;
             _strings[_position].Clear();
             _currentString.AppendToStringBuilder(_strings[_position]);
             _currentString.Clear();
+            _position++;
+            if (_position >= _consoleLinesCount)
+                _position = 0;
+            return this;
         }
 
         public void Draw(SpriteBatch spriteBatch)
