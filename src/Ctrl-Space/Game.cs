@@ -157,19 +157,7 @@ namespace Ctrl_Space
 
             Collisions.Detect(_worldLoop.Clusters, _world);
 
-            for (int i = 0; i < _world.Count; i++)
-            {
-                var obj = _world[i];
-                obj.Update(_world, _particles);
-                if (obj.IsDestroyed)
-                {
-                    DebugConsole.Append("Object destroyed (Id=").Append(obj.Id).Append(")").NewLine();
-                    obj.ResetGameObject();
-                    Game.Objects.ReleaseObject(obj);
-                    _world[i] = null;
-                }
-            }
-            _world.RemoveAll(o => o == null);
+            _world.Update(_world, _particles);
 
             _particles.Update(_world, _particles);
 
