@@ -11,6 +11,8 @@ namespace Ctrl_Space.Gameplay
     {
         public int Id = -1;
         public int HP = 0;
+        public int MaxHP = 100;
+        public bool DrawHP = false;
 
         public Vector2 Position;
         public Vector2 Speed;

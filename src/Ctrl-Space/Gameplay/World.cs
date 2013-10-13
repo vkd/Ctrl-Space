@@ -13,7 +13,6 @@ namespace Ctrl_Space.Gameplay
                 obj.Update(world, particles);
                 if (obj.IsDestroyed)
                 {
-                    Game.DebugConsole.Append("Object destroyed (Id=").Append(obj.Id).Append(")").NewLine();
                     obj.ResetGameObject();
                     Game.Objects.ReleaseObject(obj);
                     this[i] = null;

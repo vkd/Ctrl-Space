@@ -1,6 +1,7 @@
 using System;
 using Ctrl_Space.Gameplay;
 using Ctrl_Space.Graphics;
+using Ctrl_Space.Helpers;
 using Ctrl_Space.Input;
 using Ctrl_Space.Physics;
 using Microsoft.Xna.Framework;
@@ -59,6 +60,10 @@ namespace Ctrl_Space
 
             _ship = Game.Objects.CreateShip(new Vector2(WorldWidth / 2, WorldHeight / 2), _world);
             _enemyShip = Game.Objects.CreateEnemyShip(new Vector2(0.0f, 0.0f), _world, _ship);
+            _ship.HP = 100;
+            _ship.MaxHP = 100;
+            _enemyShip.HP = 100;
+            _enemyShip.MaxHP = 100;
             _camera = new Camera(_ship);
 
             for (int i = 0; i < 500; ++i)
@@ -66,6 +71,8 @@ namespace Ctrl_Space
                 Asteroid asteroid = Game.Objects.CreateAsteroid();
                 asteroid.Size = (float)(r.NextDouble() * 60 + 20);
                 asteroid.Mass = asteroid.Size;
+                asteroid.HP = (int)asteroid.Size / 8;
+                asteroid.MaxHP = (int)asteroid.Size / 8;
                 asteroid.Position = new Vector2((float)(r.NextDouble() * WorldWidth), (float)(r.NextDouble() * WorldHeight));
                 asteroid.Speed = new Vector2((float)(r.NextDouble() * 4 - 2), (float)(r.NextDouble() * 4 - 2));
                 asteroid.Rotation = (float)(r.NextDouble() * 6.28);
@@ -232,6 +239,17 @@ namespace Ctrl_Space
             _debugGeometry.DrawLine(((EnemyShip)_enemyShip).Position, ((EnemyShip)_enemyShip).TargetPos, Color.Green);
             _debugGeometry.DrawCircle(_ship.Position, 24f, Color.Blue);
             _debugGeometry.DrawLine(_ship.Position, 32f, _ship.Rotation - MathHelper.PiOver2, Color.Blue);
+
+            for (int i = 0; i < _world.Count; i++)
+            {
+                if (_world[i].DrawHP)
+                {
+                    Vector2 start = new Vector2(-10f, -_world[i].Size / 2 - 5f);
+                    start = new Vector2(start.X * Maf.Cos(-_ship.Rotation) + start.Y * Maf.Sin(-_ship.Rotation), -start.X * Maf.Sin(-_ship.Rotation) + start.Y * Maf.Cos(-_ship.Rotation));
+                    _debugGeometry.DrawLine(_world[i].Position + start, 20f, _ship.Rotation, Color.Red);
+                    _debugGeometry.DrawLine(_world[i].Position + start, 20f * _world[i].HP / _world[i].MaxHP, _ship.Rotation, Color.Green);
+                }
+            }
 
             _spriteBatch.Begin();
             DebugConsole.Draw(_spriteBatch);

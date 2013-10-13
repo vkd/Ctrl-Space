@@ -25,6 +25,7 @@ namespace Ctrl_Space.Gameplay
 
         public void Reset(Vector2 position, World world)
         {
+            DrawHP = true;
             _world = world;
 
             _weapon = new PlasmaGun(this);
@@ -88,8 +89,21 @@ namespace Ctrl_Space.Gameplay
                 Speed += new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation));
             }
 
-            if (col.GameObject is PlasmaBullet || col.GameObject is Rocket)
-                HP += 1;
+            if (col.GameObject is PlasmaBullet)
+                HP -= 3;
+            if (col.GameObject is Rocket)
+                HP -= 7;
+            if (HP <= 0)
+            {
+                var t = this.GetType();
+                Game.DebugConsole.Append(t == typeof(EnemyShip) ? "Player win!" : "CPU win!").NewLine();
+                for (int i = 0; i < _world.Count; i++)
+                {
+                    var ship = _world[i] as Ship;
+                    if (ship != null)
+                        ship.HP = ship.MaxHP;
+                }
+            }
         }
 
         public override Texture2D GetTexture()

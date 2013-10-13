@@ -8,6 +8,11 @@ namespace Ctrl_Space.Gameplay
 {
     class Asteroid : GameObject
     {
+        public Asteroid()
+        {
+            DrawHP = true;
+        }
+
         public override Texture2D GetTexture()
         {
             return TextureManager.AsteroidTexture;
@@ -28,14 +33,17 @@ namespace Ctrl_Space.Gameplay
             {
                 for (int h = 0; h < 100; h++)
                     particles.Emit(ParticleManager.Explosion, (go.Position + Position) / 2f, 3f * Chaos.GetFloat() * Chaos.GetVector2());
-                Size -= 20f;
-                if (Size < 40f)
+                if (go is Rocket)
+                    HP -= 7;
+                else
+                    HP -= 3;
+                if (HP <= 0)
                     IsDestroyed = true;
             }
 
             if (go is Asteroid)
             {
-                if(collision.Time > 0)
+                if (collision.Time > 0)
                     Response.Apply(this, collision);
                 collision.GameObject.Collisions.RemoveAll(c => c.GameObject == this);
             }
