@@ -16,6 +16,11 @@ namespace Ctrl_Space.Graphics
         {
             _followedObject = followedObject;
         }
+        
+        public GameObject FollowedObject
+        {
+            get { return _followedObject; }
+        }
 
         public Matrix GetTransform()
         {
