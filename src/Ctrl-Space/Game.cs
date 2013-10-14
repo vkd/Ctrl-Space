@@ -190,7 +190,7 @@ namespace Ctrl_Space
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetTransform());
 
-            _worldLoopParticles.PrepareClustersForRender(_ship.Position, 600f);
+            _worldLoopParticles.PrepareClustersForRender(_camera.FollowedObject.Position, 600f);
             while (_worldLoopParticles.FetchClustersForRender())
             {
                 Vector2 offset = new Vector2(_worldLoopParticles.Cluster.ShiftX * WorldWidth, _worldLoopParticles.Cluster.ShiftY * WorldHeight);
@@ -198,7 +198,7 @@ namespace Ctrl_Space
                     obj.Draw(_spriteBatch, gameTime, offset);
             }
 
-            _worldLoop.PrepareClustersForRender(_ship.Position, 600f);
+            _worldLoop.PrepareClustersForRender(_camera.FollowedObject.Position, 600f);
             while (_worldLoop.FetchClustersForRender())
             {
                 Vector2 offset = new Vector2(_worldLoop.Cluster.ShiftX * WorldWidth, _worldLoop.Cluster.ShiftY * WorldHeight);
@@ -245,9 +245,9 @@ namespace Ctrl_Space
                 if (_world[i].DrawHP)
                 {
                     Vector2 start = new Vector2(-10f, -_world[i].Size / 2 - 5f);
-                    start = new Vector2(start.X * Maf.Cos(-_ship.Rotation) + start.Y * Maf.Sin(-_ship.Rotation), -start.X * Maf.Sin(-_ship.Rotation) + start.Y * Maf.Cos(-_ship.Rotation));
-                    _debugGeometry.DrawLine(_world[i].Position + start, 20f, _ship.Rotation, Color.Red);
-                    _debugGeometry.DrawLine(_world[i].Position + start, 20f * _world[i].HP / _world[i].MaxHP, _ship.Rotation, Color.Green);
+                    start = new Vector2(start.X * Maf.Cos(-_camera.FollowedObject.Rotation) + start.Y * Maf.Sin(-_camera.FollowedObject.Rotation), -start.X * Maf.Sin(-_camera.FollowedObject.Rotation) + start.Y * Maf.Cos(-_camera.FollowedObject.Rotation));
+                    _debugGeometry.DrawLine(_world[i].Position + start, 20f, _camera.FollowedObject.Rotation, Color.Red);
+                    _debugGeometry.DrawLine(_world[i].Position + start, 20f * _world[i].HP / _world[i].MaxHP, _camera.FollowedObject.Rotation, Color.Green);
                 }
             }
 
