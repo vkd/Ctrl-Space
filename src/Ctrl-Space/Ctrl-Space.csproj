@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Gameplay\EnemyShip.cs" />
     <Compile Include="Gameplay\GameObjects.cs" />
+    <Compile Include="Gameplay\Medkit.cs" />
     <Compile Include="Gameplay\Weapon\PlasmaGun.cs" />
     <Compile Include="Gameplay\Weapon\RocketLauncher.cs" />
     <Compile Include="Gameplay\Weapon\WeaponBase.cs" />

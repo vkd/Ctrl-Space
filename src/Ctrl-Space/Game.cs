@@ -66,7 +66,7 @@ namespace Ctrl_Space
             _enemyShip.MaxHP = 100;
             _camera = new Camera(_ship);
 
-            for (int i = 0; i < 500; ++i)
+            for (int i = 0; i < 100; ++i)
             {
                 Asteroid asteroid = Game.Objects.CreateAsteroid();
                 asteroid.Size = (float)(r.NextDouble() * 60 + 20);
@@ -80,12 +80,20 @@ namespace Ctrl_Space
                 _world.Add(asteroid);
             }
 
-            for (int i = 0; i < 100; ++i)
+            for (int i = 0; i < 50; ++i)
             {
                 SpeedBonus bonus = Game.Objects.CreateSpeedBonus(
                     new Vector2((float)(r.NextDouble() * WorldWidth),
                     (float)(r.NextDouble() * WorldHeight)));
                 _world.Add(bonus);
+            }
+
+            for (int i = 0; i < 50; ++i)
+            {
+                Medkit medkit = Game.Objects.CreateMedkit(
+                    new Vector2((float)(r.NextDouble() * WorldWidth),
+                    (float)(r.NextDouble() * WorldHeight)));
+                _world.Add(medkit);
             }
 
             _world.Add(_enemyShip);

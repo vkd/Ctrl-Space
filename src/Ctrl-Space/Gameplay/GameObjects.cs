@@ -13,6 +13,7 @@ namespace Ctrl_Space.Gameplay
         private Pool<EnemyShip> _enemyShips = new Pool<EnemyShip>();
         private Pool<Asteroid> _asteroids = new Pool<Asteroid>();
         private Pool<SpeedBonus> _speedBonuses = new Pool<SpeedBonus>();
+        private Pool<Medkit> _medkits = new Pool<Medkit>();
         private Pool<PlasmaBullet> _plasmaBullets = new Pool<PlasmaBullet>();
         private Pool<Rocket> _rockets = new Pool<Rocket>();
 
@@ -71,6 +72,19 @@ namespace Ctrl_Space.Gameplay
         public void ReleaseSpeedBonus(SpeedBonus speedBonus)
         {
             _speedBonuses.PutObject(speedBonus);
+        }
+
+        public Medkit CreateMedkit(Vector2 position)
+        {
+            Medkit medkit = _medkits.GetObject();
+            medkit.Reset(position);
+            AddObject(medkit);
+            return medkit;
+        }
+
+        public void ReleaseMedkit(Medkit medkit)
+        {
+            _medkits.PutObject(medkit);
         }
 
         public PlasmaBullet CreatePlasmaBullet()

@@ -13,6 +13,7 @@ namespace Ctrl_Space.Graphics
         public static Texture2D RocketTexture { get; set; }
         public static Texture2D AsteroidTexture { get; set; }
         public static Texture2D SpeedBonusTexture { get; set; }
+        public static Texture2D MedkitTexture { get; set; }
         public static Texture2D SpaceTexture { get; set; }
         public static Texture2D PlasmaBulletTexture { get; set; }
         public static Texture2D SimpleGlowTexture { get; set; }
@@ -28,6 +29,7 @@ namespace Ctrl_Space.Graphics
             AsteroidTexture = contentManager.Load<Texture2D>("Textures/SpaceObjects/Asteroid");
             RocketTexture = contentManager.Load<Texture2D>("Textures/Weapon/Rocket");
             SpeedBonusTexture = contentManager.Load<Texture2D>("Textures/Bonuses/SpeedBonus");
+            MedkitTexture = contentManager.Load<Texture2D>("Textures/Bonuses/Medkit");
             SpaceTexture = contentManager.Load<Texture2D>("Textures/Space/Space");
             PlasmaBulletTexture = contentManager.Load<Texture2D>("Textures/Weapon/PlasmaBullet");
             SimpleGlowTexture = contentManager.Load<Texture2D>("Textures/Particles/SimpleGlow");

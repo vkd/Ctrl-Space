@@ -88,7 +88,8 @@ namespace Ctrl_Space.Gameplay
             {
                 Speed += new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation));
             }
-
+            if (col.GameObject is Medkit)
+                HP = MaxHP;
             if (col.GameObject is PlasmaBullet)
                 HP -= 3;
             if (col.GameObject is Rocket)
