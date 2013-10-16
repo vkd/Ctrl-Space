@@ -124,6 +124,8 @@ namespace Ctrl_Space.Gameplay
                 ReleaseAsteroid((Asteroid)gameObject);
             else if (type == typeof(SpeedBonus))
                 ReleaseSpeedBonus((SpeedBonus)gameObject);
+            else if (type == typeof(Medkit))
+                ReleaseMedkit((Medkit)gameObject);
             else if (type == typeof(PlasmaBullet))
                 ReleasePlasmaBullet((PlasmaBullet)gameObject);
             else if (type == typeof(Rocket))
