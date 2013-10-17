@@ -13,6 +13,15 @@ namespace Ctrl_Space.Graphics
             Sizes = new float[] { 32f, 0f }
         };
 
+        public static readonly ParticleParameters EngineNitro = new ParticleParameters()
+        {
+            Duration = 20f,
+            TextureGetter = () => TextureManager.SimpleGlowTexture,
+            Colors = new Color[] { Color.Aqua, Color.BlueViolet },
+            Alphas = new float[] { 1f, 0f },
+            Sizes = new float[] { 48f, 0f }
+        };
+
         public static readonly ParticleParameters RocketFire = new ParticleParameters()
         {
             Duration = 20f,

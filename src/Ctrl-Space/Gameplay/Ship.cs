@@ -17,6 +17,8 @@ namespace Ctrl_Space.Gameplay
         protected WeaponBase _weaponAlt;
 
         private float _acceleration = 0f;
+        private float _boost = 1.0f;
+        private int _speedBonusTime = 0;
 
         public Ship()
             : base()
@@ -43,15 +45,15 @@ namespace Ctrl_Space.Gameplay
 
         public void Strafe(float strafeStep)
         {
-            Speed.X += strafeStep * Maf.Cos(Rotation);
-            Speed.Y += strafeStep * Maf.Sin(Rotation);
+            Speed.X += strafeStep * _boost * Maf.Cos(Rotation);
+            Speed.Y += strafeStep * _boost * Maf.Sin(Rotation);
         }
 
         public void SpeedUp(float acceleration)
         {
             _acceleration = acceleration;
-            Speed.X += acceleration * Maf.Sin(Rotation);
-            Speed.Y -= acceleration * Maf.Cos(Rotation);
+            Speed.X += acceleration * _boost * Maf.Sin(Rotation);
+            Speed.Y -= acceleration * _boost * Maf.Cos(Rotation);
         }
 
         public void Shoot(InputDigitalState state)
@@ -76,8 +78,20 @@ namespace Ctrl_Space.Gameplay
             _weaponAlt.Update(_world);
             foreach (var col in Collisions)
                 Collided(col, world, particles);
-            if (_acceleration > 0)
-                particles.Emit(ParticleManager.EngineFire, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), Speed - _acceleration * new Vector2(8f * Maf.Sin(Rotation), -8f * Maf.Cos(Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
+            if (_speedBonusTime > 0)
+            {
+                _boost = 2.0f;
+                _speedBonusTime--;
+                if (_acceleration > 0)
+                    particles.Emit(ParticleManager.EngineNitro, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), Speed - _acceleration * new Vector2(8f * Maf.Sin(Rotation), -8f * Maf.Cos(Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
+            }
+            else
+            {
+                _boost = 1.0f;
+                if (_acceleration > 0)
+                    particles.Emit(ParticleManager.EngineFire, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), Speed - _acceleration * new Vector2(8f * Maf.Sin(Rotation), -8f * Maf.Cos(Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
+            }
+
             base.Update(world, particles);
             Speed *= .99f;
         }
@@ -86,7 +100,7 @@ namespace Ctrl_Space.Gameplay
         {
             if (col.GameObject is SpeedBonus)
             {
-                Speed += new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation));
+                _speedBonusTime = 1000;
             }
             if (col.GameObject is Medkit)
                 HP = MaxHP;
