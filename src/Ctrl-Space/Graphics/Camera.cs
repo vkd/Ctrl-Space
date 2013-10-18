@@ -30,9 +30,9 @@ namespace Ctrl_Space.Graphics
             return translation * rotation * view;
         }
 
-        public Matrix GetParallaxTransform()
+        public Matrix GetParallaxTransform(float ratioX, float ratioY)
         {
-            Matrix translation = Matrix.CreateTranslation(-_followedObject.Position.X / 2 + 512, -_followedObject.Position.Y / 2 + 512, 0f);
+            Matrix translation = Matrix.CreateTranslation(-_followedObject.Position.X / ratioX , -_followedObject.Position.Y / ratioY, 0f);
             Matrix rotation = Matrix.CreateRotationZ(-_followedObject.Rotation);
             Matrix view = Matrix.CreateTranslation(512, 384, 0f);
             return translation * rotation * view;
