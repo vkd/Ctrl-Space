@@ -7,19 +7,27 @@ namespace Ctrl_Space.Graphics
     {
         public int RepeatX = 1;
         public int RepeatY = 1;
+        public float ParallaxFactorX = 2f;
+        public float ParallaxFactorY = 2f;
 
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, camera.GetParallaxTransform(2f, 2f));
-            spriteBatch.Draw(TextureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(TextureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(1024, 0), SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(TextureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(1024, 1024), SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(TextureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(0, 1024), SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(TextureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(-1024, 1024), SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(TextureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(-1024, 0), SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(TextureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(-1024, -1024), SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(TextureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(0, -1024), SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(TextureManager.SpaceTexture, new Rectangle(0, 0, 1024, 1024), null, Color.White, 0.0f, new Vector2(1024, -1024), SpriteEffects.None, 0.0f);
+            var sourceRectangle = new Rectangle(0, 0, TextureManager.SpaceTexture.Width * RepeatX, TextureManager.SpaceTexture.Height * RepeatY);
+            var scale = new Vector2(
+                Game.WorldWidth / TextureManager.SpaceTexture.Width / ParallaxFactorX / RepeatX,
+                Game.WorldHeight / TextureManager.SpaceTexture.Height / ParallaxFactorY / RepeatY);
+            float w = Game.WorldWidth / ParallaxFactorX;
+            float h = Game.WorldHeight / ParallaxFactorY;
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null, null, camera.GetParallaxTransform(ParallaxFactorX, ParallaxFactorY));
+            spriteBatch.Draw(TextureManager.SpaceTexture, new Vector2(0, 0), sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), scale, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(TextureManager.SpaceTexture, new Vector2(w, 0), sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), scale, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(TextureManager.SpaceTexture, new Vector2(w, h), sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), scale, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(TextureManager.SpaceTexture, new Vector2(0, h), sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), scale, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(TextureManager.SpaceTexture, new Vector2(-w, h), sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), scale, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(TextureManager.SpaceTexture, new Vector2(-w, 0), sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), scale, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(TextureManager.SpaceTexture, new Vector2(-w, -h), sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), scale, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(TextureManager.SpaceTexture, new Vector2(0, -h), sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), scale, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(TextureManager.SpaceTexture, new Vector2(w, -h), sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), scale, SpriteEffects.None, 0.0f);
             spriteBatch.End();
         }
     }
