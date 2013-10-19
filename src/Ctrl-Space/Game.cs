@@ -14,8 +14,8 @@ namespace Ctrl_Space
     {
         public static readonly GameObjects Objects = new GameObjects();
 
-        public static readonly int WorldWidthInClusters = 8;
-        public static readonly int WorldHeihgtInClusters = 8;
+        public static readonly int WorldWidthInClusters = 64;
+        public static readonly int WorldHeihgtInClusters = 64;
         public static readonly int ClusterSizeInPowerOfTwo = 8;
         public static readonly int ClusterSize = 1 << ClusterSizeInPowerOfTwo;
         public static readonly int WorldWidth = WorldWidthInClusters * ClusterSize;
@@ -42,7 +42,7 @@ namespace Ctrl_Space
         private DebugGeometry _debugGeometry;
         public static readonly DebugConsole DebugConsole = new DebugConsole();
 
-        public Background _background = new Background();
+        public Background _background = new Background { RepeatX = 8, RepeatY = 8 };
 
         public Game()
         {
