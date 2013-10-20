@@ -27,5 +27,15 @@ namespace Ctrl_Space.Helpers
             float a = GetFloat(MathHelper.TwoPi);
             return new Vector2(Maf.Cos(a), Maf.Sin(a));
         }
+
+        public static Vector2 GetVector2InCircle()
+        {
+            return GetFloat() * GetVector2();
+        }
+
+        public static Vector2 GetVector2InCircle(float radius)
+        {
+            return GetVector2InCircle() * radius;
+        }
     }
 }

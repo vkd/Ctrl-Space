@@ -83,13 +83,13 @@ namespace Ctrl_Space.Gameplay
                 _boost = 2.0f;
                 _speedBonusTime--;
                 if (_acceleration > 0)
-                    particles.Emit(ParticleManager.EngineNitro, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), Speed - _acceleration * new Vector2(8f * Maf.Sin(Rotation), -8f * Maf.Cos(Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
+                    particles.Emit(ParticleManager.EngineNitro, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), Speed - _acceleration * new Vector2(8f * Maf.Sin(Rotation), -8f * Maf.Cos(Rotation)) + Chaos.GetVector2InCircle());
             }
             else
             {
                 _boost = 1.0f;
                 if (_acceleration > 0)
-                    particles.Emit(ParticleManager.EngineFire, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), Speed - _acceleration * new Vector2(8f * Maf.Sin(Rotation), -8f * Maf.Cos(Rotation)) + Chaos.GetFloat() * Chaos.GetVector2());
+                    particles.Emit(ParticleManager.EngineFire, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), Speed - _acceleration * new Vector2(8f * Maf.Sin(Rotation), -8f * Maf.Cos(Rotation)) + Chaos.GetVector2InCircle());
             }
 
             base.Update(world, particles);

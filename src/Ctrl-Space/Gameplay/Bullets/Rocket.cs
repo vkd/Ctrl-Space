@@ -34,7 +34,7 @@ namespace Ctrl_Space.Gameplay.Bullets
         {
             
             Speed += _acceleration;
-            particles.Emit(ParticleManager.RocketFire, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), 1f * Chaos.GetFloat() * Chaos.GetVector2() + Speed);
+            particles.Emit(ParticleManager.RocketFire, Position - new Vector2(10f * Maf.Sin(Rotation), -10f * Maf.Cos(Rotation)), Chaos.GetVector2InCircle() + Speed);
             foreach (var col in Collisions)
                 Collided(col.GameObject, world, particles);
             base.Update(world, particles);

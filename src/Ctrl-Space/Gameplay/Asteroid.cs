@@ -32,7 +32,7 @@ namespace Ctrl_Space.Gameplay
             if (go is Rocket || go is PlasmaBullet)
             {
                 for (int h = 0; h < 100; h++)
-                    particles.Emit(ParticleManager.Explosion, (go.Position + Position) / 2f, 3f * Chaos.GetFloat() * Chaos.GetVector2());
+                    particles.Emit(ParticleManager.Explosion, (go.Position + Position) / 2f, Chaos.GetVector2InCircle(3f));
                 if (go is Rocket)
                     HP -= 7;
                 else
