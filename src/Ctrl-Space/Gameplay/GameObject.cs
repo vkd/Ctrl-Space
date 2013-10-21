@@ -22,13 +22,11 @@ namespace Ctrl_Space.Gameplay
         public float RotationSpeed;
         public Color Color = Color.White;
         public float Alpha = 1f;
-        private Animation _animation;
         public bool IsDestroyed = false;
         public readonly List<Collision> Collisions = new List<Collision>();
 
         public GameObject()
         {
-            _animation = new Animation();
         }
 
         public void ResetGameObject()
@@ -49,9 +47,8 @@ namespace Ctrl_Space.Gameplay
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Vector2 offset)
         {
             var tex = GetTexture();
-            var rect = _animation.GetAnimation(gameTime, tex);
-            var s = Math.Max(rect.Width, rect.Height);
-            spriteBatch.Draw(tex, Position + offset, rect, Color * Alpha, Rotation, new Vector2(rect.Width / 2, rect.Height / 2), Size / s, SpriteEffects.None, 0f);
+            var s = Math.Max(tex.Width, tex.Height);
+            spriteBatch.Draw(tex, Position + offset, null, Color * Alpha, Rotation, new Vector2(tex.Width / 2, tex.Height / 2), Size / s, SpriteEffects.None, 0f);
         }
 
         public abstract Texture2D GetTexture();

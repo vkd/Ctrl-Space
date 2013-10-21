@@ -78,7 +78,6 @@
     <Compile Include="Gameplay\Weapon\PlasmaGun.cs" />
     <Compile Include="Gameplay\Weapon\RocketLauncher.cs" />
     <Compile Include="Gameplay\Weapon\WeaponBase.cs" />
-    <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Gameplay\Asteroid.cs" />
     <Compile Include="Gameplay\SpeedBonus.cs" />
     <Compile Include="Graphics\Background.cs" />
