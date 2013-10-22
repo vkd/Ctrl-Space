@@ -24,7 +24,7 @@ namespace Ctrl_Space.Graphics
             _state = 0f;
         }
 
-        public override Texture2D GetTexture()
+        public override MetaTexture GetTexture()
         {
             return _particleParameters.TextureGetter();
         }

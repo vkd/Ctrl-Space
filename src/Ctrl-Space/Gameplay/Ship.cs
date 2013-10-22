@@ -121,7 +121,7 @@ namespace Ctrl_Space.Gameplay
             }
         }
 
-        public override Texture2D GetTexture()
+        public override MetaTexture GetTexture()
         {
             return TextureManager.ShipOffTexture;
         }

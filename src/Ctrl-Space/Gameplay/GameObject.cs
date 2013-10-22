@@ -47,10 +47,10 @@ namespace Ctrl_Space.Gameplay
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Vector2 offset)
         {
             var tex = GetTexture();
-            var s = Math.Max(tex.Width, tex.Height);
-            spriteBatch.Draw(tex, Position + offset, null, Color * Alpha, Rotation, new Vector2(tex.Width / 2, tex.Height / 2), Size / s, SpriteEffects.None, 0f);
+            var s = Math.Max(tex.Region.Width, tex.Region.Height);
+            spriteBatch.Draw(tex.Texture, Position + offset, tex.Region, Color * Alpha, Rotation, new Vector2(tex.Region.Width / 2, tex.Region.Height / 2), Size / s, SpriteEffects.None, 0f);
         }
 
-        public abstract Texture2D GetTexture();
+        public abstract MetaTexture GetTexture();
     }
 }

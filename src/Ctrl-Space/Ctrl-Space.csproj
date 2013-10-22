@@ -84,6 +84,7 @@
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\DebugConsole.cs" />
     <Compile Include="Graphics\DebugGeometry.cs" />
+    <Compile Include="Graphics\MetaTexture.cs" />
     <Compile Include="Graphics\Particle.cs" />
     <Compile Include="Graphics\ParticleManager.cs" />
     <Compile Include="Graphics\ParticlePool.cs" />

@@ -13,7 +13,7 @@ namespace Ctrl_Space.Gameplay
             DrawHP = true;
         }
 
-        public override Texture2D GetTexture()
+        public override MetaTexture GetTexture()
         {
             return TextureManager.AsteroidTexture;
         }

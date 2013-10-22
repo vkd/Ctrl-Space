@@ -9,7 +9,7 @@ namespace Ctrl_Space.Graphics
         public float[] Sizes;
         public Color[] Colors;
         public float[] Alphas;
-        public Func<Texture2D> TextureGetter;
+        public Func<MetaTexture> TextureGetter;
         public float Duration;
     }
 }

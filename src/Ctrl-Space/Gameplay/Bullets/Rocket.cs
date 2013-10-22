@@ -25,7 +25,7 @@ namespace Ctrl_Space.Gameplay.Bullets
             Rotation = rotation;
         }
 
-        public override Texture2D GetTexture()
+        public override MetaTexture GetTexture()
         {
             return TextureManager.RocketTexture;
         }

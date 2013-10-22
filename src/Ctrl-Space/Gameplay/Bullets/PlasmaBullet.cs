@@ -13,7 +13,7 @@ namespace Ctrl_Space.Gameplay.Bullets
             State = 1.0f;
         }
 
-        public override Texture2D GetTexture()
+        public override MetaTexture GetTexture()
         {
             return TextureManager.PlasmaBulletTexture;
         }

@@ -94,7 +94,7 @@ namespace Ctrl_Space.Gameplay
             base.Update(world, particles);
         }
 
-        public override Microsoft.Xna.Framework.Graphics.Texture2D GetTexture()
+        public override MetaTexture GetTexture()
         {
             return TextureManager.EnemyTexture;
         }
