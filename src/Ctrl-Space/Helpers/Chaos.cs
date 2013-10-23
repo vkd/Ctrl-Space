@@ -37,5 +37,15 @@ namespace Ctrl_Space.Helpers
         {
             return GetVector2InCircle() * radius;
         }
+
+        public static Vector2 GetVector2InRectangle(float width, float height)
+        {
+            return new Vector2(GetFloat(width), GetFloat(height));
+        }
+
+        public static Vector2 GetVector2InCenterRectangle(float halfWidth, float halfHeight)
+        {
+            return new Vector2(GetFloat(-halfWidth, halfWidth), GetFloat(-halfHeight, halfHeight));
+        }
     }
 }

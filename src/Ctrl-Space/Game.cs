@@ -56,8 +56,6 @@ namespace Ctrl_Space
 
         protected override void Initialize()
         {
-            Random r = new Random();
-
             InitializeInputManager();
 
             _ship = Game.Objects.CreateShip(new Vector2(WorldWidth / 2, WorldHeight / 2), _world);
@@ -71,30 +69,26 @@ namespace Ctrl_Space
             for (int i = 0; i < 100; ++i)
             {
                 Asteroid asteroid = Game.Objects.CreateAsteroid();
-                asteroid.Size = (float)(r.NextDouble() * 60 + 20);
+                asteroid.Size = Chaos.GetFloat(20f, 80f);
                 asteroid.Mass = asteroid.Size;
                 asteroid.HP = (int)asteroid.Size / 8;
                 asteroid.MaxHP = (int)asteroid.Size / 8;
-                asteroid.Position = new Vector2((float)(r.NextDouble() * WorldWidth), (float)(r.NextDouble() * WorldHeight));
-                asteroid.Speed = new Vector2((float)(r.NextDouble() * 4 - 2), (float)(r.NextDouble() * 4 - 2));
-                asteroid.Rotation = (float)(r.NextDouble() * 6.28);
-                asteroid.RotationSpeed = (float)(r.NextDouble() * .1 - .05);
+                asteroid.Position = Chaos.GetVector2InRectangle(WorldWidth, WorldHeight);
+                asteroid.Speed = Chaos.GetVector2InCenterRectangle(2f, 2f);
+                asteroid.Rotation = Chaos.GetFloat(MathHelper.TwoPi);
+                asteroid.RotationSpeed = Chaos.GetFloat(-.05f, .05f);
                 _world.Add(asteroid);
             }
 
             for (int i = 0; i < 50; ++i)
             {
-                SpeedBonus bonus = Game.Objects.CreateSpeedBonus(
-                    new Vector2((float)(r.NextDouble() * WorldWidth),
-                    (float)(r.NextDouble() * WorldHeight)));
+                SpeedBonus bonus = Game.Objects.CreateSpeedBonus(Chaos.GetVector2InRectangle(WorldWidth, WorldHeight));
                 _world.Add(bonus);
             }
 
             for (int i = 0; i < 50; ++i)
             {
-                Medkit medkit = Game.Objects.CreateMedkit(
-                    new Vector2((float)(r.NextDouble() * WorldWidth),
-                    (float)(r.NextDouble() * WorldHeight)));
+                Medkit medkit = Game.Objects.CreateMedkit(Chaos.GetVector2InRectangle(WorldWidth, WorldHeight));
                 _world.Add(medkit);
             }
 
