@@ -15,6 +15,7 @@ namespace Ctrl_Space.Gameplay
         private Pool<SpeedBonus> _speedBonuses = new Pool<SpeedBonus>();
         private Pool<Medkit> _medkits = new Pool<Medkit>();
         private Pool<PlasmaBullet> _plasmaBullets = new Pool<PlasmaBullet>();
+        private Pool<SinPlasmaBullet> _sinPlasmaBullets = new Pool<SinPlasmaBullet>();
         private Pool<Rocket> _rockets = new Pool<Rocket>();
 
         public GameObject GetObject(int id)
@@ -100,6 +101,19 @@ namespace Ctrl_Space.Gameplay
             _plasmaBullets.PutObject(plasmaBullet);
         }
 
+        public SinPlasmaBullet CreateSinPlasmaBullet()
+        {
+            SinPlasmaBullet plasmaBullet = _sinPlasmaBullets.GetObject();
+            plasmaBullet.Reset();
+            AddObject(plasmaBullet);
+            return plasmaBullet;
+        }
+
+        public void ReleaseSinPlasmaBullet(SinPlasmaBullet plasmaBullet)
+        {
+            _sinPlasmaBullets.PutObject(plasmaBullet);
+        }
+
         public Rocket CreateRocket(Vector2 position, Vector2 speed, float rotation)
         {
             Rocket rocket = _rockets.GetObject();
@@ -128,6 +142,8 @@ namespace Ctrl_Space.Gameplay
                 ReleaseMedkit((Medkit)gameObject);
             else if (type == typeof(PlasmaBullet))
                 ReleasePlasmaBullet((PlasmaBullet)gameObject);
+            else if (type == typeof(SinPlasmaBullet))
+                ReleaseSinPlasmaBullet((SinPlasmaBullet)gameObject);
             else if (type == typeof(Rocket))
                 ReleaseRocket((Rocket)gameObject);
         }

@@ -72,11 +72,13 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gameplay\Bullets\SinPlasmaBullet.cs" />
     <Compile Include="Gameplay\EnemyShip.cs" />
     <Compile Include="Gameplay\GameObjects.cs" />
     <Compile Include="Gameplay\Medkit.cs" />
     <Compile Include="Gameplay\Weapon\PlasmaGun.cs" />
     <Compile Include="Gameplay\Weapon\RocketLauncher.cs" />
+    <Compile Include="Gameplay\Weapon\SinGun.cs" />
     <Compile Include="Gameplay\Weapon\SprayGun.cs" />
     <Compile Include="Gameplay\Weapon\WeaponBase.cs" />
     <Compile Include="Gameplay\Asteroid.cs" />
