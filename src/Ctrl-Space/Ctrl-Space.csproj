@@ -124,6 +124,7 @@
     <Compile Include="Input\Devices\RawInputDevices.cs" />
     <Compile Include="Input\InputState.cs" />
     <Compile Include="Physics\Collision.cs" />
+    <Compile Include="Physics\CollisionPool.cs" />
     <Compile Include="Physics\Collisions.cs" />
     <Compile Include="Graphics\FPS.cs" />
     <Compile Include="Gameplay\GameObject.cs" />

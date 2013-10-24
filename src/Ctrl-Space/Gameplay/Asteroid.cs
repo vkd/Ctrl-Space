@@ -2,7 +2,6 @@
 using Ctrl_Space.Graphics;
 using Ctrl_Space.Helpers;
 using Ctrl_Space.Physics;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Ctrl_Space.Gameplay
 {
@@ -45,7 +44,13 @@ namespace Ctrl_Space.Gameplay
             {
                 if (collision.Time > 0)
                     Response.Apply(this, collision);
-                collision.GameObject.Collisions.RemoveAll(c => c.GameObject == this);
+                for (int i = 0; i < collision.GameObject.Collisions.Count; i++)
+                    if (collision.GameObject.Collisions[i].GameObject == this)
+                    {
+                        CollisionPool.Instance.PutObject(collision.GameObject.Collisions[i]);
+                        collision.GameObject.Collisions[i] = null;
+                    }
+                collision.GameObject.Collisions.RemoveAll(c => c == null);
             }
         }
     }

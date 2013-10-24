@@ -11,7 +11,11 @@ namespace Ctrl_Space.Physics
         public static void Detect(List<GameObject>[,] clusters, World gameObjects)
         {
             for (int k = 0; k < gameObjects.Count; k++)
+            {
+                for (int i = 0; i < gameObjects[k].Collisions.Count; i++)
+                    CollisionPool.Instance.PutObject(gameObjects[k].Collisions[i]);
                 gameObjects[k].Collisions.Clear();
+            }
 
             int ww = clusters.GetLength(1);
             int wh = clusters.GetLength(0);
@@ -55,8 +59,8 @@ namespace Ctrl_Space.Physics
                                     float ol2 = rr * rr - dx * dx - dy * dy;
                                     if (ol2 > 0)
                                     {
-                                        go1.Collisions.Add(new Collision { GameObject = go2, DepthSquared = ol2, Time = 0f, Delta = new Vector2(dx, dy) });
-                                        go2.Collisions.Add(new Collision { GameObject = go1, DepthSquared = ol2, Time = 0f, Delta = new Vector2(-dx, -dy) });
+                                        go1.Collisions.Add(CollisionPool.Instance.GetObject(go2, ol2, 0f, new Vector2(dx, dy)));
+                                        go2.Collisions.Add(CollisionPool.Instance.GetObject(go1, ol2, 0f, new Vector2(-dx, -dy)));
                                     }
                                 }
                                 else
@@ -76,8 +80,8 @@ namespace Ctrl_Space.Physics
                                     float ol2 = rr * rr - dx * dx - dy * dy;
                                     if (min < 1f && max >= 0f)
                                     {
-                                        go1.Collisions.Add(new Collision { GameObject = go2, DepthSquared = ol2, Time = min, Delta = new Vector2(dx, dy) });
-                                        go2.Collisions.Add(new Collision { GameObject = go1, DepthSquared = ol2, Time = min, Delta = new Vector2(-dx, -dy) });
+                                        go1.Collisions.Add(CollisionPool.Instance.GetObject(go2, ol2, min, new Vector2(dx, dy)));
+                                        go2.Collisions.Add(CollisionPool.Instance.GetObject(go1, ol2, min, new Vector2(-dx, -dy)));
                                     }
                                 }
                             }

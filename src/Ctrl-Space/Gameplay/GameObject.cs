@@ -32,6 +32,8 @@ namespace Ctrl_Space.Gameplay
         public void ResetGameObject()
         {
             IsDestroyed = false;
+            for (int i = 0; i < Collisions.Count; i++)
+                CollisionPool.Instance.PutObject(Collisions[i]);
             Collisions.Clear();
         }
 
