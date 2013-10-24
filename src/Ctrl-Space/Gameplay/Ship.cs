@@ -30,7 +30,7 @@ namespace Ctrl_Space.Gameplay
             DrawHP = true;
             _world = world;
 
-            _weapon = new PlasmaGun(this);
+            _weapon = new SprayGun(this);
             _weaponAlt = new RocketLauncher(this);
 
             Mass = 20f;

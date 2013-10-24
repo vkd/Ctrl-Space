@@ -31,7 +31,8 @@ namespace Ctrl_Space.Gameplay.Bullets
 
         public void Collided(GameObject go, World world, Particles particles)
         {
-            IsDestroyed = true;
+            if (!(go is PlasmaBullet))
+                IsDestroyed = true;
         }
     }
 }
