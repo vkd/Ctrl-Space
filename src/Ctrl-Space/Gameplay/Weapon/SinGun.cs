@@ -11,7 +11,7 @@ namespace Ctrl_Space.Gameplay.Weapon
             : base(owner)
         {
             _shootingInterval = 5;
-            Speed = 5;
+            Speed = 15;
         }
 
         public override void Shoot(World world)
@@ -21,8 +21,8 @@ namespace Ctrl_Space.Gameplay.Weapon
             SinPlasmaBullet plasmaBullet = Game.Objects.CreateSinPlasmaBullet();
             plasmaBullet.Size = 10;
             plasmaBullet.Position = Owner.Position + kickRocket * new Vector2(Maf.Sin(Owner.Rotation), -Maf.Cos(Owner.Rotation));
-            plasmaBullet.Speed = Owner.Speed + Speed * new Vector2(Maf.Sin(Owner.Rotation), -Maf.Cos(Owner.Rotation));
-            plasmaBullet.StartSpeed = plasmaBullet.Speed;
+            plasmaBullet.StartSpeed = Owner.Speed + Speed * new Vector2(Maf.Sin(Owner.Rotation), -Maf.Cos(Owner.Rotation));
+            plasmaBullet.Speed = plasmaBullet.StartSpeed;
             world.Add(plasmaBullet);
         }
     }
