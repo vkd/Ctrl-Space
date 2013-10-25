@@ -25,7 +25,7 @@ namespace Ctrl_Space
         private SpriteBatch _spriteBatch;
 
         private Ship _ship;
-        private Ship _enemyShip;
+        private EnemyShip _enemyShip;
 
         private Camera _camera;
         private InputManager _inputManager = null;
@@ -228,9 +228,9 @@ namespace Ctrl_Space
             _debugGeometry.DrawLine(new Vector2(0f, -WorldHeight), new Vector2(0f, 2f * WorldHeight), Color.Gray);
             _debugGeometry.DrawLine(new Vector2(WorldWidth, -WorldHeight), new Vector2(WorldWidth, 2f * WorldHeight), Color.Gray);
 
-            _debugGeometry.DrawCircle(((EnemyShip)_enemyShip).TargetPos, 24f, Color.Red);
-            _debugGeometry.DrawCircle(((EnemyShip)_enemyShip).Position, 24f, Color.Green);
-            _debugGeometry.DrawLine(((EnemyShip)_enemyShip).Position, ((EnemyShip)_enemyShip).TargetPos, Color.Green);
+            _debugGeometry.DrawCircle(_enemyShip.TargetPos, 24f, Color.Red);
+            _debugGeometry.DrawCircle(_enemyShip.Position, 24f, Color.Green);
+            _debugGeometry.DrawLine(_enemyShip.Position, _enemyShip.TargetPos, Color.Green);
             _debugGeometry.DrawCircle(_ship.Position, 24f, Color.Blue);
             _debugGeometry.DrawLine(_ship.Position, 32f, _ship.Rotation - MathHelper.PiOver2, Color.Blue);
 
