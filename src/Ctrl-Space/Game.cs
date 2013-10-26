@@ -98,7 +98,7 @@ namespace Ctrl_Space
             Components.Add(new FPS(this, "Fonts/Font", Vector2.Zero));
 
             _worldLoopParticles.Clusterize(_particles.ParticlesList);
-            _worldLoop.Clusterize(_world);
+            _worldLoop.Clusterize(_world.GameObjects);
 
             base.Initialize();
         }
@@ -173,7 +173,7 @@ namespace Ctrl_Space
             _particles.Update(_world, _particles);
 
             _worldLoopParticles.Clusterize(_particles.ParticlesList);
-            _worldLoop.Clusterize(_world);
+            _worldLoop.Clusterize(_world.GameObjects);
 
             base.Update(gameTime);
         }
