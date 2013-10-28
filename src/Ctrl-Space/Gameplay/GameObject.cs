@@ -15,7 +15,7 @@ namespace Ctrl_Space.Gameplay
         public bool DrawHP = false;
 
         public Vector2 Position;
-        public Vector2 Speed;
+        private Vector2 _speed;
         public float Size;
         public float Mass = 1f;
         public float Rotation;
@@ -27,6 +27,12 @@ namespace Ctrl_Space.Gameplay
 
         public GameObject()
         {
+        }
+
+        public Vector2 Speed
+        {
+            get { return _speed; }
+            set { _speed = value; }
         }
 
         public void ResetGameObject()

@@ -45,15 +45,13 @@ namespace Ctrl_Space.Gameplay
 
         public void Strafe(float strafeStep)
         {
-            Speed.X += strafeStep * _boost * Maf.Cos(Rotation);
-            Speed.Y += strafeStep * _boost * Maf.Sin(Rotation);
+            Speed += strafeStep * _boost * new Vector2(Maf.Cos(Rotation), Maf.Sin(Rotation));
         }
 
         public void SpeedUp(float acceleration)
         {
             _acceleration = acceleration;
-            Speed.X += acceleration * _boost * Maf.Sin(Rotation);
-            Speed.Y -= acceleration * _boost * Maf.Cos(Rotation);
+            Speed += acceleration * _boost * new Vector2(Maf.Sin(Rotation), -Maf.Cos(Rotation));
         }
 
         public void Shoot(InputDigitalState state)
