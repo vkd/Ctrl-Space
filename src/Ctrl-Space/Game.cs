@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using Ctrl_Space.Gameplay;
 using Ctrl_Space.Graphics;
 using Ctrl_Space.Helpers;
@@ -20,6 +21,10 @@ namespace Ctrl_Space
         public static readonly int ClusterSize = 1 << ClusterSizeInPowerOfTwo;
         public static readonly int WorldWidth = WorldWidthInClusters * ClusterSize;
         public static readonly int WorldHeight = WorldHeihgtInClusters * ClusterSize;
+
+        public static int ResolutionX = 1024;
+        public static int ResolutionY = 768;
+        public static float ViewDistance = 600f;
 
         public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -50,8 +55,20 @@ namespace Ctrl_Space
             _graphics = new GraphicsDeviceManager(this);
             DebugConsole.Append("Init gfx...").NewLine();
             Content.RootDirectory = "Content";
-            _graphics.PreferredBackBufferWidth = 1024;
-            _graphics.PreferredBackBufferHeight = 768;
+            DebugConsole.Append("Loading config...").NewLine();
+            _graphics.IsFullScreen = ConfigurationManager.AppSettings["IsFullScreen"].ToLower() == "true";
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["Resolution"]))
+            {
+                var t = ConfigurationManager.AppSettings["Resolution"].Split('x');
+                if (t.Length == 2)
+                {
+                    int.TryParse(t[0], out ResolutionX);
+                    int.TryParse(t[1], out ResolutionY);
+                }
+            }
+            _graphics.PreferredBackBufferWidth = ResolutionX;
+            _graphics.PreferredBackBufferHeight = ResolutionY;
+            ViewDistance = Maf.Sqrt((ResolutionX * ResolutionX + ResolutionY * ResolutionY) * 0.3f);
         }
 
         protected override void Initialize()
@@ -184,7 +201,7 @@ namespace Ctrl_Space
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetTransform());
 
-            _worldLoopParticles.PrepareClustersForRender(_camera.FollowedObject.Position, 600f);
+            _worldLoopParticles.PrepareClustersForRender(_camera.FollowedObject.Position, ViewDistance);
             while (_worldLoopParticles.FetchClustersForRender())
             {
                 Vector2 offset = new Vector2(_worldLoopParticles.Cluster.ShiftX * WorldWidth, _worldLoopParticles.Cluster.ShiftY * WorldHeight);
@@ -192,7 +209,7 @@ namespace Ctrl_Space
                     obj.Draw(_spriteBatch, gameTime, offset);
             }
 
-            _worldLoop.PrepareClustersForRender(_camera.FollowedObject.Position, 600f);
+            _worldLoop.PrepareClustersForRender(_camera.FollowedObject.Position, ViewDistance);
             while (_worldLoop.FetchClustersForRender())
             {
                 Vector2 offset = new Vector2(_worldLoop.Cluster.ShiftX * WorldWidth, _worldLoop.Cluster.ShiftY * WorldHeight);

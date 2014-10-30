@@ -16,7 +16,7 @@ namespace Ctrl_Space.Graphics
         {
             _followedObject = followedObject;
         }
-        
+
         public GameObject FollowedObject
         {
             get { return _followedObject; }
@@ -26,15 +26,15 @@ namespace Ctrl_Space.Graphics
         {
             Matrix translation = Matrix.CreateTranslation(-_followedObject.Position.X, -_followedObject.Position.Y, 0f);
             Matrix rotation = Matrix.CreateRotationZ(-_followedObject.Rotation);
-            Matrix view = Matrix.CreateTranslation(512, 384, 0f);
+            Matrix view = Matrix.CreateTranslation(Game.ResolutionX / 2, Game.ResolutionY / 2, 0f);
             return translation * rotation * view;
         }
 
         public Matrix GetParallaxTransform(float ratioX, float ratioY)
         {
-            Matrix translation = Matrix.CreateTranslation(-_followedObject.Position.X / ratioX , -_followedObject.Position.Y / ratioY, 0f);
+            Matrix translation = Matrix.CreateTranslation(-_followedObject.Position.X / ratioX, -_followedObject.Position.Y / ratioY, 0f);
             Matrix rotation = Matrix.CreateRotationZ(-_followedObject.Rotation);
-            Matrix view = Matrix.CreateTranslation(512, 384, 0f);
+            Matrix view = Matrix.CreateTranslation(Game.ResolutionX / 2, Game.ResolutionY / 2, 0f);
             return translation * rotation * view;
         }
     }
