@@ -112,7 +112,7 @@ namespace Ctrl_Space
             _world.Add(_enemyShip);
             _world.Add(_ship);
 
-            Components.Add(new FPS(this, "Fonts/Font", Vector2.Zero));
+            Components.Add(new FPS(this, Vector2.Zero));
 
             _worldLoopParticles.Clusterize(_particles.ParticlesList);
             _worldLoop.Clusterize(_world.GameObjects);

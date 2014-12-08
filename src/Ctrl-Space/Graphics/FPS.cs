@@ -6,25 +6,21 @@ namespace Ctrl_Space.Graphics
     class FPS : DrawableGameComponent
     {
         private SpriteBatch _spriteBatch;
-        private SpriteFont _spriteFont;
-        private string _spriteFontName;
         private Vector2 _position;
         private int _fps = 0;
         private int _currentFps = 0;
         private double _timeFromLastFrame = 0;
         private bool _isVisible = false;
 
-        public FPS(Game game, string fontName, Vector2 position)
+        public FPS(Game game, Vector2 position)
             : base(game)
         {
-            _spriteFontName = fontName;
             _position = position;
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _spriteFont = Game.Content.Load<SpriteFont>(_spriteFontName); 
         }
 
         public override void Initialize()
@@ -54,11 +50,11 @@ namespace Ctrl_Space.Graphics
             {
                 _currentFps++;
                 _spriteBatch.Begin();
-                _spriteBatch.DrawString(_spriteFont, "FPS: " + _fps, _position + Vector2.One, Color.Black);
+                _spriteBatch.DrawString(TextureManager.Font, "FPS: " + _fps, _position + Vector2.One, Color.Black);
                 if (_fps > 10)
-                    _spriteBatch.DrawString(_spriteFont, "FPS: " + _fps, _position, Color.White);
+                    _spriteBatch.DrawString(TextureManager.Font, "FPS: " + _fps, _position, Color.White);
                 else
-                    _spriteBatch.DrawString(_spriteFont, "FPS: " + _fps, _position, Color.Red); _spriteBatch.End();
+                    _spriteBatch.DrawString(TextureManager.Font, "FPS: " + _fps, _position, Color.Red); _spriteBatch.End();
             }
         }
     }
