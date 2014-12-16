@@ -1,5 +1,7 @@
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
 namespace Ctrl_Space.Graphics
 {
@@ -19,21 +21,21 @@ namespace Ctrl_Space.Graphics
         public static MetaTexture SimpleGlowTexture { get; private set; }
         public static MetaTexture EnemyTexture { get; private set; }
 
-        public static void LoadTextures(ContentManager contentManager)
+        public static void LoadTextures(GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
             Font = contentManager.Load<SpriteFont>("Fonts/Font");
 
-            var shipTexture = contentManager.Load<Texture2D>("Textures/Ship/Ship");
-            var shipAnimation = contentManager.Load<Texture2D>("Textures/Ship/ShipAnimation");
-            var shipOffTexture = contentManager.Load<Texture2D>("Textures/Ship/Ship-off");
-            var asteroidTexture = contentManager.Load<Texture2D>("Textures/SpaceObjects/Asteroid");
-            var rocketTexture = contentManager.Load<Texture2D>("Textures/Weapon/Rocket");
-            var speedBonusTexture = contentManager.Load<Texture2D>("Textures/Bonuses/SpeedBonus");
-            var medkitTexture = contentManager.Load<Texture2D>("Textures/Bonuses/Medkit");
-            var spaceTexture = contentManager.Load<Texture2D>("Textures/Space/Space");
-            var plasmaBulletTexture = contentManager.Load<Texture2D>("Textures/Weapon/PlasmaBullet");
-            var simpleGlowTexture = contentManager.Load<Texture2D>("Textures/Particles/SimpleGlow");
-            var enemyTexture = contentManager.Load<Texture2D>("Textures/Ship/Ship2");
+            var shipTexture = LoadTexture(graphicsDevice, "Textures/Ship/Ship.png");
+            var shipAnimation = LoadTexture(graphicsDevice, "Textures/Ship/ShipAnimation.png");
+            var shipOffTexture = LoadTexture(graphicsDevice, "Textures/Ship/Ship-off.png");
+            var asteroidTexture = LoadTexture(graphicsDevice, "Textures/SpaceObjects/Asteroid.png");
+            var rocketTexture = LoadTexture(graphicsDevice, "Textures/Weapon/Rocket.png");
+            var speedBonusTexture = LoadTexture(graphicsDevice, "Textures/Bonuses/SpeedBonus.png");
+            var medkitTexture = LoadTexture(graphicsDevice, "Textures/Bonuses/Medkit.png");
+            var spaceTexture = LoadTexture(graphicsDevice, "Textures/Space/Space.jpg");
+            var plasmaBulletTexture = LoadTexture(graphicsDevice, "Textures/Weapon/PlasmaBullet.png");
+            var simpleGlowTexture = LoadTexture(graphicsDevice, "Textures/Particles/SimpleGlow.png");
+            var enemyTexture = LoadTexture(graphicsDevice, "Textures/Ship/Ship2.png");
 
             ShipTexture = new MetaTexture(shipTexture);
             ShipAnimation = new MetaTexture(shipAnimation);
@@ -46,6 +48,26 @@ namespace Ctrl_Space.Graphics
             PlasmaBulletTexture = new MetaTexture(plasmaBulletTexture);
             SimpleGlowTexture = new MetaTexture(simpleGlowTexture);
             EnemyTexture = new MetaTexture(enemyTexture);
+        }
+
+        public static Texture2D LoadTexture(GraphicsDevice graphicsDevice, string name)
+        {
+            using (var fs = new FileStream("Content\\" + name, FileMode.Open, FileAccess.Read))
+            {
+                return FromStream(graphicsDevice, fs);
+            }
+        }
+
+        // premultiplied alpha dirty workaround
+        public static Texture2D FromStream(GraphicsDevice graphicsDevice, Stream stream)
+        {
+            Texture2D texture = Texture2D.FromStream(graphicsDevice, stream);
+            Color[] data = new Color[texture.Width * texture.Height];
+            texture.GetData(data);
+            for (int i = 0; i != data.Length; ++i)
+                data[i] = Color.FromNonPremultiplied(data[i].ToVector4());
+            texture.SetData(data);
+            return texture;
         }
     }
 }

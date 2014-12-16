@@ -54,7 +54,8 @@ namespace Ctrl_Space.Graphics
                 if (_fps > 10)
                     _spriteBatch.DrawString(TextureManager.Font, "FPS: " + _fps, _position, Color.White);
                 else
-                    _spriteBatch.DrawString(TextureManager.Font, "FPS: " + _fps, _position, Color.Red); _spriteBatch.End();
+                    _spriteBatch.DrawString(TextureManager.Font, "FPS: " + _fps, _position, Color.Red);
+                _spriteBatch.End();
             }
         }
     }

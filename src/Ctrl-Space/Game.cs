@@ -68,11 +68,15 @@ namespace Ctrl_Space
             }
             _graphics.PreferredBackBufferWidth = ResolutionX;
             _graphics.PreferredBackBufferHeight = ResolutionY;
+            _graphics.ApplyChanges();
             ViewDistance = Maf.Sqrt((ResolutionX * ResolutionX + ResolutionY * ResolutionY) * 0.3f);
         }
 
         protected override void Initialize()
         {
+            _graphics.IsFullScreen = ConfigurationManager.AppSettings["IsFullScreen"].ToLower() == "true";
+            _graphics.ApplyChanges();
+
             InitializeInputManager();
 
             _ship = Game.Objects.CreateShip(new Vector2(WorldWidth / 2, WorldHeight / 2), _world);
@@ -170,8 +174,8 @@ namespace Ctrl_Space
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _debugGeometry = new DebugGeometry(GraphicsDevice);
-            TextureManager.LoadTextures(Content);
-            _song = Content.Load<Song>("Music/SOUP - Q7");
+            TextureManager.LoadTextures(GraphicsDevice, Content);
+            //_song = Content.Load<Song>("Music/SOUP - Q7");
         }
 
         protected override void UnloadContent()

@@ -1,18 +1,25 @@
-namespace Ctrl_Space
+#region Using Statements
+using Ctrl_Space;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+#endregion
+
+namespace MonogameTest
 {
-#if WINDOWS || XBOX
-    static class Program
+    /// <summary>
+    /// The main class.
+    /// </summary>
+    public static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main(string[] args)
+        [STAThread]
+        static void Main()
         {
-            using (Game game = new Game())
-            {
+            using (var game = new Game())
                 game.Run();
-            }
         }
     }
-#endif
 }
