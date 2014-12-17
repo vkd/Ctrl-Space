@@ -75,6 +75,7 @@
     <Compile Include="Graphics\ParticleParameters.cs" />
     <Compile Include="Graphics\ParticlePool.cs" />
     <Compile Include="Graphics\Particles.cs" />
+    <Compile Include="Graphics\SimpleFont.cs" />
     <Compile Include="Graphics\TextureManager.cs" />
     <Compile Include="Graphics\WorldLoop.cs" />
     <Compile Include="Helpers\AwesomeStringBuilder.cs" />
@@ -114,6 +115,9 @@
     <Compile Include="Physics\Response.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Content\Fonts\Font.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SDL.dll" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

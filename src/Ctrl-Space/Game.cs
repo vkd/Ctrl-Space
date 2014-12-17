@@ -1,5 +1,3 @@
-using System;
-using System.Configuration;
 using Ctrl_Space.Gameplay;
 using Ctrl_Space.Graphics;
 using Ctrl_Space.Helpers;
@@ -8,6 +6,9 @@ using Ctrl_Space.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using MonogameTest.Graphics;
+using System;
+using System.Configuration;
 
 namespace Ctrl_Space
 {
@@ -48,6 +49,8 @@ namespace Ctrl_Space
         public static readonly DebugConsole DebugConsole = new DebugConsole();
 
         public Background _background = new Background { RepeatX = 8, RepeatY = 8 };
+
+        public SimpleFont _font = new SimpleFont();
 
         public Game()
         {
@@ -224,9 +227,9 @@ namespace Ctrl_Space
             _spriteBatch.End();
 
             _spriteBatch.Begin();
-            _spriteBatch.DrawString(TextureManager.Font, "Score:", new Vector2(10, 0), Color.White);
-            _spriteBatch.DrawString(TextureManager.Font, "Ship - " + _ship.HP, new Vector2(10, 15), Color.Green);
-            _spriteBatch.DrawString(TextureManager.Font, "EnemyShip - " + _enemyShip.HP, new Vector2(10, 30), Color.Red);
+            _font.DrawText(_spriteBatch, "Score:", new Vector2(16, 16), Color.White);
+            _font.DrawText(_spriteBatch, "Ship - " + _ship.HP, new Vector2(16, 32), Color.Green);
+            _font.DrawText(_spriteBatch, "EnemyShip - " + _enemyShip.HP, new Vector2(16, 48), Color.Red);
             _spriteBatch.End();
 
             // ======= DEBUG INFO =======

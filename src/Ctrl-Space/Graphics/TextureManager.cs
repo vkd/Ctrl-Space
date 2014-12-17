@@ -20,6 +20,7 @@ namespace Ctrl_Space.Graphics
         public static MetaTexture PlasmaBulletTexture { get; private set; }
         public static MetaTexture SimpleGlowTexture { get; private set; }
         public static MetaTexture EnemyTexture { get; private set; }
+        public static MetaTexture[] FontTexture { get; private set; }
 
         public static void LoadTextures(GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
@@ -36,6 +37,7 @@ namespace Ctrl_Space.Graphics
             var plasmaBulletTexture = LoadTexture(graphicsDevice, "Textures/Weapon/PlasmaBullet.png");
             var simpleGlowTexture = LoadTexture(graphicsDevice, "Textures/Particles/SimpleGlow.png");
             var enemyTexture = LoadTexture(graphicsDevice, "Textures/Ship/Ship2.png");
+            var fontTexture = LoadTexture(graphicsDevice, "Fonts/Font.png");
 
             ShipTexture = new MetaTexture(shipTexture);
             ShipAnimation = new MetaTexture(shipAnimation);
@@ -48,6 +50,10 @@ namespace Ctrl_Space.Graphics
             PlasmaBulletTexture = new MetaTexture(plasmaBulletTexture);
             SimpleGlowTexture = new MetaTexture(simpleGlowTexture);
             EnemyTexture = new MetaTexture(enemyTexture);
+            FontTexture = new MetaTexture[256];
+            for (int j = 0; j < 16; j++)
+                for (int i = 0; i < 16; i++)
+                    FontTexture[j * 16 + i] = new MetaTexture(fontTexture, new Rectangle(i * 16, j * 16, 16, 16));
         }
 
         public static Texture2D LoadTexture(GraphicsDevice graphicsDevice, string name)
