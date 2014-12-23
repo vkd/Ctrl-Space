@@ -115,6 +115,9 @@
     <Compile Include="Physics\Response.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Content\Fonts\SDFFont.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Fonts\Font.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -128,9 +131,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Content Include="Content\Fonts\Font.spritefont">
+    <None Include="Content\Effects\SDF.mgfxo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="Content\Fonts\Font.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

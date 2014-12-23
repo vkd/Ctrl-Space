@@ -9,6 +9,8 @@ namespace Ctrl_Space.Graphics
     {
         public static SpriteFont Font { get; private set; }
 
+        public static Effect SDFFontEffect { get; private set; }
+
         public static MetaTexture ShipTexture { get; private set; }
         public static MetaTexture ShipAnimation { get; private set; }
         public static MetaTexture ShipOffTexture { get; private set; }
@@ -26,6 +28,8 @@ namespace Ctrl_Space.Graphics
         {
             Font = contentManager.Load<SpriteFont>("Fonts/Font");
 
+            SDFFontEffect = LoadEffect(graphicsDevice, "Effects/SDF.mgfxo");
+
             var shipTexture = LoadTexture(graphicsDevice, "Textures/Ship/Ship.png");
             var shipAnimation = LoadTexture(graphicsDevice, "Textures/Ship/ShipAnimation.png");
             var shipOffTexture = LoadTexture(graphicsDevice, "Textures/Ship/Ship-off.png");
@@ -37,7 +41,7 @@ namespace Ctrl_Space.Graphics
             var plasmaBulletTexture = LoadTexture(graphicsDevice, "Textures/Weapon/PlasmaBullet.png");
             var simpleGlowTexture = LoadTexture(graphicsDevice, "Textures/Particles/SimpleGlow.png");
             var enemyTexture = LoadTexture(graphicsDevice, "Textures/Ship/Ship2.png");
-            var fontTexture = LoadTexture(graphicsDevice, "Fonts/Font.png");
+            var fontTexture = LoadTexture(graphicsDevice, "Fonts/SDFFont.png");
 
             ShipTexture = new MetaTexture(shipTexture);
             ShipAnimation = new MetaTexture(shipAnimation);
@@ -51,9 +55,10 @@ namespace Ctrl_Space.Graphics
             SimpleGlowTexture = new MetaTexture(simpleGlowTexture);
             EnemyTexture = new MetaTexture(enemyTexture);
             FontTexture = new MetaTexture[256];
+            int fontSize = fontTexture.Width / 16;
             for (int j = 0; j < 16; j++)
                 for (int i = 0; i < 16; i++)
-                    FontTexture[j * 16 + i] = new MetaTexture(fontTexture, new Rectangle(i * 16, j * 16, 16, 16));
+                    FontTexture[j * 16 + i] = new MetaTexture(fontTexture, new Rectangle(i * fontSize, j * fontSize, fontSize, fontSize));
         }
 
         public static Texture2D LoadTexture(GraphicsDevice graphicsDevice, string name)
@@ -74,6 +79,16 @@ namespace Ctrl_Space.Graphics
                 data[i] = Color.FromNonPremultiplied(data[i].ToVector4());
             texture.SetData(data);
             return texture;
+        }
+
+        public static Effect LoadEffect(GraphicsDevice graphicsDevice, string name)
+        {
+            using (var fs = new FileStream("Content\\" + name, FileMode.Open, FileAccess.Read))
+            {
+                var data = new byte[fs.Length];
+                fs.Read(data, 0, data.Length);
+                return new Effect(graphicsDevice, data);
+            }
         }
     }
 }

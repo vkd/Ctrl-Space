@@ -9,13 +9,13 @@ namespace MonogameTest.Graphics
     {
         public void DrawText(SpriteBatch spriteBatch, string value, Vector2 position, Color color)
         {
-            var data = Encoding.ASCII.GetBytes(value);
+            var data = Encoding.GetEncoding(1251).GetBytes(value);
             foreach (var c in data)
             {
                 var mt = TextureManager.FontTexture[c];
                 spriteBatch.Draw(mt.Texture, position + Vector2.One, mt.Region, Color.Black);
-                spriteBatch.Draw(mt.Texture, position, mt.Region, color);
-                position.X += 16;
+                //spriteBatch.Draw(mt.Texture, position, mt.Region, color);
+                position.X += mt.Region.Width;
             }
         }
     }
