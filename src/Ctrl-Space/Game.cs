@@ -227,9 +227,9 @@ namespace Ctrl_Space
             _spriteBatch.End();
 
             _spriteBatch.Begin(0, null, null, null, null, TextureManager.SDFFontEffect);
-            _font.DrawText(_spriteBatch, "Score:", new Vector2(16, 16), Color.White);
-            _font.DrawText(_spriteBatch, "Ship - " + _ship.HP, new Vector2(16, 48), Color.Green);
-            _font.DrawText(_spriteBatch, "EnemyShip - " + _enemyShip.HP, new Vector2(16, 80), Color.Red);
+            _font.DrawText(_spriteBatch, "Score:", 28f, new Vector2(16, 16), Color.White);
+            _font.DrawText(_spriteBatch, "Ship - " + _ship.HP, 28f, new Vector2(16, 48), Color.Green);
+            _font.DrawText(_spriteBatch, "EnemyShip - " + _enemyShip.HP, 28f, new Vector2(16, 80), Color.Red);
             _spriteBatch.End();
 
             // ======= DEBUG INFO =======
@@ -269,8 +269,8 @@ namespace Ctrl_Space
                 }
             }
 
-            _spriteBatch.Begin();
-            DebugConsole.Draw(_spriteBatch);
+            _spriteBatch.Begin(0, null, null, null, null, TextureManager.SDFFontEffect);
+            DebugConsole.Draw(_spriteBatch, _font);
             _spriteBatch.End();
 
             base.Draw(gameTime);

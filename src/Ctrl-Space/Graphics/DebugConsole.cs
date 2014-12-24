@@ -1,7 +1,8 @@
-﻿using System.Text;
+﻿using Ctrl_Space.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Ctrl_Space.Helpers;
+using MonogameTest.Graphics;
+using System.Text;
 
 namespace Ctrl_Space.Graphics
 {
@@ -44,15 +45,16 @@ namespace Ctrl_Space.Graphics
             return this;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, SimpleFont font)
         {
             int pos = _position - _showLinesCount;
             if (pos < 0)
                 pos += _consoleLinesCount;
             for (int i = 0; i < _showLinesCount; i++)
             {
-                spriteBatch.DrawString(TextureManager.Font, _strings[pos], new Vector2(11f, 14f * i + 51f), Color.Black);
-                spriteBatch.DrawString(TextureManager.Font, _strings[pos], new Vector2(10f, 14f * i + 50f), Color.Gray);
+                font.DrawText(spriteBatch, _strings[pos].ToString(), 14f, new Vector2(10f, 14f * i + 50f), Color.Gray);
+                //spriteBatch.DrawString(TextureManager.Font, _strings[pos], new Vector2(11f, 14f * i + 51f), Color.Black);
+                //spriteBatch.DrawString(TextureManager.Font, _strings[pos], new Vector2(10f, 14f * i + 50f), Color.Gray);
                 pos++;
                 if (pos >= _consoleLinesCount)
                     pos = 0;
