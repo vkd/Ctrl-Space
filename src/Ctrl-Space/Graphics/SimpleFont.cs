@@ -18,7 +18,7 @@ namespace MonogameTest.Graphics
             foreach (var c in data)
             {
                 var mt = TextureManager.FontTexture[c];
-                //spriteBatch.Draw(mt.Texture, position + Vector2.One, mt.Region, Color.Black);
+                spriteBatch.Draw(mt.Texture, position + Vector2.One, mt.Region, Color.Black, 0f, Vector2.Zero, size / mt.Region.Width, SpriteEffects.None, 0f);
                 spriteBatch.Draw(mt.Texture, position, mt.Region, color, 0f, Vector2.Zero, size / mt.Region.Width, SpriteEffects.None, 0f);
                 position.X += size;
             }
