@@ -52,6 +52,13 @@ namespace Ctrl_Space
 
         public SimpleFont _font = new SimpleFont();
 
+        public bool IsStartTimer = true;
+        public int CountStartTimer = 3;
+        public TimeSpan LastTimeSpan = new TimeSpan(0);
+
+        public static int PlayerWins = 0;
+        public static int EnemyShipWins = 0;
+
         public Game()
         {
             DebugConsole.Append("Init game...").NewLine();
@@ -83,7 +90,7 @@ namespace Ctrl_Space
             InitializeInputManager();
 
             _ship = Game.Objects.CreateShip(new Vector2(WorldWidth / 2, WorldHeight / 2), _world);
-            _enemyShip = Game.Objects.CreateEnemyShip(new Vector2(0.0f, 0.0f), _world, _ship);
+            _enemyShip = Game.Objects.CreateEnemyShip(new Vector2(Chaos.GetFloat(0, WorldWidth), Chaos.GetFloat(0, WorldHeight)), _world, _ship);
             _ship.HP = 100;
             _ship.MaxHP = 100;
             _enemyShip.HP = 100;
@@ -104,13 +111,13 @@ namespace Ctrl_Space
                 _world.Add(asteroid);
             }
 
-            for (int i = 0; i < 50; ++i)
+            for (int i = 0; i < 150; ++i)
             {
                 SpeedBonus bonus = Game.Objects.CreateSpeedBonus(Chaos.GetVector2InRectangle(WorldWidth, WorldHeight));
                 _world.Add(bonus);
             }
 
-            for (int i = 0; i < 50; ++i)
+            for (int i = 0; i < 150; ++i)
             {
                 Medkit medkit = Game.Objects.CreateMedkit(Chaos.GetVector2InRectangle(WorldWidth, WorldHeight));
                 _world.Add(medkit);
@@ -159,6 +166,8 @@ namespace Ctrl_Space
             _inputManager.SecondaryWeapon += e => _ship.ShootAlt(e.State);
 
             _inputManager.Rotate += e => _ship.Rotate(e.Value * 0.1f);
+
+            _inputManager.GoTimer += () => IsStartTimer = false;
         }
 
         void Game_Activated(object sender, EventArgs e)
@@ -188,13 +197,30 @@ namespace Ctrl_Space
 
         protected override void Update(GameTime gameTime)
         {
+            if (IsStartTimer)
+            {
+                if (LastTimeSpan.TotalMilliseconds + 1000 < gameTime.TotalGameTime.TotalMilliseconds)
+                {
+                    LastTimeSpan = gameTime.TotalGameTime;
+                    CountStartTimer -= 1;
+                    if (CountStartTimer < 0)
+                    {
+                        IsStartTimer = false;
+                    }
+                }
+            }
+
             _inputManager.Update(gameTime);
 
-            Collisions.Detect(_worldLoop.Clusters, _world);
+            if (!IsStartTimer)
+            {
+                Collisions.Detect(_worldLoop.Clusters, _world);
 
-            _world.Update(_world, _particles);
+                _world.Update(_world, _particles);
 
-            _particles.Update(_world, _particles);
+                _particles.Update(_world, _particles);
+            }
+
 
             _worldLoopParticles.Clusterize(_particles.ParticlesList);
             _worldLoop.Clusterize(_world.GameObjects);
@@ -227,9 +253,17 @@ namespace Ctrl_Space
             _spriteBatch.End();
 
             _spriteBatch.Begin(0, null, null, null, null, TextureManager.SDFFontEffect);
-            _font.DrawText(_spriteBatch, "Score:", 28f, new Vector2(16, 16), Color.White);
+            if (IsStartTimer)
+            {
+                _font.DrawText(_spriteBatch, CountStartTimer.ToString(), 128f, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), Color.White);
+            }
+            _font.DrawText(_spriteBatch, "HP:", 28f, new Vector2(16, 16), Color.White);
             _font.DrawText(_spriteBatch, "Ship - " + _ship.HP, 28f, new Vector2(16, 48), Color.Green);
             _font.DrawText(_spriteBatch, "EnemyShip - " + _enemyShip.HP, 28f, new Vector2(16, 80), Color.Red);
+
+            _font.DrawText(_spriteBatch, "Score:", 28f, new Vector2(16, 116), Color.White);
+            _font.DrawText(_spriteBatch, "Ship - " + PlayerWins, 28f, new Vector2(16, 148), Color.Green);
+            _font.DrawText(_spriteBatch, "EnemyShip - " + EnemyShipWins, 28f, new Vector2(16, 180), Color.Red);
             _spriteBatch.End();
 
             // ======= DEBUG INFO =======
@@ -241,9 +275,13 @@ namespace Ctrl_Space
             Vector2 vectorShip = new Vector2(rectMap.X + _ship.Position.X / k, rectMap.Y + _ship.Position.Y / k);
             Vector2 vectorEnemyShip = new Vector2(rectMap.X + _enemyShip.Position.X / k, rectMap.Y + _enemyShip.Position.Y / k);
 
+            var dir = new Vector2(Maf.Cos(_ship.Rotation), Maf.Sin(_ship.Rotation));
+            var nrm = new Vector2(dir.Y, -dir.X);
+
             _debugGeometry.Prepare(Matrix.Identity);
             _debugGeometry.DrawRectangle(rectMap, Color.Blue);
             _debugGeometry.DrawCircle(vectorShip, 2, Color.Green);
+            _debugGeometry.DrawLine(vectorShip, nrm * 10 + vectorShip, Color.Green);
             _debugGeometry.DrawCircle(vectorEnemyShip, 2, Color.Red);
 
             _debugGeometry.Prepare(_camera.GetTransform());
@@ -274,6 +312,15 @@ namespace Ctrl_Space
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public static void WinShip(Type typeOfShip)
+        {
+            Game.DebugConsole.Append(typeOfShip == typeof(EnemyShip) ? "Player win!" : "CPU win!").NewLine();
+            if (typeOfShip == typeof(EnemyShip))
+                PlayerWins++;
+            else
+                EnemyShipWins++;
         }
     }
 }

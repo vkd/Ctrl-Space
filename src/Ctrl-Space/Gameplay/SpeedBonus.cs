@@ -15,7 +15,7 @@ namespace Ctrl_Space.Gameplay
         {
             Position = position;
             Speed = Vector2.Zero;
-            Size = 15;
+            Size = 40;
         }
 
         public override void Update(World world, Particles particles)

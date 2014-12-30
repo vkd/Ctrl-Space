@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Ctrl_Space.Helpers;
 using System;
+using Ctrl_Space.Gameplay.Weapon;
 
 namespace Ctrl_Space.Gameplay
 {
@@ -19,48 +20,61 @@ namespace Ctrl_Space.Gameplay
         {
             _target = target;
             base.Reset(position, world);
+
+            _weapon = new PlasmaGun(this);
         }
 
         public Vector2 TargetPos;
 
         public override void Update(World world, Particles particles)
         {
-            float dx = _target.Position.X - Position.X;
-            float dy = _target.Position.Y - Position.Y;
-            if (dx > Game.WorldWidth / 2)
-                dx -= Game.WorldWidth;
-            if (dy > Game.WorldHeight / 2)
-                dy -= Game.WorldHeight;
-            if (dx < -Game.WorldWidth / 2)
-                dx += Game.WorldWidth;
-            if (dy < -Game.WorldHeight / 2)
-                dy += Game.WorldHeight;
+            var d_pos = _target.Position - Position;
+            float dx = ((d_pos.X + Game.WorldWidth / 2) % Game.WorldWidth) - Game.WorldWidth / 2;
+            float dy = ((d_pos.Y + Game.WorldHeight / 2) % Game.WorldHeight) - Game.WorldHeight / 2;
 
-            var vect = new Vector2(dx, dy);
-            var nrmvect = new Vector2(dx, dy);
-            nrmvect.Normalize();
-            var time = vect.Length() / (_weapon.Speed + Vector2.Dot(Speed, nrmvect));
+            var directionTargetBegin = new Vector2(dx, dy);
+            var nrm_directionTargetBegin = directionTargetBegin;
+            nrm_directionTargetBegin.Normalize();
 
-            TargetPos = new Vector2(_target.Position.X - time * (Speed.X - _target.Speed.X), _target.Position.Y - time * (Speed.Y - _target.Speed.Y));
+            //var time_Speed = directionTarget.Length() 
+            //    / (
+            //        Vector2.Dot(_target.Speed, new Vector2(-nrm_directionTarget.X, -nrm_directionTarget.Y))
+            //        + Vector2.Dot(Speed, nrm_directionTarget)
+            //    );
 
-            var move = new Vector2(vect.X, vect.Y);
-            move.Normalize();
-            float ang = Maf.Atan2(vect.Y - time * (Speed.Y - _target.Speed.Y), vect.X - time * (Speed.X - _target.Speed.X));
+            //var directionTargetEnd = directionTargetBegin * Speed / (Speed - _target.Speed);
+            //var nrm_directionTargetEnd = directionTargetEnd;
+            //nrm_directionTargetEnd.Normalize();
+
+            var time_weapon = directionTargetBegin.Length() / (_weapon.Speed + Vector2.Dot(Speed, nrm_directionTargetBegin));
+
+            TargetPos = _target.Position + time_weapon * (_target.Speed - Speed);
+
+            var t = directionTargetBegin - time_weapon * (Speed - _target.Speed);
+            float ang = Maf.Atan2(t.Y, t.X);
+
             Rotation = ang + MathHelper.PiOver2;
 
             var dir = new Vector2(Maf.Cos(ang), Maf.Sin(ang));
             var nrm = new Vector2(dir.Y, -dir.X);
-            var accel = Vector2.Dot(move, dir);
-            var strafe = Vector2.Dot(move, nrm);
+            var accel = Vector2.Dot(nrm_directionTargetBegin, dir);
+            var strafe = Vector2.Dot(nrm_directionTargetBegin, nrm);
 
-            float distance = (vect).Length();
-            if (distance > 600.0f)
+            //var distanceVector = new Vector2(directionTarget.X - time_Speed * (Speed.X - _target.Speed.X), directionTarget.Y - time_Speed * (Speed.Y - _target.Speed.Y));
+
+            float distance_length = (directionTargetBegin).Length();
+            //if (HP < (MaxHP / 2))
+            //{
+            //    ;
+            //}
+            //else 
+            if (distance_length > 600.0f)
             {
                 SpeedUp(accel);
                 Strafe(strafe);
                 //ShootAlt(Input.InputDigitalState.Released);
             }
-            else if (distance > 400.0f)
+            else if (distance_length > 400.0f)
             {
                 _strafe = Chaos.GetFloat(-.2f, .2f);
                 _accel = Chaos.GetFloat(-.05f, .05f);
@@ -68,7 +82,7 @@ namespace Ctrl_Space.Gameplay
                 Strafe(0.4f * strafe);
                 //Shoot(Input.InputDigitalState.Released);
             }
-            else if (distance < 200.0f)
+            else if (distance_length < 200.0f)
             {
                 _strafe = Chaos.GetFloat(-.2f, .2f);
                 _accel = Chaos.GetFloat(-.05f, .05f);
@@ -76,7 +90,7 @@ namespace Ctrl_Space.Gameplay
                 Strafe(-0.2f * strafe);
                 //Shoot(Input.InputDigitalState.Pressed);
             }
-            else if (distance < 100.0f)
+            else if (distance_length < 100.0f)
             {
                 SpeedUp(-accel);
                 Strafe(-strafe);

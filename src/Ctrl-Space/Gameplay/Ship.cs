@@ -109,12 +109,15 @@ namespace Ctrl_Space.Gameplay
             if (HP <= 0)
             {
                 var t = this.GetType();
-                Game.DebugConsole.Append(t == typeof(EnemyShip) ? "Player win!" : "CPU win!").NewLine();
+                Game.WinShip(t);
                 for (int i = 0; i < _world.Count; i++)
                 {
                     var ship = _world[i] as Ship;
-                    if (ship != null)
+                    if (ship != null && ship.HP < 0)
+                    {
                         ship.HP = ship.MaxHP;
+                        ship.Position = Chaos.GetVector2InRectangle(Game.WorldWidth, Game.WorldHeight);
+                    }  
                 }
             }
         }

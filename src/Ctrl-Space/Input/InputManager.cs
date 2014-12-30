@@ -49,7 +49,8 @@ namespace Ctrl_Space.Input
                 new ControlMapping { Device = "XNAGamePad", Event = "RightTrigger", Method = "PrimaryWeapon" },
                 new ControlMapping { Device = "XNAGamePad", Event = "LeftTrigger", Method = "SecondaryWeapon" },
                 new ControlMapping { Device = "XNAGamePad", Event = "RightShoulder", Method = "PrimaryWeapon" },
-                new ControlMapping { Device = "XNAGamePad", Event = "LeftShoulder", Method = "SecondaryWeapon" }
+                new ControlMapping { Device = "XNAGamePad", Event = "LeftShoulder", Method = "SecondaryWeapon" },
+                new ControlMapping { Device = "XNAKeyboard", Event = "G", Method = "GoTimer" }
             };
         }
 
@@ -117,5 +118,7 @@ namespace Ctrl_Space.Input
         public event InputPressEventHandler PlayStopMediaPlayer;
 
         public event InputPressEventHandler ExitGame;
+
+        public event InputPressEventHandler GoTimer;
     }
 }
