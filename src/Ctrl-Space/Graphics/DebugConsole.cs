@@ -52,9 +52,7 @@ namespace Ctrl_Space.Graphics
                 pos += _consoleLinesCount;
             for (int i = 0; i < _showLinesCount; i++)
             {
-                font.DrawText(spriteBatch, _strings[pos].ToString(), 14f, new Vector2(10f, 14f * i + 50f), Color.Gray);
-                //spriteBatch.DrawString(TextureManager.Font, _strings[pos], new Vector2(11f, 14f * i + 51f), Color.Black);
-                //spriteBatch.DrawString(TextureManager.Font, _strings[pos], new Vector2(10f, 14f * i + 50f), Color.Gray);
+                font.DrawText(spriteBatch, _strings[pos], 14f, new Vector2(10f, 14f * i + 50f), Color.Gray);
                 pos++;
                 if (pos >= _consoleLinesCount)
                     pos = 0;
