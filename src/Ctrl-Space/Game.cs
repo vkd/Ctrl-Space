@@ -55,6 +55,7 @@ namespace Ctrl_Space
         public bool IsStartTimer = true;
         public int CountStartTimer = 3;
         public TimeSpan LastTimeSpan = new TimeSpan(0);
+        private float _timerFontSize = 0f;
 
         public static int PlayerWins = 0;
         public static int EnemyShipWins = 0;
@@ -199,8 +200,11 @@ namespace Ctrl_Space
         {
             if (IsStartTimer)
             {
-                if (LastTimeSpan.TotalMilliseconds + 1000 < gameTime.TotalGameTime.TotalMilliseconds)
+                var diff = gameTime.TotalGameTime.TotalMilliseconds - LastTimeSpan.TotalMilliseconds;
+                _timerFontSize = (float)(diff + 20.0);
+                if (diff > 1000)
                 {
+                    _timerFontSize = 20f;
                     LastTimeSpan = gameTime.TotalGameTime;
                     CountStartTimer -= 1;
                     if (CountStartTimer < 0)
@@ -255,7 +259,7 @@ namespace Ctrl_Space
             _spriteBatch.Begin(0, null, null, null, null, TextureManager.SDFFontEffect);
             if (IsStartTimer)
             {
-                _font.DrawText(_spriteBatch, CountStartTimer.ToString(), 128f, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), Color.White);
+                _font.DrawText(_spriteBatch, CountStartTimer == 0 ? "GO" : CountStartTimer.ToString(), _timerFontSize, new Vector2(GraphicsDevice.Viewport.Width / 2 - (CountStartTimer != 0 ? (_timerFontSize / 2) : _timerFontSize), GraphicsDevice.Viewport.Height / 2 - _timerFontSize / 2), Color.White);
             }
             _font.DrawText(_spriteBatch, "HP:", 28f, new Vector2(16, 16), Color.White);
             _font.DrawText(_spriteBatch, "Ship - " + _ship.HP, 28f, new Vector2(16, 48), Color.Green);
