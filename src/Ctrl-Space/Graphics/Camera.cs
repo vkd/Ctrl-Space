@@ -24,18 +24,20 @@ namespace Ctrl_Space.Graphics
 
         public Matrix GetTransform()
         {
-            Matrix translation = Matrix.CreateTranslation(-_followedObject.Position.X, -_followedObject.Position.Y, 0f);
-            Matrix rotation = Matrix.CreateRotationZ(-_followedObject.Rotation);
-            Matrix view = Matrix.CreateTranslation(Game.ResolutionX / 2, Game.ResolutionY / 2, 0f);
-            return translation * rotation * view;
+            Matrix result;
+            result = Matrix.CreateTranslation(-_followedObject.Position.X, -_followedObject.Position.Y, 0f);
+            result *= Matrix.CreateRotationZ(-_followedObject.Rotation);
+            result *= Matrix.CreateTranslation(Game.ResolutionX / 2, Game.ResolutionY / 2, 0f);
+            return result;
         }
 
         public Matrix GetParallaxTransform(float ratioX, float ratioY)
         {
-            Matrix translation = Matrix.CreateTranslation(-_followedObject.Position.X / ratioX, -_followedObject.Position.Y / ratioY, 0f);
-            Matrix rotation = Matrix.CreateRotationZ(-_followedObject.Rotation);
-            Matrix view = Matrix.CreateTranslation(Game.ResolutionX / 2, Game.ResolutionY / 2, 0f);
-            return translation * rotation * view;
+            Matrix result;
+            result = Matrix.CreateTranslation(-_followedObject.Position.X / ratioX, -_followedObject.Position.Y / ratioY, 0f);
+            result *= Matrix.CreateRotationZ(-_followedObject.Rotation);
+            result *= Matrix.CreateTranslation(Game.ResolutionX / 2, Game.ResolutionY / 2, 0f);
+            return result;
         }
     }
 }
