@@ -11,7 +11,6 @@
         public bool PrimaryWeapon;
         public bool SecondaryWeapon;
         public bool Exit;
-        public bool GoTimer;
 
         public void Reset()
         {
@@ -57,10 +56,6 @@
                 case "Exit":
                     Exit |= data > 0.5f;
                     break;
-                case "GoTimer":
-                    GoTimer |= data > 0.5f;
-                    break;
-
             }
         }
     }

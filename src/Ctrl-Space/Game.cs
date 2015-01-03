@@ -167,8 +167,6 @@ namespace Ctrl_Space
             _inputManager.SecondaryWeapon += e => _ship.ShootAlt(e.State);
 
             _inputManager.Rotate += e => _ship.Rotate(e.Value * 0.1f);
-
-            _inputManager.GoTimer += () => IsStartTimer = false;
         }
 
         void Game_Activated(object sender, EventArgs e)
