@@ -16,7 +16,7 @@ namespace Ctrl_Space.Gameplay.Weapon
 
         public override void Shoot(World world)
         {
-            var kickRocket = 30f;
+            var kickRocket = 60f;
 
             SinPlasmaBullet plasmaBullet = Game.Objects.CreateSinPlasmaBullet();
             plasmaBullet.Size = 10;
