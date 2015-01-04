@@ -28,6 +28,12 @@ namespace Ctrl_Space.Graphics
             return this;
         }
 
+        public DebugConsole AppendLine(string value)
+        {
+            Append(value).NewLine();
+            return this;
+        }
+
         public DebugConsole Append(int value)
         {
             _currentString.Append(value);

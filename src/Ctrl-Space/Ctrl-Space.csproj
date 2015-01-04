@@ -80,6 +80,7 @@
     <Compile Include="Graphics\WorldLoop.cs" />
     <Compile Include="Helpers\AwesomeStringBuilder.cs" />
     <Compile Include="Helpers\Chaos.cs" />
+    <Compile Include="Helpers\Config.cs" />
     <Compile Include="Helpers\Lerp.cs" />
     <Compile Include="Helpers\Maf.cs" />
     <Compile Include="Helpers\Pool.cs" />

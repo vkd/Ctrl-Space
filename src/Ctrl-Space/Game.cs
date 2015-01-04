@@ -45,6 +45,8 @@ namespace Ctrl_Space
 
         private Song _song;
 
+        public static Config Config = new Config("config.cfg");
+
         private DebugGeometry _debugGeometry;
         public static readonly DebugConsole DebugConsole = new DebugConsole();
 
@@ -67,10 +69,10 @@ namespace Ctrl_Space
             DebugConsole.Append("Init gfx...").NewLine();
             Content.RootDirectory = "Content";
             DebugConsole.Append("Loading config...").NewLine();
-            _graphics.IsFullScreen = ConfigurationManager.AppSettings["IsFullScreen"].ToLower() == "true";
-            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["Resolution"]))
+
+            if (!string.IsNullOrWhiteSpace(Config.Resolution))
             {
-                var t = ConfigurationManager.AppSettings["Resolution"].Split('x');
+                var t = Config.Resolution.Split('x');
                 if (t.Length == 2)
                 {
                     int.TryParse(t[0], out ResolutionX);
@@ -85,7 +87,7 @@ namespace Ctrl_Space
 
         protected override void Initialize()
         {
-            _graphics.IsFullScreen = ConfigurationManager.AppSettings["IsFullScreen"].ToLower() == "true";
+            _graphics.IsFullScreen = Config.IsFullScreen;
             _graphics.ApplyChanges();
 
             InitializeInputManager();
@@ -232,6 +234,8 @@ namespace Ctrl_Space
 
         protected override void Draw(GameTime gameTime)
         {
+            _debugGeometry.Prepare(Matrix.Identity);
+
             _background.Draw(_spriteBatch, _camera);
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetTransform());
@@ -241,7 +245,7 @@ namespace Ctrl_Space
             {
                 Vector2 offset = new Vector2(_worldLoopParticles.Cluster.ShiftX * WorldWidth, _worldLoopParticles.Cluster.ShiftY * WorldHeight);
                 foreach (var obj in _worldLoopParticles.Cluster.GameObjects)
-                    obj.Draw(_spriteBatch, gameTime, offset);
+                    obj.Draw(_spriteBatch, gameTime, offset, _camera, _debugGeometry);
             }
 
             _worldLoop.PrepareClustersForRender(_camera.FollowedObject.Position, ViewDistance);
@@ -249,7 +253,7 @@ namespace Ctrl_Space
             {
                 Vector2 offset = new Vector2(_worldLoop.Cluster.ShiftX * WorldWidth, _worldLoop.Cluster.ShiftY * WorldHeight);
                 foreach (var obj in _worldLoop.Cluster.GameObjects)
-                    obj.Draw(_spriteBatch, gameTime, offset);
+                    obj.Draw(_spriteBatch, gameTime, offset, _camera, _debugGeometry);
             }
 
             _spriteBatch.End();
@@ -259,13 +263,16 @@ namespace Ctrl_Space
             {
                 _font.DrawText(_spriteBatch, CountStartTimer == 0 ? "GO" : CountStartTimer.ToString(), _timerFontSize, new Vector2(GraphicsDevice.Viewport.Width / 2 - (CountStartTimer != 0 ? (_timerFontSize / 2) : _timerFontSize), GraphicsDevice.Viewport.Height / 2 - _timerFontSize / 2), Color.White);
             }
-            _font.DrawText(_spriteBatch, "HP:", 28f, new Vector2(16, 16), Color.White);
-            _font.DrawText(_spriteBatch, "Ship - " + _ship.HP, 28f, new Vector2(16, 48), Color.Green);
-            _font.DrawText(_spriteBatch, "EnemyShip - " + _enemyShip.HP, 28f, new Vector2(16, 80), Color.Red);
+            var fontSizeHP = Game.ResolutionX / 68f;
+            var lineHPText = 0;
+            _font.DrawText(_spriteBatch, "HP:", fontSizeHP, new Vector2(16, 16 + fontSizeHP * lineHPText++), Color.White);
+            _font.DrawText(_spriteBatch, "Ship - " + _ship.HP, fontSizeHP, new Vector2(16, 16 + fontSizeHP * lineHPText++), Color.Green);
+            _font.DrawText(_spriteBatch, "EnemyShip - " + _enemyShip.HP, fontSizeHP, new Vector2(16, 16 + fontSizeHP * lineHPText++), Color.Red);
+            lineHPText++;
 
-            _font.DrawText(_spriteBatch, "Score:", 28f, new Vector2(16, 116), Color.White);
-            _font.DrawText(_spriteBatch, "Ship - " + PlayerWins, 28f, new Vector2(16, 148), Color.Green);
-            _font.DrawText(_spriteBatch, "EnemyShip - " + EnemyShipWins, 28f, new Vector2(16, 180), Color.Red);
+            _font.DrawText(_spriteBatch, "Score:", fontSizeHP, new Vector2(16, 16 + fontSizeHP * lineHPText++), Color.White);
+            _font.DrawText(_spriteBatch, "Ship - " + PlayerWins, fontSizeHP, new Vector2(16, 16 + fontSizeHP * lineHPText++), Color.Green);
+            _font.DrawText(_spriteBatch, "EnemyShip - " + EnemyShipWins, fontSizeHP, new Vector2(16, 16 + fontSizeHP * lineHPText++), Color.Red);
             _spriteBatch.End();
 
             // ======= DEBUG INFO =======

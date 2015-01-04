@@ -4,6 +4,7 @@ using Ctrl_Space.Graphics;
 using Ctrl_Space.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ctrl_Space.Helpers;
 
 namespace Ctrl_Space.Gameplay
 {
@@ -52,11 +53,20 @@ namespace Ctrl_Space.Gameplay
             Rotation += RotationSpeed;
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Vector2 offset)
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime, Vector2 offset, Camera camera, DebugGeometry debugGeometry)
         {
             var tex = GetTexture();
             var s = Math.Max(tex.Region.Width, tex.Region.Height);
             spriteBatch.Draw(tex.Texture, Position + offset, tex.Region, Color * Alpha, Rotation, new Vector2(tex.Region.Width / 2, tex.Region.Height / 2), Size / s, SpriteEffects.None, 0f);
+
+            // DrawHP
+            if (DrawHP)
+            {
+                Vector2 start = new Vector2(-10f, -Size / 2 - 5f);
+                start = new Vector2(start.X * Maf.Cos(-camera.FollowedObject.Rotation) + start.Y * Maf.Sin(-camera.FollowedObject.Rotation), -start.X * Maf.Sin(-camera.FollowedObject.Rotation) + start.Y * Maf.Cos(-camera.FollowedObject.Rotation));
+                debugGeometry.DrawLine(Position + start, 20f, camera.FollowedObject.Rotation, Color.Red);
+                debugGeometry.DrawLine(Position + start, 20f * HP / MaxHP, camera.FollowedObject.Rotation, Color.Green);
+            }
         }
 
         public abstract MetaTexture GetTexture();
