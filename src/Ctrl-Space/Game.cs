@@ -234,7 +234,7 @@ namespace Ctrl_Space
 
         protected override void Draw(GameTime gameTime)
         {
-            _debugGeometry.Prepare(Matrix.Identity);
+            _debugGeometry.Prepare(_camera.GetTransform());
 
             _background.Draw(_spriteBatch, _camera);
 
@@ -304,18 +304,7 @@ namespace Ctrl_Space
             _debugGeometry.DrawLine(_enemyShip.Position, _enemyShip.TargetPos, Color.Green);
             _debugGeometry.DrawCircle(_ship.Position, 24f, Color.Blue);
             _debugGeometry.DrawLine(_ship.Position, 32f, _ship.Rotation - MathHelper.PiOver2, Color.Blue);
-
-            for (int i = 0; i < _world.Count; i++)
-            {
-                if (_world[i].DrawHP)
-                {
-                    Vector2 start = new Vector2(-10f, -_world[i].Size / 2 - 5f);
-                    start = new Vector2(start.X * Maf.Cos(-_camera.FollowedObject.Rotation) + start.Y * Maf.Sin(-_camera.FollowedObject.Rotation), -start.X * Maf.Sin(-_camera.FollowedObject.Rotation) + start.Y * Maf.Cos(-_camera.FollowedObject.Rotation));
-                    _debugGeometry.DrawLine(_world[i].Position + start, 20f, _camera.FollowedObject.Rotation, Color.Red);
-                    _debugGeometry.DrawLine(_world[i].Position + start, 20f * _world[i].HP / _world[i].MaxHP, _camera.FollowedObject.Rotation, Color.Green);
-                }
-            }
-
+            
             _spriteBatch.Begin(0, null, null, null, null, TextureManager.SDFFontEffect);
             DebugConsole.Draw(_spriteBatch, _font);
             _spriteBatch.End();
