@@ -64,8 +64,8 @@ namespace Ctrl_Space.Gameplay
             {
                 Vector2 start = new Vector2(-10f, -Size / 2 - 5f);
                 start = new Vector2(start.X * Maf.Cos(-camera.FollowedObject.Rotation) + start.Y * Maf.Sin(-camera.FollowedObject.Rotation), -start.X * Maf.Sin(-camera.FollowedObject.Rotation) + start.Y * Maf.Cos(-camera.FollowedObject.Rotation));
-                debugGeometry.DrawLine(Position + start, 20f, camera.FollowedObject.Rotation, Color.Red);
-                debugGeometry.DrawLine(Position + start, 20f * HP / MaxHP, camera.FollowedObject.Rotation, Color.Green);
+                debugGeometry.DrawLine(Position + start + offset, 20f, camera.FollowedObject.Rotation, Color.Red);
+                debugGeometry.DrawLine(Position + start + offset, 20f * HP / MaxHP, camera.FollowedObject.Rotation, Color.Green);
             }
         }
 
