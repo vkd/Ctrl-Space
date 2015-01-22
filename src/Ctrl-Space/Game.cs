@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using MonogameTest.Graphics;
 using System;
-using System.Configuration;
 
 namespace Ctrl_Space
 {
@@ -70,15 +69,9 @@ namespace Ctrl_Space
             Content.RootDirectory = "Content";
             DebugConsole.Append("Loading config...").NewLine();
 
-            if (!string.IsNullOrWhiteSpace(Config.Resolution))
-            {
-                var t = Config.Resolution.Split('x');
-                if (t.Length == 2)
-                {
-                    int.TryParse(t[0], out ResolutionX);
-                    int.TryParse(t[1], out ResolutionY);
-                }
-            }
+            ResolutionX = Config.Resolution.X;
+            ResolutionY = Config.Resolution.Y;
+
             _graphics.PreferredBackBufferWidth = ResolutionX;
             _graphics.PreferredBackBufferHeight = ResolutionY;
             _graphics.ApplyChanges();
@@ -304,7 +297,7 @@ namespace Ctrl_Space
             _debugGeometry.DrawLine(_enemyShip.Position, _enemyShip.TargetPos, Color.Green);
             _debugGeometry.DrawCircle(_ship.Position, 24f, Color.Blue);
             _debugGeometry.DrawLine(_ship.Position, 32f, _ship.Rotation - MathHelper.PiOver2, Color.Blue);
-            
+
             _spriteBatch.Begin(0, null, null, null, null, TextureManager.SDFFontEffect);
             DebugConsole.Draw(_spriteBatch, _font);
             _spriteBatch.End();

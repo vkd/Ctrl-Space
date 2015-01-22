@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Configuration;
 using System.IO;
 
@@ -9,12 +10,12 @@ namespace Ctrl_Space.Helpers
         private string _filename = "config.cfg";
 
         public bool IsFullScreen { get; set; }
-        public string Resolution { get; set; }
+        public Point Resolution { get; set; }
 
         public Config(string filename = null)
         {
             IsFullScreen = ConfigurationManager.AppSettings["IsFullScreen"].ToLower() == "true";
-            Resolution = ConfigurationManager.AppSettings["Resolution"];
+            Resolution = ParseResolution(ConfigurationManager.AppSettings["Resolution"]);
 
             if (!string.IsNullOrEmpty(filename))
                 _filename = filename;
@@ -49,7 +50,7 @@ namespace Ctrl_Space.Helpers
                                         IsFullScreen = config[1].Trim().ToLower() == "true";
                                         break;
                                     case "Resolution":
-                                        Resolution = config[1].Trim();
+                                        Resolution = ParseResolution(config[1].Trim());
                                         break;
                                 }
                             }
@@ -80,6 +81,19 @@ namespace Ctrl_Space.Helpers
             catch (Exception ex)
             {
                 Game.DebugConsole.AppendLine("Error load config: " + ex.Message);
+            }
+        }
+
+        private Point ParseResolution(string value)
+        {
+            try
+            {
+                var t = value.Split('x');
+                return new Point(int.Parse(t[0]), int.Parse(t[1]));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error parsing resolution from config.", ex);
             }
         }
     }
